@@ -8,6 +8,7 @@ import UserProfileView from "~/Components/UserProfilePage/UserProfileView";
 import ChoresView from "~/Components/ChoresPage/ChoresView";
 import RewardsView from "~/Components/RewardsPage/RewardsView";
 import MissionView from "~/Components/MissionPage/MissionView";
+import ChoreResponse from "~/types/ChoreResponse";
 
 const VITE_APP_BACKEND_URL: string = import.meta.env.VITE_APP_BACKEND_URL;
 
@@ -18,14 +19,29 @@ const getTestString = (): Promise<string> => {
   });
 };
 
+export async function getChores(userId: number): Promise<ChoreResponse[]> {
+  try {
+    const response = await fetch(
+      `${VITE_APP_BACKEND_URL}/users/${userId}/chores`,
+    );
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
 function App() {
   const [message, setMessage] = useState("");
+  const [chores, setChores] = useState<ChoreResponse[]>([]);
+  const [userId] = useState<number>(1);
 
   useEffect(() => {
+    getChores(userId).then((chores) => setChores(chores));
     getTestString().then((message) => {
       setMessage(message);
     });
-  }, []);
+  }, [userId, chores]);
 
   return (
     <>
@@ -38,8 +54,7 @@ function App() {
           <Route index element={<LoginView />} />
           {/*users see this page when they go to site, will be redirected if they are already logged in.*/}
           <Route path="/UserProfile" element={<UserProfileView />} />
-          {/*TODO: Please pass in the api call*/}
-          <Route path="/Chores" element={<ChoresView chores={[]} />} />
+          <Route path="/Chores" element={<ChoresView chores={chores} />} />
           <Route path="/Rewards" element={<RewardsView />} />
           <Route path="/Mission" element={<MissionView />} />
         </Routes>
