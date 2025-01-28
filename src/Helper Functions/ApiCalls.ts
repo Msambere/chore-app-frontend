@@ -9,3 +9,12 @@ export const getTestString= (): Promise<string> => {
       return response.data;
     });
 };
+
+export const getUserDataAPICall = (userId : number) =>{
+  return axios.get(`${VITE_APP_BACKEND_URL}/users/${userId}`)
+    .then((response) => {
+      console.log(response.data)
+      return response.data;
+    });
+
+}
