@@ -22,7 +22,7 @@ interface ChoreProps {
   chore: ChoreResponse;
 }
 
-function ChoreView({ chore }: ChoreProps) {
+function SingleChoreView({ chore }: ChoreProps) {
   return (
     <Box sx={{ mb: 1 }}>
       <Container maxWidth="sm">
@@ -102,4 +102,4 @@ function ChoreView({ chore }: ChoreProps) {
     </Box>
   );
 }
-export default ChoreView;
+export default SingleChoreView;

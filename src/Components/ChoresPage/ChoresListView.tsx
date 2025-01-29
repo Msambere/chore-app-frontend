@@ -1,6 +1,6 @@
 import { Box, Grid2 as Grid } from "@mui/material";
-import ChoreCreate from "~/Components/ChoresPage/ChoreCreate";
-import ChoreView from "~/Components/ChoresPage/ChoreView";
+import ChoreCreate from "~/Components/ChoresPage/ChoreForm";
+import SingleChoreView from "~/Components/ChoresPage/SingleChoreView";
 import ChoreResponse from "~/types/ChoreResponse";
 
 interface ChoresProps {
@@ -17,7 +17,7 @@ export default function Chores({ chores }: ChoresProps) {
             Chores List
           </Box>
           {chores?.map((chore) => (
-            <ChoreView key={chore.title} chore={chore} />
+            <SingleChoreView key={chore.title} chore={chore} />
           ))}
         </Box>
       </Grid>

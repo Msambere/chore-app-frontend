@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint-fix": "eslint . --fix",
-    "lint": "eslint .",
+    "lint-fix": "eslint . --fix --ignore-pattern 'dist/*' ",
+    "lint": "eslint . --ignore-pattern 'dist/*'",
     "preview": "vite preview"
   },
   "dependencies": {
