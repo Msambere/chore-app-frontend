@@ -1,44 +1,47 @@
-import { useState, useEffect } from 'react';
-import './App.css'
+import { useState, useEffect } from "react";
+import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router";
-import LoginView from "./Components/LoginPage/LoginView.tsx";
-import SideBar from "./Components/SideBar/SideBar.tsx";
-import UserProfileView from "./Components/UserProfilePage/UserProfileView.tsx";
-import ChoresView from "./Components/ChoresPage/ChoresView.tsx";
-import RewardsView from "./Components/RewardsPage/RewardsView.tsx";
-import MissionView from "./Components/MissionPage/MissionView.tsx";
-import {getTestString} from "./Helper Functions/ApiCalls.ts";
-
+import LoginView from "~/Components/LoginPage/LoginView";
+import UserProfileView from "~/Components/UserProfilePage/UserProfileView";
+import ChoresListView from "~/Components/ChoresPage/ChoresListView";
+import RewardsView from "~/Components/RewardsPage/RewardsView";
+import MissionView from "~/Components/MissionPage/MissionView";
+import UserData from "~/types/UserData";
+import { Layout } from "~/Components/Layout/Layout";
+import { getUserInfo } from "~/Helper Functions/ApiCalls";
+import ChoreFormComponent from "./Components/ChoresPage/ChoreFormComponent";
 
 function App() {
-  const [message, setMessage] = useState("");
-
+  const [userData, setUserData] = useState<UserData>();
+  const [userId] = useState<string>("user1");
 
   useEffect(() => {
-    getTestString().then((message ) => {
-      setMessage(message);
-  })
-}, []);
+    getUserInfo(userId).then((response) => {
+      setUserData(response);
+    });
+  }, [userId]);
 
   return (
-    <>
-      <h1>{message}</h1>
-      <h1> Side bar goes here</h1>
-        <SideBar/>
-        {/*Create this component. Use <NavLink to="...">...</NavLink>/>  for buttons */}
-      <BrowserRouter>
-        <Routes>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
           <Route index element={<LoginView />} />
           {/*users see this page when they go to site, will be redirected if they are already logged in.*/}
           <Route path="/UserProfile" element={<UserProfileView />} />
-          <Route path="/Chores" element={<ChoresView />} />
+          <Route
+            path="/Chores"
+            element={<ChoresListView chores={userData?.chores ?? []} />}
+          />
+          <Route
+            path="/Chores/create"
+            element={<ChoreFormComponent userName={userData?.username ?? ""} />}
+          />
           <Route path="/Rewards" element={<RewardsView />} />
           <Route path="/Mission" element={<MissionView />} />
-        </Routes>
-      </BrowserRouter>
-
-    </>
-  )
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

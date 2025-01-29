@@ -1,9 +1,31 @@
-import {ReactElement} from "react";
+import { List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 
-const SideBar = (): ReactElement<string> => {
+import Link from "@mui/material/Link";
+import { Link as RouterLink } from "react-router";
+
+const Sidebar = () => {
+  const menuItems = [
+    { label: "UserProfile", route: "/UserProfile" },
+    { label: "Chores", route: "/chores" },
+    { label: "Mission", route: "/Mission" },
+    { label: "Rewards", route: "/Rewards" },
+  ];
   return (
-    <h1>This is were the Sidebar components will go</h1>
-  )
-}
+    <List>
+      {menuItems.map((item) => (
+        <ListItem
+          key={item.label}
+          component={(props) => (
+            <Link {...props} to={item.route!} component={RouterLink} />
+          )}
+        >
+          <ListItemButton>
+            <ListItemText primary={item.label} />
+          </ListItemButton>
+        </ListItem>
+      ))}
+    </List>
+  );
+};
 
-export default SideBar;
+export default Sidebar;
