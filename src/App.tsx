@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from "axios";
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router";
 import LoginView from "./Components/LoginPage/LoginView.tsx";
@@ -8,16 +7,8 @@ import UserProfileView from "./Components/UserProfilePage/UserProfileView.tsx";
 import ChoresView from "./Components/ChoresPage/ChoresView.tsx";
 import RewardsView from "./Components/RewardsPage/RewardsView.tsx";
 import MissionView from "./Components/MissionPage/MissionView.tsx";
+import {getTestString} from "./Helper Functions/ApiCalls.ts";
 
-const VITE_APP_BACKEND_URL : string = import.meta.env.VITE_APP_BACKEND_URL
-
-const getTestString= (): Promise<string> => {
-    return axios.get(`${VITE_APP_BACKEND_URL}`)
-        .then((response) => {
-            console.log(response.data)
-            return response.data;
-        });
-};
 
 function App() {
   const [message, setMessage] = useState("");
