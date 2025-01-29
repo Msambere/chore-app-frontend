@@ -1,6 +1,6 @@
 import axios from "axios";
-import UserData from "~/types/UserData";
-import ChoreResponse from "~/types/ChoreResponse";
+import UserData from "~/types/Response/UserData";
+import ChoreResponse from "~/types/Response/ChoreResponse";
 
 const VITE_APP_BACKEND_URL: string = import.meta.env.VITE_APP_BACKEND_URL;
 
