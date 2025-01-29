@@ -27,6 +27,11 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<LoginView />} />
           {/*users see this page when they go to site, will be redirected if they are already logged in.*/}
+          <Route path="/Login" element={<LoginView />} />
+          <Route
+            path="/Login"
+            element={<ChoresListView chores={userData?.chores ?? []} />}
+          />
           <Route path="/UserProfile" element={<UserProfileView />} />
           <Route
             path="/Chores"
