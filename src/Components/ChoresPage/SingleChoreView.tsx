@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Star } from "@mui/icons-material";
-import ChoreResponse from "~/types/ChoreResponse";
+import ChoreResponse from "~/types/Response/ChoreResponse";
 import ChoreFormComponent from "./ChoreFormComponent";
 import Link from "@mui/material/Link";
 import { Link as RouterLink } from "react-router";

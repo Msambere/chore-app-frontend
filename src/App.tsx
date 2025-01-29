@@ -6,7 +6,7 @@ import UserProfileView from "~/Components/UserProfilePage/UserProfileView";
 import ChoresListView from "~/Components/ChoresPage/ChoresListView";
 import RewardsView from "~/Components/RewardsPage/RewardsView";
 import MissionView from "~/Components/MissionPage/MissionView";
-import UserData from "~/types/UserData";
+import UserData from "~/types/Response/UserData";
 import { Layout } from "~/Components/Layout/Layout";
 import { getUserInfo } from "~/Helper Functions/ApiCalls";
 import ChoreFormComponent from "./Components/ChoresPage/ChoreFormComponent";
