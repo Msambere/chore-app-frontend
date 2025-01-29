@@ -27,8 +27,8 @@ function App() {
     getTestString().then((message ) => {
       setMessage(message);
   })
-}, []);
-
+}, [])
+    // Testing for gIthub
   return (
     <>
       <h1>{message}</h1>
