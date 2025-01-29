@@ -7,18 +7,25 @@ import UserProfileView from "./Components/UserProfilePage/UserProfileView.tsx";
 import ChoresView from "./Components/ChoresPage/ChoresView.tsx";
 import RewardsView from "./Components/RewardsPage/RewardsView.tsx";
 import MissionView from "./Components/MissionPage/MissionView.tsx";
-import {getTestString} from "./Helper Functions/ApiCalls.ts";
+import {getTestString, getUserDataAPICall} from "./Helper Functions/ApiCalls.ts";
 
 
 function App() {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<string>("");
+  const [userData, setUserData] = useState([]) //Add typing
+  const [userId, setUserID] = useState<number>(1);
 
 
   useEffect(() => {
     getTestString().then((message ) => {
       setMessage(message);
-  })
-}, [])
+    });
+    getUserDataAPICall(userId).then((data) =>{
+      // default user is 1 for now
+      setUserData(data);
+      console.log(userData);
+    })
+}, []);
 
   return (
     <>
