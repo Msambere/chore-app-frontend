@@ -2,10 +2,10 @@ import {ReactElement, useState} from "react";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 // import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 
-interface MissionChoreProps {
+interface MissionChoresProps {
   missionChores: MissionChoreResponse[];
 }
-const ActiveMission = (props: MissionChoreProps): ReactElement<string> => {
+const ActiveMission = (props: MissionChoresProps): ReactElement<string> => {
   const [missionChores, setMissionChores] = useState<MissionChoreResponse[]>(props.missionChores);
   const [pointTotal, setPointTotal] = useState(0);
   const [timeElapsed, setTimeElapsed] = useState(0);
