@@ -5,10 +5,10 @@ import { Link as RouterLink } from "react-router";
 
 const Sidebar = () => {
   const menuItems = [
-    { label: "Chores", route: "/chores" },
     { label: "UserProfile", route: "/UserProfile" },
-    { label: "Rewards", route: "/Rewards" },
+    { label: "Chores", route: "/chores" },
     { label: "Mission", route: "/Mission" },
+    { label: "Rewards", route: "/Rewards" },
   ];
   return (
     <List>

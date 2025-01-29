@@ -3,16 +3,17 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router";
 import LoginView from "~/Components/LoginPage/LoginView";
 import UserProfileView from "~/Components/UserProfilePage/UserProfileView";
-import ChoresView from "~/Components/ChoresPage/ChoresListView";
+import ChoresListView from "~/Components/ChoresPage/ChoresListView";
 import RewardsView from "~/Components/RewardsPage/RewardsView";
 import MissionView from "~/Components/MissionPage/MissionView";
 import UserData from "~/types/UserData";
 import { Layout } from "~/Components/Layout/Layout";
 import { getUserInfo } from "~/Helper Functions/ApiCalls";
+import ChoreFormComponent from "./Components/ChoresPage/ChoreFormComponent";
 
 function App() {
   const [userData, setUserData] = useState<UserData>();
-  const [userId] = useState<number>(1);
+  const [userId] = useState<string>("user1");
 
   useEffect(() => {
     getUserInfo(userId).then((response) => {
@@ -29,7 +30,11 @@ function App() {
           <Route path="/UserProfile" element={<UserProfileView />} />
           <Route
             path="/Chores"
-            element={<ChoresView chores={userData?.chores ?? []} />}
+            element={<ChoresListView chores={userData?.chores ?? []} />}
+          />
+          <Route
+            path="/Chores/create"
+            element={<ChoreFormComponent userName={userData?.username ?? ""} />}
           />
           <Route path="/Rewards" element={<RewardsView />} />
           <Route path="/Mission" element={<MissionView />} />

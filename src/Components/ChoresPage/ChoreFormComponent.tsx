@@ -3,6 +3,9 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Button } from "@mui/material";
+import { createChore } from "~/Helper Functions/ApiCalls";
+import ChoreResponse from "~/types/ChoreResponse";
+import { useState } from "react";
 
 const previous_chore_tile = [
   { previous_chore_tile: "Do Laundry" },
@@ -26,8 +29,19 @@ const set_difficulty_level = [
   { set_difficulty_level: "Medium" },
   { set_difficulty_level: "Hard" },
 ];
+interface ChoreCreateComponentProps {
+  userName: string;
+}
 
-export default function ChoreCreateComponent() {
+export default function ChoreCreateComponent({
+  userName,
+}: ChoreCreateComponentProps) {
+  const [chore, setChore] = useState<ChoreResponse>({} as ChoreResponse);
+  const createChoreCall = () => {
+    if (userName) {
+      createChore(userName, chore);
+    }
+  };
   return (
     <Box sx={{ mb: 2 }}>
       <Box component="span" style={{ fontSize: "2em" }}>
@@ -46,7 +60,7 @@ export default function ChoreCreateComponent() {
           )}
           onChange={(_, newValue) => {
             if (typeof newValue === "string") {
-              console.log("New value added:", newValue); // Optional: Handle new value addition
+              setChore({ ...chore, title: newValue });
             }
           }}
         />
@@ -111,7 +125,9 @@ export default function ChoreCreateComponent() {
             mt: 2, // Optional: Add some margin-top
           }}
         >
-          <Button variant="outlined">Submit</Button>
+          <Button variant="outlined" onClick={createChoreCall}>
+            Submit
+          </Button>
         </Box>
       </Container>
     </Box>
