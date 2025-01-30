@@ -1,9 +1,9 @@
 import ChoreResponse from "~/types/Response/ChoreResponse";
 
 export const extractUserCategories = (chores: ChoreResponse[]): string[] => {
-  const categories: string[] = [];
+  const categories: Set<string> = new Set<string>();
   chores.forEach((chore) => {
-    categories.push(chore.category);
+    categories.add(chore.category);
   });
-  return categories;
-}
+  return Array.from(categories);
+};
