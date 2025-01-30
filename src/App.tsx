@@ -10,6 +10,7 @@ import UserData from "~/types/Response/UserData";
 import { Layout } from "~/Components/Layout/Layout";
 import { getUserInfo } from "~/Helper Functions/ApiCalls";
 import ChoreFormComponent from "./Components/ChoresPage/ChoreFormComponent";
+import SignupView from "~/Components/LoginPage/Signup";
 
 function App() {
   const [userData, setUserData] = useState<UserData>();
@@ -28,6 +29,7 @@ function App() {
           <Route index element={<LoginView />} />
           {/*users see this page when they go to site, will be redirected if they are already logged in.*/}
           <Route path="/Login" element={<LoginView />} />
+          <Route path="/Signup" element={<SignupView />} />
           <Route
             path="/Login"
             element={<ChoresListView chores={userData?.chores ?? []} />}
