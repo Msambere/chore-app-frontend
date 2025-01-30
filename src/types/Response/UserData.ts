@@ -11,4 +11,5 @@ export default interface UserData {
   chores: ChoreResponse[];
   missions: MissionResponse[];
   rewards: RewardResponse[];
+  message?: string | undefined;
 }
