@@ -1,6 +1,6 @@
 import { Box, Button, Grid2 as Grid } from "@mui/material";
 import SingleChoreView from "~/Components/ChoresPage/SingleChoreView";
-import ChoreResponse from "~/types/ChoreResponse";
+import ChoreResponse from "~/types/Response/ChoreResponse";
 import { Link as RouterLink } from "react-router";
 import React from "react";
 

@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Button } from "@mui/material";
 import { createChore } from "~/Helper Functions/ApiCalls";
-import ChoreResponse from "~/types/ChoreResponse";
+import ChoreResponse from "~/types/Response/ChoreResponse";
 import { useState } from "react";
 
 const previous_chore_tile = [

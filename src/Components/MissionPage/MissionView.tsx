@@ -1,14 +1,7 @@
 import { ReactElement } from "react";
-import ActiveMission from "~/Components/MissionPage/ActiveMission/ActiveMission";
 
 const MissionView = (): ReactElement<string> => {
-  return (
-      <ActiveMission>
-
-      </ActiveMission>
-
-  )
-
+  return <h1>This is were the Mission page components will go</h1>;
 };
 
 export default MissionView;
