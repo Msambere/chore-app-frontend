@@ -23,9 +23,6 @@ export const createNewMissionApiCall = (
     .post(`${VITE_APP_BACKEND_URL}/users/${userId}/missions`, newMissionData)
     .then((response) => {
       return response.data;
-    })
-    .catch((error) => {
-      console.log(error);
     });
 };
 
