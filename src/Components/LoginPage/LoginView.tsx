@@ -8,7 +8,8 @@ import {
 } from "react-hook-form-mui";
 import { Button, Stack } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { getUserInfo } from "~/Helper Functions/ApiCalls";
 
 const loginSchema = z.object({
   username: z.string().min(4, "Invalid username"),
@@ -31,19 +32,38 @@ export default function LoginPage({
   const { handleSubmit, setError } = formContext;
   const navigate = useNavigate();
 
-  const onSubmit = (data: LoginFormInputs) => {
-    console.log("Logging in with:", data);
-    if (data.username !== "test" || data.password !== "password123") {
-      setError("root", { type: "manual", message: "Wrong credentials." });
-    }
-    userNameSetter("user1");
-  };
-
+  const onSubmit = useCallback(
+    async (data: LoginFormInputs) => {
+      try {
+        const response = await getUserInfo(data.username);
+        if (response?.message === "User not found") {
+          setError("username", {
+            type: "value",
+            message: "User not found. Please check your username.",
+          });
+        } else if (response?.username) {
+          userNameSetter(response.username ?? "");
+        } else {
+          setError("username", {
+            type: "value",
+            message: "Unexpected response from the server.",
+          });
+        }
+      } catch (error) {
+        setError("username", {
+          type: "value",
+          message: "Failed to log in. Please try again.",
+        });
+        console.error(error);
+      }
+    },
+    [userNameSetter, setError],
+  );
   useEffect(() => {
     if (userName) {
       navigate("/");
     }
-  }, [userName, onSubmit]);
+  }, [userName]);
 
   return (
     <FormContainer
