@@ -1,6 +1,8 @@
 import axios from "axios";
 import UserData from "~/types/Response/UserData";
 import ChoreResponse from "~/types/Response/ChoreResponse";
+import { MissionRequest } from "~/types/Request/MissionRequest";
+import MissionResponse from "~/types/Response/MissionResponse";
 
 const VITE_APP_BACKEND_URL: string = import.meta.env.VITE_APP_BACKEND_URL;
 
@@ -9,6 +11,21 @@ export const getTestString = (): Promise<string> => {
     console.log(response.data);
     return response.data;
   });
+};
+
+export const createNewMissionApiCall = (
+  userId: number,
+  newMissionData: MissionRequest,
+): Promise<MissionResponse> => {
+  console.log(newMissionData);
+  return axios
+    .post(`${VITE_APP_BACKEND_URL}/users/${userId}/missions`, newMissionData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 export async function getUserInfo(userName: string): Promise<UserData> {

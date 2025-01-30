@@ -13,13 +13,14 @@ import ChoreFormComponent from "./Components/ChoresPage/ChoreFormComponent";
 
 function App() {
   const [userData, setUserData] = useState<UserData>();
-  const [userId] = useState<string>("user1");
+  const [username, setUsername] = useState<string>("FirstLady4eva");
+  console.log(username);
 
   useEffect(() => {
-    getUserInfo(userId).then((response) => {
+    getUserInfo(username).then((response) => {
       setUserData(response);
     });
-  }, [userId]);
+  }, [username]);
 
   return (
     <BrowserRouter>
@@ -37,7 +38,10 @@ function App() {
             element={<ChoreFormComponent userName={userData?.username ?? ""} />}
           />
           <Route path="/Rewards" element={<RewardsView />} />
-          <Route path="/Mission" element={<MissionView />} />
+          <Route
+            path="/Mission"
+            element={<MissionView userData={userData ?? []} />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
