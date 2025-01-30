@@ -8,6 +8,7 @@ import {
 } from "react-hook-form-mui";
 import { Button, Stack } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router";
+import { useEffect } from "react";
 
 const loginSchema = z.object({
   username: z.string().min(4, "Invalid username"),
@@ -16,19 +17,33 @@ const loginSchema = z.object({
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
-export default function LoginPage() {
+interface LoginViewProps {
+  userNameSetter: (value: string) => void;
+  userName?: string | undefined;
+}
+
+export default function LoginPage({
+  userNameSetter,
+  userName,
+}: LoginViewProps) {
   const formResolver = zodResolver(loginSchema);
   const formContext = useForm<LoginFormInputs>({ resolver: formResolver });
   const { handleSubmit, setError } = formContext;
   const navigate = useNavigate();
 
-  const onSubmit = async (data: LoginFormInputs) => {
+  const onSubmit = (data: LoginFormInputs) => {
     console.log("Logging in with:", data);
     if (data.username !== "test" || data.password !== "password123") {
       setError("root", { type: "manual", message: "Wrong credentials." });
     }
-    navigate("/UserProfile");
+    userNameSetter("user1");
   };
+
+  useEffect(() => {
+    if (userName) {
+      navigate("/");
+    }
+  }, [userName, onSubmit]);
 
   return (
     <FormContainer

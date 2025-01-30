@@ -11,7 +11,11 @@ import { Link as RouterLink } from "react-router";
 import signupSchema from "~/types/Forms/SignupSchema";
 import SignupFormInputs from "~/types/Forms/SignupFormInputs";
 
-export default function SignupView() {
+interface SignupViewProps {
+  userNameSetter: (value: string) => void;
+}
+
+export default function SignupView({ userNameSetter }: SignupViewProps) {
   const formResolver = zodResolver(signupSchema);
   const formContext = useForm<SignupFormInputs>({ resolver: formResolver });
   const { handleSubmit, setError } = formContext;
@@ -21,6 +25,7 @@ export default function SignupView() {
       .then((response) => {
         response.json().then((data) => {
           alert(data.message);
+          userNameSetter(data.username);
         });
       })
       .catch((error) => {
