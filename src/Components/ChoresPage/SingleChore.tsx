@@ -22,7 +22,7 @@ interface ChoreProps {
   chore: ChoreResponse;
 }
 
-function SingleChoreView({ chore }: ChoreProps) {
+function SingleChore({ chore }: ChoreProps) {
   return (
     <>
       <Box sx={{ mb: 1 }}>
@@ -104,4 +104,4 @@ function SingleChoreView({ chore }: ChoreProps) {
     </>
   );
 }
-export default SingleChoreView;
+export default SingleChore;

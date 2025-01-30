@@ -47,7 +47,10 @@ function App() {
             element={<ChoreFormComponent userData={userData} />}
           />
           <Route path="/Rewards" element={<RewardsView />} />
-          <Route path="/Mission" element={<MissionView />} />
+          <Route
+            path="/Mission"
+            element={<MissionView userData={userData!} />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

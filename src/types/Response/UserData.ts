@@ -3,7 +3,7 @@ import MissionResponse from "~/types/Response/MissionResponse";
 import RewardResponse from "~/types/Response/RewardResponse";
 
 export default interface UserData {
-  id: number;
+  userId: number;
   firstName: string;
   lastName: string;
   username: string;
@@ -11,5 +11,5 @@ export default interface UserData {
   chores: ChoreResponse[];
   missions: MissionResponse[];
   rewards: RewardResponse[];
-  message?: string | undefined;
+  message: string | null;
 }

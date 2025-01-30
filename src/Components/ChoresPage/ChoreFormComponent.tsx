@@ -33,7 +33,7 @@ const set_difficulty_level = [
 ];
 
 interface ChoreCreateComponentProps {
-  userData?: UserData | undefined;
+  userData?: UserData;
 }
 
 export default function ChoreCreateComponent({
