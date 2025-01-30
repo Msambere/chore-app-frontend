@@ -5,7 +5,9 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { Button } from "@mui/material";
 import { createChore } from "~/Helper Functions/ApiCalls";
 import ChoreResponse from "~/types/Response/ChoreResponse";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import UserData from "~/types/Response/UserData";
+import { useNavigate } from "react-router";
 
 const previous_chore_tile = [
   { previous_chore_tile: "Do Laundry" },
@@ -29,17 +31,26 @@ const set_difficulty_level = [
   { set_difficulty_level: "Medium" },
   { set_difficulty_level: "Hard" },
 ];
+
 interface ChoreCreateComponentProps {
-  userName: string;
+  userData?: UserData;
 }
 
 export default function ChoreCreateComponent({
-  userName,
+  userData,
 }: ChoreCreateComponentProps) {
   const [chore, setChore] = useState<ChoreResponse>({} as ChoreResponse);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userData) {
+      navigate("/Login");
+    }
+  }, [userData]);
+
   const createChoreCall = () => {
-    if (userName) {
-      createChore(userName, chore);
+    if (userData) {
+      createChore(userData.username, chore);
     }
   };
   return (

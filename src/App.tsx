@@ -10,34 +10,47 @@ import UserData from "~/types/Response/UserData";
 import { Layout } from "~/Components/Layout/Layout";
 import { getUserInfo } from "~/Helper Functions/ApiCalls";
 import ChoreFormComponent from "./Components/ChoresPage/ChoreFormComponent";
+import SignupView from "~/Components/LoginPage/Signup";
 
 function App() {
   const [userData, setUserData] = useState<UserData>();
-  const [userId] = useState<string>("user1");
+  const [userName, setUserName] = useState<string>();
 
   useEffect(() => {
-    getUserInfo(userId).then((response) => {
+    if (!userName) return;
+    getUserInfo(userName).then((response) => {
       setUserData(response);
     });
-  }, [userId]);
+  }, [userName]);
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<LoginView />} />
-          {/*users see this page when they go to site, will be redirected if they are already logged in.*/}
-          <Route path="/UserProfile" element={<UserProfileView />} />
+          <Route index element={<UserProfileView userData={userData} />} />
+          <Route
+            path="/Login"
+            element={
+              <LoginView userNameSetter={setUserName} userName={userName} />
+            }
+          />
+          <Route
+            path="/Signup"
+            element={<SignupView userNameSetter={setUserName} />}
+          />
           <Route
             path="/Chores"
             element={<ChoresListView chores={userData?.chores ?? []} />}
           />
           <Route
             path="/Chores/create"
-            element={<ChoreFormComponent userName={userData?.username ?? ""} />}
+            element={<ChoreFormComponent userData={userData} />}
           />
           <Route path="/Rewards" element={<RewardsView />} />
-          <Route path="/Mission" element={<MissionView />} />
+          <Route
+            path="/Mission"
+            element={<MissionView userData={userData!} />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

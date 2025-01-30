@@ -17,15 +17,12 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Star } from "@mui/icons-material";
 import ChoreResponse from "~/types/Response/ChoreResponse";
-import ChoreFormComponent from "./ChoreFormComponent";
-import Link from "@mui/material/Link";
-import { Link as RouterLink } from "react-router";
 
 interface ChoreProps {
   chore: ChoreResponse;
 }
 
-function SingleChoreView({ chore }: ChoreProps) {
+function SingleChore({ chore }: ChoreProps) {
   return (
     <>
       <Box sx={{ mb: 1 }}>
@@ -107,4 +104,4 @@ function SingleChoreView({ chore }: ChoreProps) {
     </>
   );
 }
-export default SingleChoreView;
+export default SingleChore;
