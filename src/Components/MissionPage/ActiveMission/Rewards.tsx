@@ -1,56 +1,42 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
+import RewardResponse from "~/types/Response/RewardResponse";
 
-interface RewardProps {
-  totalChores: number;
-  completedChores: number;
+interface RewardsProps {
+  rewards: RewardResponse[];
 }
 
-function Rewards({ totalChores, completedChores }: RewardProps) {
-  const progressPercentage =
-    totalChores > 0 ? (completedChores / totalChores) * 100 : 0;
-
+const Rewards = ({ rewards }: RewardsProps) => {
   return (
-    <Box sx={{ p: 3, bgcolor: "#e0e0e0", borderRadius: 1, height: "100%", position: "relative" }}>
+    <Box sx={{ p: 3, bgcolor: "#e0e0e0", borderRadius: 1, height: "100%" }}>
       <Typography variant="h6">Rewards:</Typography>
       <Box
         sx={{
-          width: 10,
-          height: "100px",
-          bgcolor: "#ddd",
-          position: "relative",
-          overflow: "hidden",
-          borderRadius: "10px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: 2,
         }}
       >
-        <Box
-          sx={{
-            width: "100%",
-            height: `${progressPercentage}%`,
-            bgcolor: "#4caf50",
-            position: "absolute",
-            bottom: 0,
-            transition: "height 0.3s ease-in-out",
-          }}
-        />
-      </Box>
-
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
-        {Array.from({ length: totalChores }, (_, index) => (
+        {rewards.map((reward, index) => (
           <Box
             key={index}
-            sx={{
-              width: 30,
-              height: 30,
-              bgcolor: index < completedChores ? "#ffc107" : "#ddd",
-              borderRadius: "50%",
-              transition: "background-color 0.3s ease-in-out",
-            }}
-          />
+            sx={{ display: "flex", alignItems: "center", mb: 1 }}
+          >
+            <Box
+              sx={{
+                width: 30,
+                height: 30,
+                bgcolor: reward.inMission ? "#ffc107" : "#9e9e9e",
+                borderRadius: "50%",
+                mr: 1,
+              }}
+            />
+            <Typography>{reward.name}</Typography>
+          </Box>
         ))}
       </Box>
     </Box>
   );
-}
-
+};
 export default Rewards;

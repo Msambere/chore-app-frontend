@@ -1,7 +1,9 @@
 export default interface MissionChoreResponse {
   message: string | null;
-  userId: number;
+  missionId: number;
   choreId: number;
   choreName: string;
+  duration: number;
+  points: number;
   completed: boolean;
 }

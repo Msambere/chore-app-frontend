@@ -6,8 +6,8 @@ export default interface UserData {
   id: number;
   firstName: string;
   lastName: string;
-  username: string;
   email: string;
+  username: string;
   chores: ChoreResponse[];
   missions: MissionResponse[];
   rewards: RewardResponse[];

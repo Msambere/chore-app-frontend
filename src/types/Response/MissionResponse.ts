@@ -1,10 +1,14 @@
+import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
+
 export default interface MissionResponse {
+  message: string | null;
   missionId: number;
-  recurrence: string;
   category: string;
+  recurrence: string;
+  totalUnredeemedPoints: number;
   dateStarted: string;
   timeLimit: number;
-  userId: number;
   timeElapsed: number;
-  message: string | null;
+  userId: number;
+  missionChores: MissionChoreResponse[];
 }
