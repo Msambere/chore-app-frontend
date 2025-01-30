@@ -10,13 +10,14 @@ import UserData from "~/types/Response/UserData";
 import { Layout } from "~/Components/Layout/Layout";
 import { getUserInfo } from "~/Helper Functions/ApiCalls";
 import ChoreFormComponent from "./Components/ChoresPage/ChoreFormComponent";
+import SignupView from "~/Components/LoginPage/Signup";
 
 function App() {
   const [userData, setUserData] = useState<UserData>();
-  const [username, setUsername] = useState<string>("FirstLady4eva");
-  console.log(username);
+  const [username, setUsername] = useState<string>();
 
   useEffect(() => {
+    if (!username) return;
     getUserInfo(username).then((response) => {
       setUserData(response);
     });
@@ -26,16 +27,24 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<LoginView />} />
-          {/*users see this page when they go to site, will be redirected if they are already logged in.*/}
-          <Route path="/UserProfile" element={<UserProfileView />} />
+          <Route index element={<UserProfileView userData={userData} />} />
+          <Route
+            path="/Login"
+            element={
+              <LoginView userNameSetter={setUserName} userName={userName} />
+            }
+          />
+          <Route
+            path="/Signup"
+            element={<SignupView userNameSetter={setUserName} />}
+          />
           <Route
             path="/Chores"
             element={<ChoresListView chores={userData?.chores ?? []} />}
           />
           <Route
             path="/Chores/create"
-            element={<ChoreFormComponent userName={userData?.username ?? ""} />}
+            element={<ChoreFormComponent userData={userData} />}
           />
           <Route path="/Rewards" element={<RewardsView />} />
           <Route
