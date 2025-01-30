@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, JSX } from "react";
 import {
   Box,
   Typography,
@@ -7,37 +7,49 @@ import {
   CircularProgress,
 } from "@mui/material";
 import MissionChoresList from "./MissionChoresList";
-import Rewards from "./Rewards";
+import TotalPointsEarned from "./TotalPointsEarned";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
-import RewardResponse from "~/types/Response/RewardResponse";
+import axios from "axios";
 
 interface ActiveMissionProps {
   missionChores: MissionChoreResponse[];
-  rewards: RewardResponse[];
+  userId: number;
 }
 
-const ActiveMission = ({
-  missionChores,
-  rewards,
-}: ActiveMissionProps): JSX.Element => {
-  const [chores, setChores] = useState<MissionChoreResponse[]>(
-    missionChores || [],
-  );
+const ActiveMission = ({ missionChores, userId }: ActiveMissionProps): JSX.Element => {
+  const [chores, setChores] = useState<MissionChoreResponse[]>(missionChores);
   const [pointTotal, setPointTotal] = useState(0);
-  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [timeElapsed, setTimeElapsed] = useState<number>(0);
+  const timeLimit = 60;
 
-  // Calculate progress based on completed chores
+  const remainingTime = Math.max(timeLimit - timeElapsed, 0);
   const completedChores = chores.filter((chore) => chore.completed).length;
-  const progress =
-    chores.length > 0 ? (completedChores / chores.length) * 100 : 0;
+  const totalChores = chores.length;
+  const progress = totalChores > 0 ? (completedChores / totalChores) * 100 : 0;
 
-  // Mark chore as completed
-  const completeChore = (choreId: number) => {
+  // Timer to track elapsed time
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeElapsed((prev) => prev + 1);
+    }, 60000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Handle chore completion
+  const completeChore = (choreId: number, missionId: number, points: number) => {
     setChores((prevChores) =>
       prevChores.map((chore) =>
         chore.choreId === choreId ? { ...chore, completed: true } : chore,
       ),
     );
+    setPointTotal((prevPoints) => prevPoints + points);
+
+    axios
+      .patch(`${import.meta.env.VITE_APP_BACKEND_URL}/missionchores`, null, {
+        params: { missionId, choreId },
+      })
+      .then(() => console.log(`Chore ${choreId} marked as completed.`))
+      .catch((err) => console.error("Error updating chore completion:", err));
   };
 
   return (
@@ -59,9 +71,8 @@ const ActiveMission = ({
           }}
         >
           <Typography variant="h6">Time & Progress:</Typography>
-          <Typography variant="h4">Remaining Time: {timeElapsed}m</Typography>
+          <Typography variant="h4">Remaining Time: {remainingTime}m</Typography>
 
-          {/* Progress Bar */}
           <Box sx={{ position: "relative", display: "inline-flex", mt: 2 }}>
             <CircularProgress
               variant="determinate"
@@ -71,11 +82,11 @@ const ActiveMission = ({
             />
             <Box
               sx={{
+                position: "absolute",
                 top: 0,
                 left: 0,
                 bottom: 0,
                 right: 0,
-                position: "absolute",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -93,9 +104,9 @@ const ActiveMission = ({
         </Box>
       </Grid>
 
-      {/* Right Panel - Rewards */}
+      {/* Right Panel - Total Points Earned */}
       <Grid size={4}>
-        <Rewards rewards={rewards} />
+        <TotalPointsEarned pointTotal={pointTotal} />
         <Button variant="contained" fullWidth sx={{ mt: 2 }}>
           Redeem Reward
         </Button>
