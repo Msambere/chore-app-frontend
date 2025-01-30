@@ -14,14 +14,14 @@ import SignupView from "~/Components/LoginPage/Signup";
 
 function App() {
   const [userData, setUserData] = useState<UserData>();
-  const [username, setUsername] = useState<string>();
+  const [userName, setUserName] = useState<string>();
 
   useEffect(() => {
-    if (!username) return;
-    getUserInfo(username).then((response) => {
+    if (!userName) return;
+    getUserInfo(userName).then((response) => {
       setUserData(response);
     });
-  }, [username]);
+  }, [userName]);
 
   return (
     <BrowserRouter>
@@ -49,7 +49,7 @@ function App() {
           <Route path="/Rewards" element={<RewardsView />} />
           <Route
             path="/Mission"
-            element={<MissionView userData={userData ?? []} />}
+            element={<MissionView userData={userData!} />}
           />
         </Route>
       </Routes>
