@@ -7,7 +7,7 @@ import UserData from "~/types/Response/UserData";
 
 interface MissionProps {
   userData: UserData;
-  setUserData: Dispatch<SetStateAction<UserData | undefined>>;
+  setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
 const MissionView = ({

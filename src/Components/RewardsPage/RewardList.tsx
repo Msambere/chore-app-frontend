@@ -6,7 +6,7 @@ import SingleReward from "~/Components/RewardsPage/SingleReward";
 
 interface RewardsProps {
   userData: UserData;
-  setUserData: Dispatch<SetStateAction<UserData | undefined>>;
+  setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
 export default function RewardList({ userData, setUserData }: RewardsProps) {

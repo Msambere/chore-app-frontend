@@ -13,15 +13,26 @@ import ChoreFormStatic from "~/Components/ChoresPage/ChoreFormStatic";
 import RewardFormStatic from "~/Components/RewardsPage/RewardFormStatic";
 
 function App() {
-  const [userData, setUserData] = useState<UserData>();
-  const [userName, setUserName] = useState<string>();
+  const [userData, setUserData] = useState<UserData>({
+    message: "",
+    userId: 0,
+    firstName: "",
+    lastName: "",
+    email: "",
+    username: "Not logged in",
+    chores: [],
+    missions: [],
+    rewards: [],
+  });
+  const [username, setUsername] = useState<string>(userData.username);
 
   useEffect(() => {
-    if (!userName) return;
-    getUserInfo(userName).then((response) => {
-      setUserData(response);
-    });
-  }, [userName]);
+    if (username != "Not logged in") {
+      getUserInfo(username).then((response) => {
+        setUserData(response);
+      });
+    }
+  }, [username]);
 
   return (
     <BrowserRouter>
@@ -31,12 +42,16 @@ function App() {
           <Route
             path="/Login"
             element={
-              <LoginView userNameSetter={setUserName} userName={userName} />
+              <LoginView
+                userNameSetter={setUsername}
+                userName={username}
+                userData={userData}
+              />
             }
           />
           <Route
             path="/Signup"
-            element={<SignupView userNameSetter={setUserName} />}
+            element={<SignupView userNameSetter={setUsername} />}
           />
           <Route
             path="/Chores"
@@ -45,7 +60,7 @@ function App() {
           <Route
             path="/Chores/create"
             element={
-              <ChoreFormStatic userData={userData} setUserData={setUserData} />
+              <ChoreFormStatic userData={userData!} setUserData={setUserData} />
             }
             // element={<ChoreFormComponent userData={userData} setUserData={setUserData} />}
           />
@@ -77,15 +92,3 @@ function App() {
 }
 
 export default App;
-
-// {
-//   message: "User created successfully",
-//     userId: 2,
-//   firstName: "User",
-//   lastName: "One",
-//   email: "thefirst@users.com",
-//   username: "theOG11",
-//   chores: [],
-//   missions: [],
-//   rewards: [],
-// }

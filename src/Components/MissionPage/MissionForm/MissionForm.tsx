@@ -23,7 +23,7 @@ interface MissionProps {
   setMissionChores: Dispatch<SetStateAction<MissionChoreResponse[]>>;
   setStartMission: Dispatch<SetStateAction<boolean>>;
   userData: UserData;
-  setUserData: Dispatch<SetStateAction<UserData | undefined>>;
+  setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
 const defaultMissionRequest: MissionRequest = {
