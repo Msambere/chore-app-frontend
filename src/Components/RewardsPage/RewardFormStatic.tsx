@@ -42,8 +42,8 @@ export default function RewardFormStatic({
     useState<RewardRequest>(defaultRequestData);
 
   useEffect(() => {
-    if (!userData) {
-      navigate("/Login");
+    if (userData.username === "Not logged in") {
+      navigate("/");
     }
   }, [userData]);
 

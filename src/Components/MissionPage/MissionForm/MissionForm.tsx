@@ -58,7 +58,7 @@ const MissionForm = ({
     fieldName: string,
     fieldValue: string | number | null,
   ): void => {
-    if (fieldValue === "Any" || fieldValue === "Unlimited") {
+    if (fieldValue === "Any" || fieldValue === "Let's do them all!") {
       fieldValue = null;
     }
     setMissionRequestData({ ...missionRequestData, [fieldName]: fieldValue });
@@ -137,12 +137,12 @@ const MissionForm = ({
             name="timeLimit"
             label="Time Limit"
             margin="normal"
-            defaultValue="Unlimited"
+            defaultValue="Let's do them all!"
             onChange={(event) =>
               handleInputChange(event.target.name, event.target.value)
             }
           >
-            {["Unlimited", 5, 10, 15, 20, 25, 30, 35, 40, 45].map(
+            {["Let's do them all!", 5, 10, 15, 20, 25, 30, 35, 40, 45].map(
               (time, index) => (
                 <MenuItem key={index} value={time}>
                   {time}

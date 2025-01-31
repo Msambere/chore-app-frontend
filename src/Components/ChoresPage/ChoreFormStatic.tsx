@@ -19,7 +19,7 @@ import { createNewChoreApiCall } from "~/Helper Functions/ApiCalls";
 import CloseIcon from "@mui/icons-material/Close";
 
 interface ChoreCreateComponentProps {
-  userData: UserData | undefined;
+  userData: UserData;
   setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
@@ -46,8 +46,8 @@ export default function ChoreFormStatic({
     useState<ChoreRequest>(defaultRequestData);
 
   useEffect(() => {
-    if (!userData) {
-      navigate("/Login");
+    if (userData.username === "Not logged in") {
+      navigate("/");
     }
   }, [userData]);
 

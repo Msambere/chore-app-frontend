@@ -56,11 +56,13 @@ function App() {
           />
           <Route
             path="/Signup"
-            element={<SignupView userNameSetter={setUsername} />}
+            element={
+              <SignupView userNameSetter={setUsername} userData={userData} />
+            }
           />
           <Route
             path="/Chores"
-            element={<ChoresListView chores={userData?.chores ?? []} />}
+            element={<ChoresListView userData={userData} />}
           />
           <Route
             path="/Chores/create"
