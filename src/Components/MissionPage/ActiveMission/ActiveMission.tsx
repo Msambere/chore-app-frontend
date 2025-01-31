@@ -13,6 +13,7 @@ interface ActiveMissionProps {
 const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
   const [chores, setChores] = useState<MissionChoreResponse[]>(missionChores);
   const [pointTotal, setPointTotal] = useState(0);
+  const maxPoints = missionChores.reduce((acc, chore) => acc + chore.points, 0);
 
   // Handle chore completion
   const toggleChoreCompletion = (
@@ -59,7 +60,7 @@ const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
 
       {/* Right Panel - Total Points Earned */}
       <Grid size={4}>
-        <TotalPointsEarned pointTotal={pointTotal} />
+        <TotalPointsEarned pointTotal={pointTotal} maxPoints={maxPoints} />
         <Button variant="contained" fullWidth sx={{ mt: 2 }}>
           Redeem Reward
         </Button>

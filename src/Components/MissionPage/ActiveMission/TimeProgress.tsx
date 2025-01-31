@@ -47,7 +47,10 @@ const TimeProgress = ({ chores }: TimeProgressProps) => {
         textAlign: "center",
       }}
     >
-      <Typography variant="h6" sx={{ alignSelf: "flex-start" }}>
+      <Typography
+        variant="h6"
+        sx={{ fontWeight: "bold", mb: 2, alignSelf: "flex-start" }}
+      >
         Time & Progress:
       </Typography>
 
@@ -59,7 +62,9 @@ const TimeProgress = ({ chores }: TimeProgressProps) => {
           padding: 2,
         }}
       >
-        <Typography variant="subtitle1">Remaining Time:</Typography>
+        <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 2 }}>
+          Remaining Time:
+        </Typography>
         <Typography variant="h4" color="black">
           {formatTime(remainingTime)}
         </Typography>
@@ -68,9 +73,9 @@ const TimeProgress = ({ chores }: TimeProgressProps) => {
       {/* Progress Bar Section */}
       <Box
         sx={{
-          p: 2,
-          border: "1px solid #ccc",
+          border: "1px solid black",
           borderRadius: 2,
+          padding: 2,
           textAlign: "center",
         }}
       >
