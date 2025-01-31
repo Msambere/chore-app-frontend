@@ -1,17 +1,72 @@
-import {ReactElement, useState} from "react";
+import React, { useState, JSX } from "react";
+import { Button, Grid2 as Grid } from "@mui/material";
+import MissionChoresList from "./MissionChoresList";
+import TotalPointsEarned from "./TotalPointsEarned";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
-// import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
+import TimeProgress from "~/Components/MissionPage/ActiveMission/TimeProgress";
+import axios from "axios";
 
-interface MissionChoresProps {
+interface ActiveMissionProps {
   missionChores: MissionChoreResponse[];
 }
-const ActiveMission = (props: MissionChoresProps): ReactElement<string> => {
-  const [missionChores, setMissionChores] = useState<MissionChoreResponse[]>(props.missionChores);
-  const [pointTotal, setPointTotal] = useState(0);
-  const [timeElapsed, setTimeElapsed] = useState(0);
-  // need a useState for progress too
 
-  return <h1>This is were the Active Mission dashboard components go.</h1>;
+const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
+  const [chores, setChores] = useState<MissionChoreResponse[]>(missionChores);
+  const [pointTotal, setPointTotal] = useState(0);
+  const maxPoints = missionChores.reduce((acc, chore) => acc + chore.points, 0);
+
+  // Handle chore completion
+  const toggleChoreCompletion = (
+    choreId: number,
+    missionId: number,
+    points: number,
+    completed: boolean,
+  ) => {
+    setChores((prevChores) =>
+      prevChores.map((chore) =>
+        chore.choreId === choreId ? { ...chore, completed } : chore,
+      ),
+    );
+
+    setPointTotal((prevPoints) =>
+      completed ? prevPoints + points : Math.max(prevPoints - points, 0),
+    );
+
+    axios
+      .patch(`${import.meta.env.VITE_APP_BACKEND_URL}/missionchores`, null, {
+        params: { missionId, choreId },
+      })
+      .then((response) => {
+        console.log(`Chore ${choreId} status updated.`);
+        console.log("Backend Response:", response.data);
+      })
+      .catch((err) => console.error("Error updating chore completion:", err));
+  };
+
+  return (
+    <Grid container spacing={2}>
+      {/* Left Panel - Chores List */}
+      <Grid size={4}>
+        <MissionChoresList
+          chores={chores}
+          onToggleChore={toggleChoreCompletion}
+        />
+      </Grid>
+
+      {/* Middle Panel - Time & Progress */}
+      <Grid size={4}>
+        <TimeProgress chores={chores} />
+      </Grid>
+
+      {/* Right Panel - Total Points Earned */}
+      <Grid size={4}>
+        <TotalPointsEarned pointTotal={pointTotal} maxPoints={maxPoints} />
+        <Button variant="contained" fullWidth sx={{ mt: 2 }}>
+          Redeem Reward
+        </Button>
+      </Grid>
+    </Grid>
+  );
 };
 
 export default ActiveMission;

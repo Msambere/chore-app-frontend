@@ -1,5 +1,5 @@
 export default interface ChoreResponse {
-  choreId: number;
+  message: string | null;
   title: string;
   description: string;
   recurrence: string;
@@ -7,5 +7,5 @@ export default interface ChoreResponse {
   duration: number;
   difficulty: number;
   userId: number;
-  message: string | null;
+  choreId: number;
 }

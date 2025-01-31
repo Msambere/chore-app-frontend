@@ -4,6 +4,8 @@ import ChoreResponse from "~/types/Response/ChoreResponse";
 import { MissionRequest } from "~/types/Request/MissionRequest";
 import MissionResponse from "~/types/Response/MissionResponse";
 import SignupFormInputs from "~/types/Forms/SignupFormInputs";
+import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
+import RewardResponse from "~/types/Response/RewardResponse";
 
 const VITE_APP_BACKEND_URL: string = import.meta.env.VITE_APP_BACKEND_URL;
 
