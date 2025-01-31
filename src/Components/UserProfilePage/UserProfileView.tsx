@@ -5,7 +5,7 @@ import UserProfileInfoBox from "~/Components/UserProfilePage/Boxes/UserProfileIn
 import CalendarView from "~/Components/UserProfilePage/Boxes/Calander";
 import MissionResponse from "~/types/Response/MissionResponse";
 import dayjs from "dayjs";
-import {Grid2, Toolbar} from "@mui/material";
+import { Grid2, Toolbar } from "@mui/material";
 
 interface DateRange {
   start: Date;

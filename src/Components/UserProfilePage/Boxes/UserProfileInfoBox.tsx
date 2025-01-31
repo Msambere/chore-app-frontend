@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Box, Tooltip, Typography } from "@mui/material";
+import { Tooltip, Typography } from "@mui/material";
 import StyledContainer from "~/Components/UserProfilePage/Boxes/StyledContainer";
 import StyledAvatar from "~/Components/UserProfilePage/Boxes/StyledAvatar";
 import PointsSummary from "~/Components/UserProfilePage/Boxes/PointSummary";
@@ -44,7 +44,7 @@ const UserProfileInfoBox = ({ user }: UserProfileInfoBoxProps) => {
         <Typography
           variant="body1"
           color="text.secondary"
-          sx={{ wordBreak: "break-word"}}
+          sx={{ wordBreak: "break-word" }}
         >
           @{user.username}
         </Typography>
