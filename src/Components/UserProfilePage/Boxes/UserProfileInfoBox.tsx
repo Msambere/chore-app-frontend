@@ -1,80 +1,57 @@
-import React, { useMemo } from "react";
+import React, { useCallback } from "react";
 import { Box, Tooltip, Typography } from "@mui/material";
-import { StyledContainer } from "~/Components/UserProfilePage/Boxes/StyledContainer";
-import { StyledAvatar } from "~/Components/UserProfilePage/Boxes/StyledAvatar";
+import StyledContainer from "~/Components/UserProfilePage/Boxes/StyledContainer";
+import StyledAvatar from "~/Components/UserProfilePage/Boxes/StyledAvatar";
+import PointsSummary from "~/Components/UserProfilePage/Boxes/PointSummary";
+import UserData from "~/types/Response/UserData";
 
 export interface UserProfileInfoBoxProps {
-  username?: string;
-  firstName?: string;
-  lastName?: string;
+  user?: UserData;
 }
-const UserProfileInfoBox = ({
-  username,
-  firstName,
-  lastName,
-}: UserProfileInfoBoxProps) => {
-  const getInitials = useMemo(() => {
-    const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
-    const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
+const UserProfileInfoBox = ({ user }: UserProfileInfoBoxProps) => {
+  const getInitials = useCallback(() => {
+    const firstInitial = user?.firstName?.charAt(0).toUpperCase() || "";
+    const lastInitial = user?.lastName.charAt(0).toUpperCase() || "";
     return `${firstInitial}${lastInitial}`;
-  }, [firstName, lastName]);
+  }, [user]);
 
-  const fullName = useMemo(() => {
-    return `${firstName || ""} ${lastName || ""}`.trim();
-  }, [firstName, lastName]);
+  const fullName = useCallback(() => {
+    return `${user?.firstName || ""} ${user?.lastName || ""}`.trim();
+  }, [user]);
 
-  if (!username || !firstName) {
+  if (!user) {
     return (
-      <StyledContainer elevation={2}>
+      <StyledContainer>
         <Typography color="error">Required user information missing</Typography>
       </StyledContainer>
     );
   }
 
   return (
-    <StyledContainer
-      elevation={2}
-      role="article"
-      aria-label={`Profile information for ${fullName}`}
-    >
-      <Tooltip title={fullName} arrow placement="top">
-        <StyledAvatar
-          alt={`${fullName}'s profile picture`}
-          sx={{
-            bgcolor: "#45B7D1",
-            fontSize: "2rem",
-            fontWeight: "bold",
-          }}
-        >
-          {getInitials}
-        </StyledAvatar>
+    <StyledContainer>
+      <Tooltip title={fullName()} arrow placement="top">
+        <StyledAvatar>{getInitials()}</StyledAvatar>
       </Tooltip>
-
-      <Box
-        sx={{
-          textAlign: "center",
-          display: "flex",
-          flexDirection: "column",
-          gap: 1,
-        }}
-      >
+      <div className={"p14"}>
         <Typography
           variant="h5"
           component="h1"
           sx={{ fontWeight: "bold" }}
           gutterBottom
         >
-          {fullName}
+          {fullName()}
         </Typography>
-
         <Typography
           variant="body1"
           color="text.secondary"
-          sx={{ wordBreak: "break-word" }}
+          sx={{ wordBreak: "break-word"}}
         >
-          @{username}
+          @{user.username}
         </Typography>
-      </Box>
+      </div>
+      <div className={"mt-2"}>
+        <PointsSummary user={user} />
+      </div>
     </StyledContainer>
   );
 };

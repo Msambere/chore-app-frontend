@@ -1,17 +1,19 @@
-import { styled } from "@mui/system";
-import { Paper } from "@mui/material";
+import React from "react";
 
-export const StyledContainer = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(1.5, 2),
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: theme.spacing(2),
-  margin: "auto",
-  borderRadius: theme.spacing(2),
-  transition: "all 0.3s ease-in-out",
-  "&:hover": {
-    transform: "translateY(-5px)",
-  },
-}));
+interface StyledContainerProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const StyledContainer: React.FC<StyledContainerProps> = ({
+  children,
+  className,
+}) => (
+  <div
+    className={`flex flex-col items-center gap-2 m-auto rounded-md transition-all duration-300 ease-in-out hover:-translate-y-2 p-6 ${className}`}
+  >
+    {children}
+  </div>
+);
+
 export default StyledContainer;
