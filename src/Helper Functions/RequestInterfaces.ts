@@ -1,12 +1,11 @@
-export interface userRequest{
+export interface userRequest {
   firstName: string;
   lastName: string;
   username: string;
   email: string;
-
 }
 
-export interface choreRequest{
+export interface choreRequest {
   title: string;
   description: string;
   category: string;
@@ -15,7 +14,7 @@ export interface choreRequest{
   userId: number;
 }
 
-export interface rewardRequest{
+export interface rewardRequest {
   name: string;
   description: string;
   inMission: boolean;
@@ -23,7 +22,7 @@ export interface rewardRequest{
   userId: number;
 }
 
-export interface missionRequest{
+export interface missionRequest {
   userId: number;
   recurrence: string | null;
   category: string | null;
