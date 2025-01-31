@@ -63,6 +63,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.0.1
         version: 4.0.1
+      '@tailwindcss/vite':
+        specifier: ^4.0.1
+        version: 4.0.1(vite@5.4.14(@types/node@20.17.16)(lightningcss@1.29.1))
       '@types/node':
         specifier: ^20
         version: 20.17.16
@@ -883,6 +886,11 @@ packages:
 
   '@tailwindcss/postcss@4.0.1':
     resolution: {integrity: sha512-fZHL49vCDauQymdm2U1jehuUeX8msYVDKB/2v+jWhTQleH3QE8J1dJ2dnL5tqRvB0udjBP4kwUC1ZIVIdv66YA==}
+
+  '@tailwindcss/vite@4.0.1':
+    resolution: {integrity: sha512-ZkwMBA7uR+nyrafIZI8ce3PduE0dDVFVmxmInCUPTN17Jgy6RfEPXzqtL5fz658eDDxKa5xZ+gmiTt+5AMD0pw==}
+    peerDependencies:
+      vite: ^5.2.0 || ^6
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -3257,6 +3265,14 @@ snapshots:
       lightningcss: 1.29.1
       postcss: 8.5.1
       tailwindcss: 4.0.1
+
+  '@tailwindcss/vite@4.0.1(vite@5.4.14(@types/node@20.17.16)(lightningcss@1.29.1))':
+    dependencies:
+      '@tailwindcss/node': 4.0.1
+      '@tailwindcss/oxide': 4.0.1
+      lightningcss: 1.29.1
+      tailwindcss: 4.0.1
+      vite: 5.4.14(@types/node@20.17.16)(lightningcss@1.29.1)
 
   '@types/babel__core@7.20.5':
     dependencies:
