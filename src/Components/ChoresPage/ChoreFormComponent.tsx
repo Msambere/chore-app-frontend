@@ -18,18 +18,12 @@ import { extractUserRecurrences } from "~/Helper Functions/extractUserRecurrence
 import { extractUserCategories } from "~/Helper Functions/extractUserCategories";
 import { createNewChoreApiCall } from "~/Helper Functions/ApiCalls";
 import CloseIcon from "@mui/icons-material/Close";
-import Creatable, { useCreatable } from "react-select/creatable";
-import CreatableSelect from "react-select/creatable";
 
 interface ChoreCreateComponentProps {
   userData: UserData;
   setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
-export interface SelectOption {
-  value: string;
-  label: string;
-}
 
 const defaultRequestData: ChoreRequest = {
   title: "",
@@ -222,9 +216,6 @@ export default function ChoreForm({
                 {...params}
                 label="Select a category"
                 name="category"
-                onChange={(event, value) =>
-                  handleInputChange(event.target.name, value)
-                }
               />
             )}
           />
