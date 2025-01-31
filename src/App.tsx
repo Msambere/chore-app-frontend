@@ -9,7 +9,7 @@ import MissionView from "~/Components/MissionPage/MissionView";
 import UserData from "~/types/Response/UserData";
 import { Layout } from "~/Components/Layout/Layout";
 import { getUserInfo } from "~/Helper Functions/ApiCalls";
-import ChoreFormComponent from "./Components/ChoresPage/ChoreFormComponent";
+// import ChoreFormComponent from "./Components/ChoresPage/ChoreFormComponent";
 import SignupView from "~/Components/LoginPage/Signup";
 import ChoreFormStatic from "~/Components/ChoresPage/ChoreFormStatic";
 
@@ -41,16 +41,16 @@ function App() {
           />
           <Route
             path="/Chores"
-            element={<ChoresListView chores={userData?.chores ?? []} />}
+            element={<ChoresListView userData={userData!} setUserData={setUserData} />}
           />
           <Route
             path="/Chores/create"
             element={
-              <ChoreFormStatic userData={userData} setUserData={setUserData} />
+              <ChoreFormStatic userData={userData!} setUserData={setUserData} />
             }
             // element={<ChoreFormComponent userData={userData} setUserData={setUserData} />}
           />
-          <Route path="/Rewards" element={<RewardsView />} />
+          <Route path="/Rewards" element={<RewardsView userData={userData!} setUserData={setUserData} />} />
           <Route
             path="/Mission"
             element={<MissionView userData={userData!} />}
