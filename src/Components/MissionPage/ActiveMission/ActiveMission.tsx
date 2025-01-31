@@ -13,10 +13,9 @@ import axios from "axios";
 
 interface ActiveMissionProps {
   missionChores: MissionChoreResponse[];
-  userId: number;
 }
 
-const ActiveMission = ({ missionChores, userId }: ActiveMissionProps): JSX.Element => {
+const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
   const [chores, setChores] = useState<MissionChoreResponse[]>(missionChores);
   const [pointTotal, setPointTotal] = useState(0);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
@@ -36,7 +35,12 @@ const ActiveMission = ({ missionChores, userId }: ActiveMissionProps): JSX.Eleme
   }, []);
 
   // Handle chore completion
-  const toggleChoreCompletion = (choreId: number, missionId: number, points: number, completed: boolean) => {
+  const toggleChoreCompletion = (
+    choreId: number,
+    missionId: number,
+    points: number,
+    completed: boolean,
+  ) => {
     setChores((prevChores) =>
       prevChores.map((chore) =>
         chore.choreId === choreId ? { ...chore, completed } : chore,
