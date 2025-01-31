@@ -19,8 +19,8 @@ import { createNewChoreApiCall } from "~/Helper Functions/ApiCalls";
 import CloseIcon from "@mui/icons-material/Close";
 
 interface ChoreCreateComponentProps {
-  userData: UserData;
-  setUserData: Dispatch<SetStateAction<UserData>>;
+  userData: UserData | undefined;
+  setUserData: Dispatch<SetStateAction<UserData | undefined>>;
 }
 
 const defaultRequestData: ChoreRequest = {
@@ -38,8 +38,10 @@ export default function ChoreFormStatic({
 }: ChoreCreateComponentProps) {
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
-  const recurrenceList: string[] = extractUserRecurrences(userData.chores);
-  const categoryList: string[] = extractUserCategories(userData.chores);
+  const recurrenceList: string[] = extractUserRecurrences(
+    userData?.chores ?? [],
+  );
+  const categoryList: string[] = extractUserCategories(userData?.chores ?? []);
   const [choreRequestData, setChoreRequestData] =
     useState<ChoreRequest>(defaultRequestData);
 
@@ -68,7 +70,7 @@ export default function ChoreFormStatic({
 
   const handleCreateChore = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    createNewChoreApiCall(userData.userId, choreRequestData)
+    createNewChoreApiCall(userData?.userId ?? 0, choreRequestData)
       .then((response: ChoreResponse) => {
         console.log(response);
         setUserData((prevData) => ({

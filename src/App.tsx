@@ -63,3 +63,15 @@ function App() {
 }
 
 export default App;
+
+// {
+//   message: "User created successfully",
+//     userId: 2,
+//   firstName: "User",
+//   lastName: "One",
+//   email: "thefirst@users.com",
+//   username: "theOG11",
+//   chores: [],
+//   missions: [],
+//   rewards: [],
+// }
