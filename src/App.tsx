@@ -40,7 +40,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           {/*<Route index element={<UserProfileView userData={userData} />} />*/}
           <Route
-            path="/home"
+            path="/UserProfile"
             element={<UserProfileView userData={userData} />}
           />
           <Route

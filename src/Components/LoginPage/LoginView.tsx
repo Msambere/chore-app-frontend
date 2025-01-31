@@ -64,7 +64,7 @@ export default function LoginPage({
   );
   useEffect(() => {
     if (userData.username !== "Not logged in") {
-      navigate("/home");
+      navigate("/UserProfile");
     }
   }, [userData]);
 
