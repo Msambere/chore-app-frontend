@@ -4,10 +4,13 @@ import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 
 interface MissionChoresListProps {
   chores: MissionChoreResponse[];
-  onCompleteChore: (choreId: number, missionId: number, points: number, completed: boolean) => void;
+  onToggleChore: (choreId: number, missionId: number, points: number, completed: boolean) => void;
 }
 
-const MissionChoresList = ({ chores, onCompleteChore }: MissionChoresListProps) => {
+const MissionChoresList = ({
+  chores,
+  onToggleChore,
+}: MissionChoresListProps) => {
   return (
     <Box sx={{ p: 3, bgcolor: "#e0e0e0", borderRadius: 1, height: "100%" }}>
       <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
@@ -40,14 +43,20 @@ const MissionChoresList = ({ chores, onCompleteChore }: MissionChoresListProps) 
               </Typography>
               <Button
                 variant="contained"
-                color="primary"
                 size="small"
-                disabled={chore.completed}
+                color={chore.completed ? "secondary" : "primary"}
                 onClick={() =>
-                  onCompleteChore(chore.choreId, chore.missionId, chore.points)
+                  onToggleChore(chore.choreId, chore.missionId, chore.points, !chore.completed)
                 }
+                sx={{
+                  minWidth: "100px",
+                  fontSize: "0.75rem",
+                  fontWeight: "bold",
+                  bgcolor: chore.completed ? "#d3d3d3" : "#1976d2",
+                  color: chore.completed ? "gray" : "white",
+                }}
               >
-                {chore.completed ? "Completed" : "Mark Complete"}
+                {chore.completed ? "UNDO" : "MARK COMPLETE"}
               </Button>
             </ListItem>
           ))

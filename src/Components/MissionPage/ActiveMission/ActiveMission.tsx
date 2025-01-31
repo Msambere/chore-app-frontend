@@ -36,18 +36,25 @@ const ActiveMission = ({ missionChores, userId }: ActiveMissionProps): JSX.Eleme
   }, []);
 
   // Handle chore completion
-  const completeChore = (choreId: number, missionId: number, points: number) => {
+  const toggleChoreCompletion = (choreId: number, missionId: number, points: number, completed: boolean) => {
     setChores((prevChores) =>
       prevChores.map((chore) =>
-        chore.choreId === choreId ? { ...chore, completed: true } : chore,
+        chore.choreId === choreId ? { ...chore, completed } : chore,
       ),
     );
-    setPointTotal((prevPoints) => prevPoints + points);
+
+    setPointTotal((prevPoints) =>
+      completed ? prevPoints + points : Math.max(prevPoints - points, 0),
+    );
+
     axios
       .patch(`${import.meta.env.VITE_APP_BACKEND_URL}/missionchores`, null, {
         params: { missionId, choreId },
       })
-      .then(() => console.log(`Chore ${choreId} marked as completed.`))
+      .then((response) => {
+        console.log(`Chore ${choreId} status updated.`);
+        console.log("Backend Response:", response.data);
+      })
       .catch((err) => console.error("Error updating chore completion:", err));
   };
 
@@ -55,7 +62,10 @@ const ActiveMission = ({ missionChores, userId }: ActiveMissionProps): JSX.Eleme
     <Grid container spacing={2}>
       {/*Left Panel - Chores List*/}
       <Grid size={4}>
-        <MissionChoresList chores={chores} onCompleteChore={completeChore} />
+        <MissionChoresList
+          chores={chores}
+          onToggleChore={toggleChoreCompletion}
+        />
       </Grid>
 
       <Grid size={4}>
