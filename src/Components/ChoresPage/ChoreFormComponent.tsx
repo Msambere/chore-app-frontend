@@ -114,7 +114,7 @@ export default function ChoreCreateComponent({
             recurrence: "Daily",
             category: "",
             duration: 1,
-            difficulty: "Easy", // Default difficulty before transform
+            difficulty: 1,
           }}
           resolver={zodResolver(choreSchema)}
           onSuccess={handleFormSuccess}

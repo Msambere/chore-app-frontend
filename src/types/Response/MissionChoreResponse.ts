@@ -6,6 +6,4 @@ export default interface MissionChoreResponse {
   duration: number;
   points: number;
   completed: boolean;
-  points: number;
-  duration: number;
 }

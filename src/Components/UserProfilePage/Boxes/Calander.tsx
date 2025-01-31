@@ -62,7 +62,7 @@ const CalendarView: FC<CalendarViewProps> = ({ dateRanges }) => {
   };
 
   return (
-    <StyledContainer elevation={2}>
+    <StyledContainer>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <StaticDatePicker
           displayStaticWrapperAs={"desktop"}
@@ -76,6 +76,7 @@ const CalendarView: FC<CalendarViewProps> = ({ dateRanges }) => {
                   {...other}
                   day={day}
                   selected={selected}
+                  // @ts-expect-error it exists
                   bgColor={bgColor}
                 />
               );
