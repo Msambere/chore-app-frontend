@@ -8,8 +8,9 @@ import MissionView from "~/Components/MissionPage/MissionView";
 import UserData from "~/types/Response/UserData";
 import { Layout } from "~/Components/Layout/Layout";
 import { getUserInfo } from "~/Helper Functions/ApiCalls";
-import ChoreFormComponent from "./Components/ChoresPage/ChoreFormComponent";
 import SignupView from "~/Components/LoginPage/Signup";
+import ChoreFormStatic from "~/Components/ChoresPage/ChoreFormStatic";
+import RewardFormStatic from "~/Components/RewardsPage/RewardFormStatic";
 
 function App() {
   const [userData, setUserData] = useState<UserData>();
@@ -43,12 +44,31 @@ function App() {
           />
           <Route
             path="/Chores/create"
-            element={<ChoreFormComponent userData={userData} />}
+            element={
+              <ChoreFormStatic userData={userData} setUserData={setUserData} />
+            }
+            // element={<ChoreFormComponent userData={userData} setUserData={setUserData} />}
           />
-          <Route path="/Rewards" element={<RewardsView />} />
+          <Route
+            path="/Rewards"
+            element={
+              <RewardsView userData={userData!} setUserData={setUserData} />
+            }
+          />
+          <Route
+            path="/Rewards/create"
+            element={
+              <RewardFormStatic
+                userData={userData!}
+                setUserData={setUserData}
+              />
+            }
+          />
           <Route
             path="/Mission"
-            element={<MissionView userData={userData!} />}
+            element={
+              <MissionView userData={userData!} setUserData={setUserData} />
+            }
           />
         </Route>
       </Routes>
@@ -57,3 +77,15 @@ function App() {
 }
 
 export default App;
+
+// {
+//   message: "User created successfully",
+//     userId: 2,
+//   firstName: "User",
+//   lastName: "One",
+//   email: "thefirst@users.com",
+//   username: "theOG11",
+//   chores: [],
+//   missions: [],
+//   rewards: [],
+// }

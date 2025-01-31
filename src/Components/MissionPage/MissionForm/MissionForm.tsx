@@ -23,6 +23,7 @@ interface MissionProps {
   setMissionChores: Dispatch<SetStateAction<MissionChoreResponse[]>>;
   setStartMission: Dispatch<SetStateAction<boolean>>;
   userData: UserData;
+  setUserData: Dispatch<SetStateAction<UserData | undefined>>;
 }
 
 const defaultMissionRequest: MissionRequest = {
@@ -31,7 +32,12 @@ const defaultMissionRequest: MissionRequest = {
   timeLimit: null,
 };
 
-const MissionForm = (props: MissionProps) => {
+const MissionForm = ({
+  setMissionChores,
+  setStartMission,
+  userData,
+  setUserData,
+}: MissionProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [recurrenceOptions, setRecurrenceOptions] = useState<string[]>();
   const [categoryOptions, setCategoryOptions] = useState<string[]>();
@@ -40,12 +46,10 @@ const MissionForm = (props: MissionProps) => {
   );
 
   useEffect(() => {
-    const recurrenceList: string[] = extractUserRecurrences(
-      props.userData.chores,
-    );
+    const recurrenceList: string[] = extractUserRecurrences(userData.chores);
     recurrenceList.push("Any");
     setRecurrenceOptions(recurrenceList);
-    const categoryList: string[] = extractUserCategories(props.userData.chores);
+    const categoryList: string[] = extractUserCategories(userData.chores);
     categoryList.push("Any");
     setCategoryOptions(categoryList);
   }, []);
@@ -62,10 +66,16 @@ const MissionForm = (props: MissionProps) => {
 
   const handleStartMission = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    createNewMissionApiCall(props.userData.userId, missionRequestData)
+    createNewMissionApiCall(userData.userId, missionRequestData)
       .then((response: MissionResponse) => {
-        props.setMissionChores(response.missionChores);
-        props.setStartMission(true);
+        setMissionChores(response.missionChores);
+        console.log(response);
+        console.log(response.missionChores.length);
+        setUserData({
+          ...userData,
+          missions: [...userData.missions, response],
+        });
+        setStartMission(true);
         setMissionRequestData(defaultMissionRequest);
       })
 

@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import {
   Alert,
   AlertTitle,
@@ -20,10 +19,9 @@ import { createNewChoreApiCall } from "~/Helper Functions/ApiCalls";
 import CloseIcon from "@mui/icons-material/Close";
 
 interface ChoreCreateComponentProps {
-  userData: UserData;
+  userData: UserData | undefined;
   setUserData: Dispatch<SetStateAction<UserData>>;
 }
-
 
 const defaultRequestData: ChoreRequest = {
   title: "",
@@ -34,14 +32,16 @@ const defaultRequestData: ChoreRequest = {
   difficulty: 0,
 };
 
-export default function ChoreForm({
+export default function ChoreFormStatic({
   userData,
   setUserData,
 }: ChoreCreateComponentProps) {
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
-  const recurrenceList: string[] = extractUserRecurrences(userData.chores);
-  const categoryList: string[] = extractUserCategories(userData.chores);
+  const recurrenceList: string[] = extractUserRecurrences(
+    userData?.chores ?? [],
+  );
+  const categoryList: string[] = extractUserCategories(userData?.chores ?? []);
   const [choreRequestData, setChoreRequestData] =
     useState<ChoreRequest>(defaultRequestData);
 
@@ -50,19 +50,6 @@ export default function ChoreForm({
       navigate("/Login");
     }
   }, [userData]);
-
-  // const recurrenceList: SelectOption[] = [];
-  // const categoryList: SelectOption[] = [];
-  // useEffect(() => {
-  //   const recurrenceStrings = extractUserRecurrences(userData.chores);
-  //   for (const recurrence in recurrenceStrings) {
-  //     recurrenceList.push({ value: recurrence, label: recurrence });
-  //   }
-  //   const categoryStrings = extractUserCategories(userData.chores);
-  //   for (const category in categoryStrings) {
-  //     categoryList.push({ value: category, label: category });
-  //   }
-  // }, []);
 
   const handleInputChange = (
     fieldName: string,
@@ -83,17 +70,19 @@ export default function ChoreForm({
 
   const handleCreateChore = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    createNewChoreApiCall(userData.userId, choreRequestData)
+    createNewChoreApiCall(userData?.userId ?? 0, choreRequestData)
       .then((response: ChoreResponse) => {
         console.log(response);
-        setUserData((prevData) => ({
+        setUserData((prevData: UserData) => ({
           ...prevData,
-          chores: [...prevData.chores, response],
+          chores: [...(prevData?.chores ?? []), response],
         }));
+        setChoreRequestData(defaultRequestData);
         navigate("/Chores");
       })
       .catch((error) => {
         console.log(error.response);
+        setOpen(true);
       })
       .finally(() => {
         console.log("Always print");
@@ -123,8 +112,7 @@ export default function ChoreForm({
           }
         >
           <AlertTitle>Warning</AlertTitle>
-          No matching chores found. Change your recurrence/category/time limit
-          and try again.
+          Invalid inputs. Title and Description must be at least 1 char long.
         </Alert>
       </Collapse>
       <Container maxWidth="sm">
@@ -160,12 +148,12 @@ export default function ChoreForm({
 
           {/* TextField for Chore Length */}
           <TextField
+            required
             fullWidth
             select
             name="duration"
             label="Duration"
             margin="normal"
-            defaultValue={0}
             onChange={(event) =>
               handleInputChange(event.target.name, event.target.value)
             }
@@ -177,66 +165,63 @@ export default function ChoreForm({
             ))}
           </TextField>
 
-          {/* Autocomplete for Select a Recurrence */}
-          <Autocomplete
-            disablePortal
-            options={recurrenceList}
-            getOptionLabel={(option) => option}
-            sx={{ mb: 2 }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select a Recurrence"
-                name="recurrence"
-                onChange={(event) => {
-                  console.log(event.target);
-                  handleInputChange(event.target.name, event.target.value);
-                }}
-              />
-            )}
-          />
+          {/* TextField for Select a Recurrence */}
+          <TextField
+            required
+            fullWidth
+            select
+            name="recurrence"
+            label="Recurrence"
+            margin="normal"
+            onChange={(event) => {
+              console.log(event.target);
+              handleInputChange(event.target.name, event.target.value);
+            }}
+          >
+            {recurrenceList?.map((recurrence, index) => (
+              <MenuItem key={index} value={recurrence}>
+                {recurrence}
+              </MenuItem>
+            ))}
+          </TextField>
 
-          {/*<CreatableSelect*/}
-          {/*  isClearable*/}
-          {/*  // onChange={(event) => {*/}
-          {/*  //   console.log(event.target);*/}
-          {/*  //   handleInputChange(event.target.name, event.target.value);*/}
-          {/*  // }}*/}
-          {/*  options={recurrenceList}*/}
-          {/*/>*/}
+          {/* TextField for Select a category */}
+          <TextField
+            required
+            fullWidth
+            select
+            name="category"
+            label="Category"
+            margin="normal"
+            onChange={(event) =>
+              handleInputChange(event.target.name, event.target.value)
+            }
+          >
+            {categoryList?.map((category, index) => (
+              <MenuItem key={index} value={category}>
+                {category}
+              </MenuItem>
+            ))}
+          </TextField>
 
-          {/* Autocomplete for Select a category */}
-          <Autocomplete
-            disablePortal
-            options={categoryList}
-            getOptionLabel={(option) => option}
-            sx={{ mb: 2 }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select a category"
-                name="category"
-              />
-            )}
-          />
-
-          {/* Autocomplete forSelect a set difficulty level */}
-          <Autocomplete
-            disablePortal
-            options={["Easy", "Medium", "Hard"]}
-            getOptionLabel={(option) => option}
-            sx={{ mb: 2 }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Set Difficulty Level"
-                name="difficutly"
-                onChange={(event) =>
-                  handleInputChange(event.target.name, event.target.value)
-                }
-              />
-            )}
-          />
+          {/* Textfield forSelect a set difficulty level */}
+          <TextField
+            required
+            fullWidth
+            select
+            name="difficulty"
+            label="Difficulty"
+            margin="normal"
+            onChange={(event) =>
+              handleInputChange(event.target.name, event.target.value)
+            }
+          >
+            {["Easy", "Medium", "Hard"].map((difficulty, index) => (
+              <MenuItem key={index} value={difficulty}>
+                {difficulty}
+              </MenuItem>
+            ))}
+          </TextField>
 
           <Box
             sx={{

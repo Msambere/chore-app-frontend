@@ -1,7 +1,13 @@
-import { ReactElement } from "react";
+import {Dispatch, ReactElement, SetStateAction} from "react";
+import RewardList from "~/Components/RewardsPage/RewardList";
+import UserData from "~/types/Response/UserData";
+interface RewardsProps {
+  userData: UserData;
+  setUserData: Dispatch<SetStateAction<UserData | undefined>>;
+}
 
-const RewardsView = (): ReactElement<string> => {
-  return <h1>This is were the Reward page components will go</h1>;
+const RewardsView = ({ userData, setUserData }: RewardsProps) => {
+  return <RewardList userData={userData} setUserData={setUserData} />;
 };
 
 export default RewardsView;
