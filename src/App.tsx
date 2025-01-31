@@ -38,9 +38,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<UserProfileView userData={userData} />} />
+          {/*<Route index element={<UserProfileView userData={userData} />} />*/}
           <Route
-            path="/Login"
+            path="/home"
+            element={<UserProfileView userData={userData} />}
+          />
+          <Route
+            index
+            // path="/Login"
             element={
               <LoginView
                 userNameSetter={setUsername}

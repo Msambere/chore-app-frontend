@@ -70,7 +70,7 @@ const UserProfileView = ({ userData }: UserProfileViewProps) => {
 
   useEffect(() => {
     if (userData.username === "Not logged in") {
-      navigate("/Login");
+      navigate("/");
     } else {
       setUserDateRanges(buildMissionDateRanges(userData.missions));
     }
