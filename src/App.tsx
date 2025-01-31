@@ -53,7 +53,9 @@ function App() {
           <Route path="/Rewards" element={<RewardsView />} />
           <Route
             path="/Mission"
-            element={<MissionView userData={userData!} />}
+            element={
+              <MissionView userData={userData!} setUserData={setUserData} />
+            }
           />
         </Route>
       </Routes>

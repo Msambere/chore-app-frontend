@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { Dispatch, ReactElement, SetStateAction } from "react";
 import { useState } from "react";
 import ActiveMission from "~/Components/MissionPage/ActiveMission/ActiveMission";
 import MissionForm from "~/Components/MissionPage/MissionForm/MissionForm";
@@ -7,9 +7,13 @@ import UserData from "~/types/Response/UserData";
 
 interface MissionProps {
   userData: UserData;
+  setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
-const MissionView = ({ userData }: MissionProps): ReactElement<string> => {
+const MissionView = ({
+  userData,
+  setUserData,
+}: MissionProps): ReactElement<string> => {
   const [startMission, setStartMission] = useState<boolean>(false);
   const [missionChores, setMissionChores] = useState<MissionChoreResponse[]>(
     [],
@@ -23,6 +27,7 @@ const MissionView = ({ userData }: MissionProps): ReactElement<string> => {
           setStartMission={setStartMission}
           setMissionChores={setMissionChores}
           userData={userData}
+          setUserData={setUserData}
         />
       )}
     </main>
