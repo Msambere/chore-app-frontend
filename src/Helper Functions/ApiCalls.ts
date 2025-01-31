@@ -4,6 +4,7 @@ import ChoreResponse from "~/types/Response/ChoreResponse";
 import { MissionRequest } from "~/types/Request/MissionRequest";
 import MissionResponse from "~/types/Response/MissionResponse";
 import SignupFormInputs from "~/types/Forms/SignupFormInputs";
+import RewardResponse from "~/types/Response/RewardResponse";
 
 const VITE_APP_BACKEND_URL: string = import.meta.env.VITE_APP_BACKEND_URL;
 
@@ -48,6 +49,18 @@ export const createNewChoreApiCall = (
   console.log(newChoreData);
   return axios
     .post(`${VITE_APP_BACKEND_URL}/users/${userId}/chores`, newChoreData)
+    .then((response) => {
+      return response.data;
+    });
+};
+
+export const createNewRewardApiCall = (
+  userId: number,
+  newRewardData: RewardRequest,
+): Promise<RewardResponse> => {
+  console.log(newRewardData);
+  return axios
+    .post(`${VITE_APP_BACKEND_URL}/users/${userId}/rewards`, newRewardData)
     .then((response) => {
       return response.data;
     });

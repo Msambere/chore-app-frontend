@@ -12,6 +12,7 @@ import { getUserInfo } from "~/Helper Functions/ApiCalls";
 // import ChoreFormComponent from "./Components/ChoresPage/ChoreFormComponent";
 import SignupView from "~/Components/LoginPage/Signup";
 import ChoreFormStatic from "~/Components/ChoresPage/ChoreFormStatic";
+import RewardFormStatic from "~/Components/RewardsPage/RewardFormStatic";
 
 function App() {
   const [userData, setUserData] = useState<UserData>();
@@ -50,7 +51,21 @@ function App() {
             }
             // element={<ChoreFormComponent userData={userData} setUserData={setUserData} />}
           />
-          <Route path="/Rewards" element={<RewardsView userData={userData!} setUserData={setUserData} />} />
+          <Route
+            path="/Rewards"
+            element={
+              <RewardsView userData={userData!} setUserData={setUserData} />
+            }
+          />
+          <Route
+            path="/Rewards/create"
+            element={
+              <RewardFormStatic
+                userData={userData!}
+                setUserData={setUserData}
+              />
+            }
+          />
           <Route
             path="/Mission"
             element={<MissionView userData={userData!} />}

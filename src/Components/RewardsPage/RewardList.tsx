@@ -27,7 +27,7 @@ export default function RewardList({ userData, setUserData }: RewardsProps) {
           ))}
           <Button
             variant="outlined"
-            to={"/Chores/create"}
+            to={"/Rewards/create"}
             component={RouterLink}
           >
             Add New Reward
