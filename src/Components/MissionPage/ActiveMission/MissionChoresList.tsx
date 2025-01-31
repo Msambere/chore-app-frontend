@@ -17,7 +17,15 @@ const MissionChoresList = ({
   onToggleChore,
 }: MissionChoresListProps) => {
   return (
-    <Box sx={{ p: 3, bgcolor: "#e0e0e0", borderRadius: 1, height: "100%" }}>
+    <Box
+      sx={{
+        p: 3,
+        bgcolor: "#e0e0e0",
+        borderRadius: 1,
+        height: "100%",
+        overflowY: "auto",
+      }}
+    >
       <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
         List of Chores:
       </Typography>
