@@ -43,7 +43,6 @@ const ActiveMission = ({ missionChores, userId }: ActiveMissionProps): JSX.Eleme
       ),
     );
     setPointTotal((prevPoints) => prevPoints + points);
-
     axios
       .patch(`${import.meta.env.VITE_APP_BACKEND_URL}/missionchores`, null, {
         params: { missionId, choreId },
@@ -54,12 +53,11 @@ const ActiveMission = ({ missionChores, userId }: ActiveMissionProps): JSX.Eleme
 
   return (
     <Grid container spacing={2}>
-      {/* Left Panel - Chores List */}
+      {/*Left Panel - Chores List*/}
       <Grid size={4}>
         <MissionChoresList chores={chores} onCompleteChore={completeChore} />
       </Grid>
 
-      {/* Middle Panel - Time & Progress */}
       <Grid size={4}>
         <Box
           sx={{
@@ -67,13 +65,22 @@ const ActiveMission = ({ missionChores, userId }: ActiveMissionProps): JSX.Eleme
             bgcolor: "#e0e0e0",
             borderRadius: 1,
             height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
             textAlign: "center",
           }}
         >
-          <Typography variant="h6">Time & Progress:</Typography>
-          <Typography variant="h4">Remaining Time: {remainingTime}m</Typography>
+          {/*Top: Remaining Time Section*/}
+          <Box>
+            <Typography variant="h6" sx={{ textAlign: "left" }}>
+              Time & Progress:
+            </Typography>
+            <Typography variant="h4">{remainingTime}m Left</Typography>
+          </Box>
 
-          <Box sx={{ position: "relative", display: "inline-flex", mt: 2 }}>
+          {/*Bottom: Progress Bar Section*/}
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
             <CircularProgress
               variant="determinate"
               value={progress}
@@ -83,10 +90,6 @@ const ActiveMission = ({ missionChores, userId }: ActiveMissionProps): JSX.Eleme
             <Box
               sx={{
                 position: "absolute",
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -104,7 +107,7 @@ const ActiveMission = ({ missionChores, userId }: ActiveMissionProps): JSX.Eleme
         </Box>
       </Grid>
 
-      {/* Right Panel - Total Points Earned */}
+      {/*Right Panel - Total Points Earned*/}
       <Grid size={4}>
         <TotalPointsEarned pointTotal={pointTotal} />
         <Button variant="contained" fullWidth sx={{ mt: 2 }}>
