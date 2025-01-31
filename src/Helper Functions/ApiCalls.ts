@@ -44,11 +44,11 @@ export function createUser(user: SignupFormInputs): Promise<Response> {
 }
 
 export async function createChore(
-  userName: string,
+  userId: number,
   chore: ChoreResponse,
 ): Promise<UserData> {
   const response = await fetch(
-    `${VITE_APP_BACKEND_URL}/users/${userName}/chores`,
+    `${VITE_APP_BACKEND_URL}/users/${userId}/chores`,
     {
       method: "POST",
       headers: {
