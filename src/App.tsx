@@ -11,6 +11,7 @@ import { Layout } from "~/Components/Layout/Layout";
 import { getUserInfo } from "~/Helper Functions/ApiCalls";
 import ChoreFormComponent from "./Components/ChoresPage/ChoreFormComponent";
 import SignupView from "~/Components/LoginPage/Signup";
+import ChoreFormStatic from "~/Components/ChoresPage/ChoreFormStatic";
 
 function App() {
   const [userData, setUserData] = useState<UserData>();
@@ -44,7 +45,10 @@ function App() {
           />
           <Route
             path="/Chores/create"
-            element={<ChoreFormComponent userData={userData} />}
+            element={
+              <ChoreFormStatic userData={userData} setUserData={setUserData} />
+            }
+            // element={<ChoreFormComponent userData={userData} setUserData={setUserData} />}
           />
           <Route path="/Rewards" element={<RewardsView />} />
           <Route

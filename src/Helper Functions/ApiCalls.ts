@@ -4,8 +4,6 @@ import ChoreResponse from "~/types/Response/ChoreResponse";
 import { MissionRequest } from "~/types/Request/MissionRequest";
 import MissionResponse from "~/types/Response/MissionResponse";
 import SignupFormInputs from "~/types/Forms/SignupFormInputs";
-import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
-import RewardResponse from "~/types/Response/RewardResponse";
 
 const VITE_APP_BACKEND_URL: string = import.meta.env.VITE_APP_BACKEND_URL;
 
@@ -43,47 +41,14 @@ export function createUser(user: SignupFormInputs): Promise<Response> {
   });
 }
 
-export async function createChore(
-  userName: string,
-  chore: ChoreResponse,
-): Promise<UserData> {
-  const response = await fetch(
-    `${VITE_APP_BACKEND_URL}/users/${userName}/chores`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(chore),
-    },
-  );
-  return await response.json();
-}
-
-// Fetch MissionChores
-export const getMissionChores = async (): Promise<MissionChoreResponse[]> => {
-  try {
-    const response = await axios.get<MissionChoreResponse[]>(
-      `${VITE_APP_BACKEND_URL}/missionchores`,
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching mission chores:", error);
-    throw new Error("Failed to load mission chores.");
-  }
-};
-
-// Fetch Rewards for a User
-export const getRewards = async (
+export const createNewChoreApiCall = (
   userId: number,
-): Promise<RewardResponse[]> => {
-  try {
-    const response = await axios.get<RewardResponse[]>(
-      `${VITE_APP_BACKEND_URL}/users/${userId}/rewards`,
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching rewards:", error);
-    throw new Error("Failed to load rewards.");
-  }
+  newChoreData: ChoreRequest,
+): Promise<ChoreResponse> => {
+  console.log(newChoreData);
+  return axios
+    .post(`${VITE_APP_BACKEND_URL}/users/${userId}/chores`, newChoreData)
+    .then((response) => {
+      return response.data;
+    });
 };
