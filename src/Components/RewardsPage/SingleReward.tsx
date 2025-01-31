@@ -22,7 +22,7 @@ import RewardResponse from "~/types/Response/RewardResponse";
 interface RewardProps {
   reward: RewardResponse;
   userData: UserData;
-  setUserData: Dispatch<SetStateAction<UserData>>;
+  setUserData: Dispatch<SetStateAction<UserData | undefined>>;
 }
 
 export default function SingleReward({ reward, setUserData, userData }: RewardProps) {

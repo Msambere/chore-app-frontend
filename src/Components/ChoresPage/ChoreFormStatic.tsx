@@ -20,7 +20,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 interface ChoreCreateComponentProps {
   userData: UserData | undefined;
-  setUserData: Dispatch<SetStateAction<UserData | undefined>>;
+  setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
 const defaultRequestData: ChoreRequest = {
@@ -73,9 +73,9 @@ export default function ChoreFormStatic({
     createNewChoreApiCall(userData?.userId ?? 0, choreRequestData)
       .then((response: ChoreResponse) => {
         console.log(response);
-        setUserData((prevData) => ({
+        setUserData((prevData: UserData) => ({
           ...prevData,
-          chores: [...prevData.chores, response],
+          chores: [...(prevData?.chores ?? []), response],
         }));
         setChoreRequestData(defaultRequestData);
         navigate("/Chores");

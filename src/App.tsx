@@ -8,7 +8,6 @@ import MissionView from "~/Components/MissionPage/MissionView";
 import UserData from "~/types/Response/UserData";
 import { Layout } from "~/Components/Layout/Layout";
 import { getUserInfo } from "~/Helper Functions/ApiCalls";
-import ChoreFormComponent from "./Components/ChoresPage/ChoreFormComponent";
 import SignupView from "~/Components/LoginPage/Signup";
 import ChoreFormStatic from "~/Components/ChoresPage/ChoreFormStatic";
 import RewardFormStatic from "~/Components/RewardsPage/RewardFormStatic";

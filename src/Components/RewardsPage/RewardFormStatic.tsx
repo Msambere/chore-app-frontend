@@ -66,9 +66,9 @@ export default function RewardFormStatic({
     createNewRewardApiCall(userData.userId, rewardRequestData)
       .then((response: RewardResponse) => {
         console.log(response);
-        setUserData((prevData) => ({
+        setUserData((prevData: UserData) => ({
           ...prevData,
-          rewards: [...prevData.rewards, response],
+          rewards: [...(prevData?.rewards ?? []), response],
         }));
         setRewardRequestData(defaultRequestData);
         navigate("/Rewards");
