@@ -7,8 +7,8 @@ const Sidebar = () => {
   const menuItems = [
     { label: "UserProfile", route: "/" },
     { label: "Chores", route: "/chores" },
-    { label: "Mission", route: "/Mission" },
     { label: "Rewards", route: "/Rewards" },
+    { label: "Mission", route: "/Mission" },
   ];
   return (
     <List>
