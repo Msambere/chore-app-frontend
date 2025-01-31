@@ -1,36 +1,61 @@
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import {
+  FormContainer,
+  TextFieldElement,
+  AutocompleteElement,
+} from "react-hook-form-mui";
+
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import { Button } from "@mui/material";
-import { createChore } from "~/Helper Functions/ApiCalls";
-import ChoreResponse from "~/types/Response/ChoreResponse";
-import { useEffect, useState } from "react";
+import Button from "@mui/material/Button";
+
+import { createChore } from "~/Helper Functions/ApiCalls"; // Your API call
+import ChoreResponse from "~/types/Response/ChoreResponse"; // The interface
 import UserData from "~/types/Response/UserData";
-import { useNavigate } from "react-router";
 
-const previous_chore_tile = [
-  { previous_chore_tile: "Do Laundry" },
-  { previous_chore_tile: "Study Algorithm" },
-  { previous_chore_tile: "Go the gym" },
-];
-const recurrence = [
-  { recurrence: "Daily" },
-  { recurrence: "Weekly" },
-  { recurrence: "Monthly" },
-];
+// ----- Option arrays -----
+const recurrenceOptions = ["Daily", "Weekly", "Monthly"];
+const categoryOptions = ["House Chores", "Self Care", "Self Study"];
+// We will store difficulty as strings in the dropdown, then transform to a numeric value.
+const difficultyOptions = ["Easy", "Medium", "Hard"];
 
-const category = [
-  { category: "House Chores" },
-  { category: "Self Care" },
-  { category: "Self Study" },
-];
+// ----- 1. Define Zod schema matching ChoreResponse -----
+const choreSchema = z.object({
+  title: z.string().min(3, "Title is required"),
+  description: z.string().min(3, "Description is required"),
+  recurrence: z.enum(["Daily", "Weekly", "Monthly"], {
+    errorMap: () => ({ message: "Recurrence is required" }),
+  }),
+  category: z.string().min(3, "Category is required"),
 
-const set_difficulty_level = [
-  { set_difficulty_level: "Easy" },
-  { set_difficulty_level: "Medium" },
-  { set_difficulty_level: "Hard" },
-];
+  // Duration is a number => we use .coerce.number() so user can input text and it’s parsed as a number
+  duration: z.coerce
+    .number()
+    .min(1, "Please enter a positive number for duration"),
+
+  // Difficulty is a string in the dropdown, but we transform it to a numeric for the final result
+  difficulty: z
+    .enum(["Easy", "Medium", "Hard"], {
+      errorMap: () => ({ message: "Difficulty is required" }),
+    })
+    .transform((val) => {
+      switch (val) {
+        case "Easy":
+          return 1;
+        case "Medium":
+          return 2;
+        case "Hard":
+          return 3;
+      }
+    }),
+});
+
+// Derive the TypeScript type from the schema
+type ChoreFormValues = z.infer<typeof choreSchema>;
 
 interface ChoreCreateComponentProps {
   userData?: UserData;
@@ -39,107 +64,137 @@ interface ChoreCreateComponentProps {
 export default function ChoreCreateComponent({
   userData,
 }: ChoreCreateComponentProps) {
-  const [chore, setChore] = useState<ChoreResponse>({} as ChoreResponse);
   const navigate = useNavigate();
 
+  // ----- 2. Redirect if no userData -----
   useEffect(() => {
     if (!userData) {
       navigate("/Login");
     }
-  }, [userData]);
+  }, [userData, navigate]);
 
-  const createChoreCall = () => {
-    if (userData) {
-      createChore(userData.username, chore);
-    }
+  // ----- 3. Handle successful form submission -----
+  const handleFormSuccess = (data: ChoreFormValues) => {
+    if (!userData) return;
+
+    // Map the form data to the ChoreResponse interface
+    const choreToCreate: ChoreResponse = {
+      title: data.title,
+      description: data.description,
+      recurrence: data.recurrence,
+      category: data.category,
+      duration: data.duration,
+      difficulty: data.difficulty,
+      userId: userData.userId,
+    };
+
+    // Call your API
+    createChore(userData.userId, choreToCreate).then(() => {
+      navigate("/Chores");
+    });
   };
+
+  // ----- 4. Render the form -----
   return (
     <Box sx={{ mb: 2 }}>
       <Box component="span" style={{ fontSize: "2em" }}>
         Create a Chore
       </Box>
-      <Container maxWidth="sm">
-        {/* TextField for Adding a Title */}
-        <Autocomplete
-          disablePortal
-          freeSolo
-          options={previous_chore_tile.map((item) => item.previous_chore_tile)}
-          getOptionLabel={(option) => option}
-          sx={{ mb: 2 }}
-          renderInput={(params) => (
-            <TextField {...params} label="Chore Title" />
-          )}
-          onChange={(_, newValue) => {
-            if (typeof newValue === "string") {
-              setChore({ ...chore, title: newValue });
-            }
+
+      <Container maxWidth="sm" sx={{ mt: 2 }}>
+        {/*
+          1) FormContainer from react-hook-form-mui sets up useForm internally
+             and applies the zodResolver for validation.
+          2) onSuccess => handleFormSuccess is called after all validations pass.
+        */}
+        <FormContainer
+          defaultValues={{
+            title: "",
+            description: "",
+            recurrence: "Daily",
+            category: "",
+            duration: 1,
+            difficulty: 1,
           }}
-        />
-
-        {/* TextField for Adding a Description */}
-        <TextField
-          fullWidth
-          label="Add a Description"
-          margin="normal"
-          multiline
-          rows={2}
-          variant="outlined"
-        />
-
-        {/* TextField for Chore Length */}
-        <TextField
-          fullWidth
-          label="Chore Length"
-          margin="normal"
-          multiline
-          rows={2}
-          variant="outlined"
-        />
-
-        {/* Autocomplete forSelect a Recurrence */}
-        <Autocomplete
-          disablePortal
-          options={recurrence}
-          getOptionLabel={(option) => option.recurrence}
-          sx={{ mb: 2 }}
-          renderInput={(params) => (
-            <TextField {...params} label="Select a Recurrence" />
-          )}
-        />
-
-        {/* Autocomplete forSelect a category */}
-        <Autocomplete
-          disablePortal
-          options={category}
-          getOptionLabel={(option) => option.category}
-          sx={{ mb: 2 }}
-          renderInput={(params) => (
-            <TextField {...params} label="Select a category" />
-          )}
-        />
-
-        {/* Autocomplete forSelect a set difficulty level */}
-        <Autocomplete
-          disablePortal
-          options={set_difficulty_level}
-          getOptionLabel={(option) => option.set_difficulty_level}
-          sx={{ mb: 2 }}
-          renderInput={(params) => (
-            <TextField {...params} label="Set Difficulty Level" />
-          )}
-        />
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end", // Aligns items to the right
-            mt: 2, // Optional: Add some margin-top
-          }}
+          resolver={zodResolver(choreSchema)}
+          onSuccess={handleFormSuccess}
         >
-          <Button variant="outlined" onClick={createChoreCall}>
-            Submit
-          </Button>
-        </Box>
+          {/*
+            TextFieldElement => a simple MUI TextField integrated with react-hook-form.
+            AutocompleteElement => an MUI Autocomplete integrated with react-hook-form.
+            Each one automatically handles value, error display, and onChange events.
+          */}
+          <TextFieldElement
+            name="title"
+            label="Chore Title"
+            required
+            fullWidth
+            sx={{ mb: 2 }}
+          />
+
+          <TextFieldElement
+            name="description"
+            label="Description"
+            required
+            multiline
+            rows={2}
+            fullWidth
+            sx={{ mb: 2 }}
+          />
+
+          <AutocompleteElement
+            name="recurrence"
+            label="Select Recurrence"
+            options={recurrenceOptions}
+            required
+            textFieldProps={{ sx: { mb: 2 } }}
+          />
+
+          <AutocompleteElement
+            name="category"
+            label="Select Category"
+            options={categoryOptions}
+            required
+            textFieldProps={{ sx: { mb: 2 } }}
+          />
+
+          {/*
+            We store 'duration' as a number. We'll use a TextFieldElement with type="number".
+            The Zod schema uses z.coerce.number() so the string input is parsed to a number.
+          */}
+          <TextFieldElement
+            name="duration"
+            label="Duration (minutes)"
+            type="number"
+            required
+            fullWidth
+            sx={{ mb: 2 }}
+          />
+
+          {/*
+            difficulty is a numeric field in your interface,
+            but we collect it as "Easy"/"Medium"/"Hard" then transform it to 1/2/3 in Zod.
+          */}
+          <AutocompleteElement
+            name="difficulty"
+            label="Difficulty"
+            options={difficultyOptions}
+            required
+            textFieldProps={{ sx: { mb: 2 } }}
+          />
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              mt: 2,
+            }}
+          >
+            <Button variant="outlined" type="submit">
+              Submit
+            </Button>
+          </Box>
+        </FormContainer>
       </Container>
     </Box>
   );
