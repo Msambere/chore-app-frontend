@@ -4,7 +4,12 @@ import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 
 interface MissionChoresListProps {
   chores: MissionChoreResponse[];
-  onToggleChore: (choreId: number, missionId: number, points: number, completed: boolean) => void;
+  onToggleChore: (
+    choreId: number,
+    missionId: number,
+    points: number,
+    completed: boolean,
+  ) => void;
 }
 
 const MissionChoresList = ({
@@ -46,7 +51,12 @@ const MissionChoresList = ({
                 size="small"
                 color={chore.completed ? "secondary" : "primary"}
                 onClick={() =>
-                  onToggleChore(chore.choreId, chore.missionId, chore.points, !chore.completed)
+                  onToggleChore(
+                    chore.choreId,
+                    chore.missionId,
+                    chore.points,
+                    !chore.completed,
+                  )
                 }
                 sx={{
                   minWidth: "100px",
