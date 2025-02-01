@@ -45,7 +45,12 @@ function App() {
           <Route
             path="/Chores/create"
             element={
-              <ChoreFormStatic userData={userData} setUserData={setUserData} />
+              userData && (
+                <ChoreFormStatic
+                  userData={userData}
+                  setUserData={setUserData}
+                />
+              )
             }
             // element={<ChoreFormComponent userData={userData} setUserData={setUserData} />}
           />

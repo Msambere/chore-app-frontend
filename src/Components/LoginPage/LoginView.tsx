@@ -42,6 +42,7 @@ export default function LoginPage({
             message: "User not found. Please check your username.",
           });
         } else if (response?.username) {
+          // we only set the userName. you need to set the username and userData can get the same time
           userNameSetter(response.username ?? "");
         } else {
           setError("username", {
@@ -64,7 +65,6 @@ export default function LoginPage({
       navigate("/");
     }
   }, [userName]);
-
   return (
     <FormContainer
       formContext={formContext}
