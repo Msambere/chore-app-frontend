@@ -4,7 +4,6 @@ import ChoreResponse from "~/types/Response/ChoreResponse";
 import { MissionRequest } from "~/types/Request/MissionRequest";
 import MissionResponse from "~/types/Response/MissionResponse";
 import SignupFormInputs from "~/types/Forms/SignupFormInputs";
-import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 import RewardResponse from "~/types/Response/RewardResponse";
 
 const VITE_APP_BACKEND_URL: string = import.meta.env.VITE_APP_BACKEND_URL;
@@ -43,19 +42,26 @@ export function createUser(user: SignupFormInputs): Promise<Response> {
   });
 }
 
-export async function createChore(
+export const createNewChoreApiCall = (
   userId: number,
-  chore: ChoreResponse,
-): Promise<UserData> {
-  const response = await fetch(
-    `${VITE_APP_BACKEND_URL}/users/${userId}/chores`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(chore),
-    },
-  );
-  return await response.json();
-}
+  newChoreData: ChoreRequest,
+): Promise<ChoreResponse> => {
+  console.log(newChoreData);
+  return axios
+    .post(`${VITE_APP_BACKEND_URL}/users/${userId}/chores`, newChoreData)
+    .then((response) => {
+      return response.data;
+    });
+};
+
+export const createNewRewardApiCall = (
+  userId: number,
+  newRewardData: RewardRequest,
+): Promise<RewardResponse> => {
+  console.log(newRewardData);
+  return axios
+    .post(`${VITE_APP_BACKEND_URL}/users/${userId}/rewards`, newRewardData)
+    .then((response) => {
+      return response.data;
+    });
+};
