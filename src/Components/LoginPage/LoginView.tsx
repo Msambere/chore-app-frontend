@@ -10,6 +10,7 @@ import { Button, Stack } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router";
 import { useCallback, useEffect } from "react";
 import { getUserInfo } from "~/Helper Functions/ApiCalls";
+import UserData from "~/types/Response/UserData";
 
 const loginSchema = z.object({
   username: z.string().min(4, "Invalid username"),
@@ -21,11 +22,13 @@ type LoginFormInputs = z.infer<typeof loginSchema>;
 interface LoginViewProps {
   userNameSetter: (value: string) => void;
   userName?: string | undefined;
+  userData: UserData;
 }
 
 export default function LoginPage({
   userNameSetter,
   userName,
+  userData,
 }: LoginViewProps) {
   const formResolver = zodResolver(loginSchema);
   const formContext = useForm<LoginFormInputs>({ resolver: formResolver });
@@ -42,7 +45,6 @@ export default function LoginPage({
             message: "User not found. Please check your username.",
           });
         } else if (response?.username) {
-          // we only set the userName. you need to set the username and userData can get the same time
           userNameSetter(response.username ?? "");
         } else {
           setError("username", {
@@ -61,10 +63,11 @@ export default function LoginPage({
     [userNameSetter, setError],
   );
   useEffect(() => {
-    if (userName) {
-      navigate("/");
+    if (userData.username !== "Not logged in") {
+      navigate("/UserProfile");
     }
-  }, [userName]);
+  }, [userData]);
+
   return (
     <FormContainer
       formContext={formContext}

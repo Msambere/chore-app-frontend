@@ -23,7 +23,7 @@ interface MissionProps {
   setMissionChores: Dispatch<SetStateAction<MissionChoreResponse[]>>;
   setStartMission: Dispatch<SetStateAction<boolean>>;
   userData: UserData;
-  setUserData: Dispatch<SetStateAction<UserData | undefined>>;
+  setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
 const defaultMissionRequest: MissionRequest = {
@@ -38,7 +38,7 @@ const MissionForm = ({
   userData,
   setUserData,
 }: MissionProps) => {
-  const [open, setOpen] = useState<boolean>(false);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [recurrenceOptions, setRecurrenceOptions] = useState<string[]>();
   const [categoryOptions, setCategoryOptions] = useState<string[]>();
   const [missionRequestData, setMissionRequestData] = useState<MissionRequest>(
@@ -58,7 +58,7 @@ const MissionForm = ({
     fieldName: string,
     fieldValue: string | number | null,
   ): void => {
-    if (fieldValue === "Any" || fieldValue === "Unlimited") {
+    if (fieldValue === "Any" || fieldValue === "Let's do them all!") {
       fieldValue = null;
     }
     setMissionRequestData({ ...missionRequestData, [fieldName]: fieldValue });
@@ -71,17 +71,21 @@ const MissionForm = ({
         setMissionChores(response.missionChores);
         console.log(response);
         console.log(response.missionChores.length);
-        setUserData({
-          ...userData,
-          missions: [...userData.missions, response],
-        });
+        // setUserData({
+        //   ...userData,
+        //   missions: [...userData.missions, response],
+        // });
+        // setUserData((prevData: UserData) => ({
+        //   ...prevData,
+        //   missions: [...(prevData?.missions ?? []), response],
+        // }));
         setStartMission(true);
         setMissionRequestData(defaultMissionRequest);
       })
 
       .catch((error) => {
         console.log(error.response.data.message);
-        setOpen(true);
+        setOpenAlert(true);
       })
       .finally(() => {
         console.log("Always print");
@@ -137,12 +141,12 @@ const MissionForm = ({
             name="timeLimit"
             label="Time Limit"
             margin="normal"
-            defaultValue="Unlimited"
+            defaultValue="Let's do them all!"
             onChange={(event) =>
               handleInputChange(event.target.name, event.target.value)
             }
           >
-            {["Unlimited", 5, 10, 15, 20, 25, 30, 35, 40, 45].map(
+            {["Let's do them all!", 5, 10, 15, 20, 25, 30, 35, 40, 45].map(
               (time, index) => (
                 <MenuItem key={index} value={time}>
                   {time}
@@ -151,7 +155,7 @@ const MissionForm = ({
             )}
           </TextField>
 
-          <Collapse in={open}>
+          <Collapse in={openAlert}>
             <Alert
               variant="outlined"
               severity="warning"
@@ -161,7 +165,7 @@ const MissionForm = ({
                   color="inherit"
                   size="small"
                   onClick={() => {
-                    setOpen(false);
+                    setOpenAlert(false);
                   }}
                 >
                   <CloseIcon fontSize="inherit" />

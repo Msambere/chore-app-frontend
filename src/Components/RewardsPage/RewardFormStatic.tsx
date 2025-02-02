@@ -37,13 +37,13 @@ export default function RewardFormStatic({
   setUserData,
 }: RewardProps) {
   const navigate = useNavigate();
-  const [open, setOpen] = useState<boolean>(false);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [rewardRequestData, setRewardRequestData] =
     useState<RewardRequest>(defaultRequestData);
 
   useEffect(() => {
-    if (!userData) {
-      navigate("/Login");
+    if (userData.username === "Not logged in") {
+      navigate("/");
     }
   }, [userData]);
 
@@ -75,7 +75,7 @@ export default function RewardFormStatic({
       })
       .catch((error) => {
         console.log(error);
-        setOpen(true);
+        setOpenAlert(true);
       })
       .finally(() => {
         console.log("Always print");
@@ -87,7 +87,7 @@ export default function RewardFormStatic({
       <Box component="span" style={{ fontSize: "2em" }}>
         Create a Reward
       </Box>
-      <Collapse in={open}>
+      <Collapse in={openAlert}>
         <Alert
           variant="outlined"
           severity="warning"
@@ -97,7 +97,7 @@ export default function RewardFormStatic({
               color="inherit"
               size="small"
               onClick={() => {
-                setOpen(false);
+                setOpenAlert(false);
               }}
             >
               <CloseIcon fontSize="inherit" />

@@ -1,14 +1,21 @@
 import { Box, Button, Grid2 as Grid } from "@mui/material";
-import ChoreResponse from "~/types/Response/ChoreResponse";
-import { Link as RouterLink } from "react-router";
-import React from "react";
+import { Link as RouterLink, useNavigate } from "react-router";
+import React, { useEffect } from "react";
 import SingleChore from "~/Components/ChoresPage/SingleChore";
+import UserData from "~/types/Response/UserData";
 
 interface ChoresProps {
-  chores: ChoreResponse[];
+  userData: UserData;
 }
 
-export default function Chores({ chores }: ChoresProps) {
+export default function Chores({ userData }: ChoresProps) {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (userData.username === "Not logged in") {
+      navigate("/");
+    }
+  }, [userData]);
+
   return (
     <Grid container spacing={2}>
       {/* Chores List */}
@@ -17,7 +24,7 @@ export default function Chores({ chores }: ChoresProps) {
           <Box component="span" style={{ fontSize: "2em" }}>
             Chores List
           </Box>
-          {chores?.map((chore) => (
+          {userData.chores.map((chore) => (
             <SingleChore key={chore.title} chore={chore} />
           ))}
           <Button

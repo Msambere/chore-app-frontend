@@ -1,8 +1,14 @@
 import { AppBar, Box, Drawer, Toolbar, Typography } from "@mui/material";
 import SideBar from "~/Components/SideBar/SideBar";
 import { Outlet } from "react-router";
+import {Dispatch, SetStateAction} from "react";
+import UserData from "~/types/Response/UserData";
 
-export function Layout() {
+interface Props {
+  setUserData: Dispatch<SetStateAction<UserData>>;
+}
+
+export function Layout({setUserData}:Props) {
   const drawerWidth = 240;
   return (
     <Box sx={{ display: "flex" }}>
@@ -29,7 +35,7 @@ export function Layout() {
         anchor="left"
       >
         <Toolbar />
-        <SideBar />
+        <SideBar setUserData={setUserData} />
       </Drawer>
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
