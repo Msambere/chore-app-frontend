@@ -75,10 +75,10 @@ const MissionForm = ({
         //   ...userData,
         //   missions: [...userData.missions, response],
         // });
-        setUserData((prevData: UserData) => ({
-          ...prevData,
-          missions: [...(prevData?.missions ?? []), response],
-        }));
+        // setUserData((prevData: UserData) => ({
+        //   ...prevData,
+        //   missions: [...(prevData?.missions ?? []), response],
+        // }));
         setStartMission(true);
         setMissionRequestData(defaultMissionRequest);
       })
