@@ -8,47 +8,89 @@ import MissionView from "~/Components/MissionPage/MissionView";
 import UserData from "~/types/Response/UserData";
 import { Layout } from "~/Components/Layout/Layout";
 import { getUserInfo } from "~/Helper Functions/ApiCalls";
-import ChoreFormComponent from "./Components/ChoresPage/ChoreFormComponent";
 import SignupView from "~/Components/LoginPage/Signup";
+import ChoreFormStatic from "~/Components/ChoresPage/ChoreFormStatic";
+import RewardFormStatic from "~/Components/RewardsPage/RewardFormStatic";
 
 function App() {
-  const [userData, setUserData] = useState<UserData>();
-  const [userName, setUserName] = useState<string>();
+  const [userData, setUserData] = useState<UserData>({
+    message: "",
+    userId: 0,
+    firstName: "",
+    lastName: "",
+    email: "",
+    username: "Not logged in",
+    chores: [],
+    missions: [],
+    rewards: [],
+  });
+  const [username, setUsername] = useState<string>(userData.username);
 
   useEffect(() => {
-    if (!userName) return;
-    getUserInfo(userName).then((response) => {
-      setUserData(response);
-    });
-  }, [userName]);
+    if (username != "Not logged in") {
+      getUserInfo(username).then((response) => {
+        setUserData(response);
+      });
+    }
+  }, [username]);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<UserProfileView userData={userData} />} />
+        <Route path="/" element={<Layout setUserData={setUserData} />}>
+          {/*<Route index element={<UserProfileView userData={userData} />} />*/}
           <Route
-            path="/Login"
+            path="/UserProfile"
+            element={<UserProfileView userData={userData} />}
+          />
+          <Route
+            index
+            // path="/Login"
             element={
-              <LoginView userNameSetter={setUserName} userName={userName} />
+              <LoginView
+                userNameSetter={setUsername}
+                userName={username}
+                userData={userData}
+              />
             }
           />
           <Route
             path="/Signup"
-            element={<SignupView userNameSetter={setUserName} />}
+            element={
+              <SignupView userNameSetter={setUsername} userData={userData} />
+            }
           />
           <Route
             path="/Chores"
-            element={<ChoresListView chores={userData?.chores ?? []} />}
+            element={<ChoresListView userData={userData} />}
           />
           <Route
             path="/Chores/create"
-            element={<ChoreFormComponent userData={userData} />}
+            element={
+              <ChoreFormStatic userData={userData!} setUserData={setUserData} />
+            }
+            // element={<ChoreFormComponent userData={userData} setUserData={setUserData} />}
           />
-          <Route path="/Rewards" element={<RewardsView />} />
+          <Route
+            path="/Rewards"
+            element={
+              <RewardsView userData={userData!} setUserData={setUserData} />
+            }
+          />
+          <Route
+            path="/Rewards/create"
+            element={
+              <RewardFormStatic
+                userData={userData!}
+                setUserData={setUserData}
+              />
+            }
+          />
           <Route
             path="/Mission"
-            element={<MissionView userData={userData!} />}
+            element={
+              <MissionView userData={userData!} setUserData={setUserData} />
+            }
           />
         </Route>
       </Routes>

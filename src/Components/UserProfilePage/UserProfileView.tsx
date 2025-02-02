@@ -13,7 +13,7 @@ interface DateRange {
   color: string;
 }
 interface UserProfileViewProps {
-  userData?: UserData | undefined;
+  userData: UserData;
 }
 function getMissionColor(mission: MissionResponse): string {
   const { missionChores } = mission;
@@ -69,10 +69,10 @@ const UserProfileView = ({ userData }: UserProfileViewProps) => {
   const [userDateRanges, setUserDateRanges] = useState<DateRange[]>([]);
 
   useEffect(() => {
-    if (!userData) {
-      navigate("/Login");
+    if (userData.username === "Not logged in") {
+      navigate("/");
     } else {
-      setUserDateRanges(buildMissionDateRanges(userData?.missions));
+      setUserDateRanges(buildMissionDateRanges(userData.missions));
     }
   }, [userData]);
 
