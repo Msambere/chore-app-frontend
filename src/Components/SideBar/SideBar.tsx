@@ -2,11 +2,18 @@ import { List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 
 import Link from "@mui/material/Link";
 import { Link as RouterLink } from "react-router";
+import LogoutButton from "~/Components/LoginPage/LogoutButton";
+import { Dispatch, SetStateAction } from "react";
+import UserData from "~/types/Response/UserData";
 
-const Sidebar = () => {
+interface Props {
+  setUserData: Dispatch<SetStateAction<UserData>>;
+}
+
+const Sidebar = ({ setUserData }: Props) => {
   const menuItems = [
-    { label: "UserProfile", route: "/" },
-    { label: "Chores", route: "/chores" },
+    { label: "UserProfile", route: "/UserProfile" },
+    { label: "Chores", route: "/Chores" },
     { label: "Rewards", route: "/Rewards" },
     { label: "Mission", route: "/Mission" },
   ];
@@ -24,6 +31,9 @@ const Sidebar = () => {
           </ListItemButton>
         </ListItem>
       ))}
+      <ListItem>
+        <LogoutButton setUserData={setUserData} />
+      </ListItem>
     </List>
   );
 };

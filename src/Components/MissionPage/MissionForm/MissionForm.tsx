@@ -38,7 +38,7 @@ const MissionForm = ({
   userData,
   setUserData,
 }: MissionProps) => {
-  const [open, setOpen] = useState<boolean>(false);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [recurrenceOptions, setRecurrenceOptions] = useState<string[]>();
   const [categoryOptions, setCategoryOptions] = useState<string[]>();
   const [missionRequestData, setMissionRequestData] = useState<MissionRequest>(
@@ -71,17 +71,21 @@ const MissionForm = ({
         setMissionChores(response.missionChores);
         console.log(response);
         console.log(response.missionChores.length);
-        setUserData({
-          ...userData,
-          missions: [...userData.missions, response],
-        });
+        // setUserData({
+        //   ...userData,
+        //   missions: [...userData.missions, response],
+        // });
+        // setUserData((prevData: UserData) => ({
+        //   ...prevData,
+        //   missions: [...(prevData?.missions ?? []), response],
+        // }));
         setStartMission(true);
         setMissionRequestData(defaultMissionRequest);
       })
 
       .catch((error) => {
         console.log(error.response.data.message);
-        setOpen(true);
+        setOpenAlert(true);
       })
       .finally(() => {
         console.log("Always print");
@@ -151,7 +155,7 @@ const MissionForm = ({
             )}
           </TextField>
 
-          <Collapse in={open}>
+          <Collapse in={openAlert}>
             <Alert
               variant="outlined"
               severity="warning"
@@ -161,7 +165,7 @@ const MissionForm = ({
                   color="inherit"
                   size="small"
                   onClick={() => {
-                    setOpen(false);
+                    setOpenAlert(false);
                   }}
                 >
                   <CloseIcon fontSize="inherit" />

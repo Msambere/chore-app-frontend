@@ -37,7 +37,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Layout setUserData={setUserData} />}>
           {/*<Route index element={<UserProfileView userData={userData} />} />*/}
           <Route
             path="/UserProfile"
