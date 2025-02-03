@@ -69,12 +69,12 @@ const UserProfileView = ({ userData }: UserProfileViewProps) => {
   const [userDateRanges, setUserDateRanges] = useState<DateRange[]>([]);
 
   useEffect(() => {
-    if (userData.username === "") {
+    if (localStorage.getItem("username") === "") {
       navigate("/");
     } else {
       setUserDateRanges(buildMissionDateRanges(userData.missions));
     }
-  }, [userData]);
+  }, []);
 
   return (
     <Grid2 container spacing={20}>

@@ -10,6 +10,7 @@ import { Layout } from "~/Components/Layout/Layout";
 import SignupView from "~/Components/LoginPage/Signup";
 import ChoreFormStatic from "~/Components/ChoresPage/ChoreFormStatic";
 import RewardFormStatic from "~/Components/RewardsPage/RewardFormStatic";
+import { getExistngUserApiCall } from "~/Helper Functions/ApiCalls";
 
 function App() {
   const [userData, setUserData] = useState<UserData>({
@@ -23,6 +24,16 @@ function App() {
     missions: [],
     rewards: [],
   });
+
+  useEffect(() => {
+    console.log(localStorage.getItem("username"));
+    const loggedInUser: string | null = localStorage.getItem("username");
+    if (loggedInUser && loggedInUser !== "") {
+      getExistngUserApiCall(loggedInUser).then((response: UserData) =>
+        setUserData(response),
+      );
+    }
+  }, []);
 
   return (
     <BrowserRouter>
@@ -49,29 +60,26 @@ function App() {
           <Route
             path="/Chores/create"
             element={
-              <ChoreFormStatic userData={userData!} setUserData={setUserData} />
+              <ChoreFormStatic userData={userData} setUserData={setUserData} />
             }
             // element={<ChoreFormComponent userData={userData} setUserData={setUserData} />}
           />
           <Route
             path="/Rewards"
             element={
-              <RewardsView userData={userData!} setUserData={setUserData} />
+              <RewardsView userData={userData} setUserData={setUserData} />
             }
           />
           <Route
             path="/Rewards/create"
             element={
-              <RewardFormStatic
-                userData={userData!}
-                setUserData={setUserData}
-              />
+              <RewardFormStatic userData={userData} setUserData={setUserData} />
             }
           />
           <Route
             path="/Mission"
             element={
-              <MissionView userData={userData!} setUserData={setUserData} />
+              <MissionView userData={userData} setUserData={setUserData} />
             }
           />
         </Route>

@@ -22,6 +22,7 @@ const LogoutButton = ({ setUserData }: Props) => {
       missions: [],
       rewards: [],
     });
+    localStorage.setItem("username", "");
     navigate("/");
   };
 

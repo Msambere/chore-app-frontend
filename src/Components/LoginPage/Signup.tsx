@@ -30,6 +30,7 @@ export default function SignupView({ setUserData }: SignupViewProps) {
           alert(data.message);
           if (data.message === "User created successfully") {
             setUserData(data);
+            localStorage.setItem("username", data.username);
             navigate("/UserProfile");
           }
         });
