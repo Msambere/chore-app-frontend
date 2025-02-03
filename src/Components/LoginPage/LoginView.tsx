@@ -8,7 +8,7 @@ import {
 } from "react-hook-form-mui";
 import { Button, Stack } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router";
-import { useCallback, useEffect } from "react";
+import { Dispatch, SetStateAction, useCallback } from "react";
 import { getUserInfo } from "~/Helper Functions/ApiCalls";
 import UserData from "~/types/Response/UserData";
 
@@ -20,53 +20,40 @@ const loginSchema = z.object({
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
 interface LoginViewProps {
-  userNameSetter: (value: string) => void;
-  userName?: string | undefined;
-  userData: UserData;
+  setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
-export default function LoginPage({
-  userNameSetter,
-  userName,
-  userData,
-}: LoginViewProps) {
+export default function LoginPage({ setUserData }: LoginViewProps) {
   const formResolver = zodResolver(loginSchema);
   const formContext = useForm<LoginFormInputs>({ resolver: formResolver });
   const { handleSubmit, setError } = formContext;
   const navigate = useNavigate();
 
-  const onSubmit = useCallback(
-    async (data: LoginFormInputs) => {
-      try {
-        const response = await getUserInfo(data.username);
-        if (response?.message === "User not found") {
-          setError("username", {
-            type: "value",
-            message: "User not found. Please check your username.",
-          });
-        } else if (response?.username) {
-          userNameSetter(response.username ?? "");
-        } else {
-          setError("username", {
-            type: "value",
-            message: "Unexpected response from the server.",
-          });
-        }
-      } catch (error) {
+  const onSubmit = useCallback(async (data: LoginFormInputs) => {
+    try {
+      const response = await getUserInfo(data.username);
+      if (response?.message === "User not found") {
         setError("username", {
           type: "value",
-          message: "Failed to log in. Please try again.",
+          message: "User not found. Please check your username.",
         });
-        console.error(error);
+      } else if (response?.message === "User found") {
+        setUserData(response);
+        navigate("/UserProfile");
+      } else {
+        setError("username", {
+          type: "value",
+          message: "Unexpected response from the server.",
+        });
       }
-    },
-    [userNameSetter, setError],
-  );
-  useEffect(() => {
-    if (userData.username !== "Not logged in") {
-      navigate("/UserProfile");
+    } catch (error) {
+      setError("username", {
+        type: "value",
+        message: "Failed to log in. Please try again.",
+      });
+      console.error(error);
     }
-  }, [userData]);
+  }, []);
 
   return (
     <FormContainer

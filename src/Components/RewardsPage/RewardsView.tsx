@@ -1,4 +1,4 @@
-import { Dispatch, ReactElement, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import RewardList from "~/Components/RewardsPage/RewardList";
 import UserData from "~/types/Response/UserData";
 import { useNavigate } from "react-router";
@@ -9,11 +9,14 @@ interface RewardsProps {
 
 const RewardsView = ({ userData, setUserData }: RewardsProps) => {
   const navigate = useNavigate();
+
   useEffect(() => {
-    if (userData.username === "Not logged in") {
+    console.log(userData.username);
+    if (userData.username === "") {
       navigate("/");
     }
-  }, [userData]);
+  }, []);
+
   return <RewardList userData={userData} setUserData={setUserData} />;
 };
 

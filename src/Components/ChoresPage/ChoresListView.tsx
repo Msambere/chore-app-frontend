@@ -11,10 +11,10 @@ interface ChoresProps {
 export default function Chores({ userData }: ChoresProps) {
   const navigate = useNavigate();
   useEffect(() => {
-    if (userData.username === "Not logged in") {
+    if (userData.username === "") {
       navigate("/");
     }
-  }, [userData]);
+  }, []);
 
   return (
     <Grid container spacing={2}>

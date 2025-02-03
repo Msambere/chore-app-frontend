@@ -7,7 +7,6 @@ import RewardsView from "~/Components/RewardsPage/RewardsView";
 import MissionView from "~/Components/MissionPage/MissionView";
 import UserData from "~/types/Response/UserData";
 import { Layout } from "~/Components/Layout/Layout";
-import { getUserInfo } from "~/Helper Functions/ApiCalls";
 import SignupView from "~/Components/LoginPage/Signup";
 import ChoreFormStatic from "~/Components/ChoresPage/ChoreFormStatic";
 import RewardFormStatic from "~/Components/RewardsPage/RewardFormStatic";
@@ -19,20 +18,11 @@ function App() {
     firstName: "",
     lastName: "",
     email: "",
-    username: "Not logged in",
+    username: "",
     chores: [],
     missions: [],
     rewards: [],
   });
-  const [username, setUsername] = useState<string>(userData.username);
-
-  useEffect(() => {
-    if (username != "Not logged in") {
-      getUserInfo(username).then((response) => {
-        setUserData(response);
-      });
-    }
-  }, [username]);
 
   return (
     <BrowserRouter>
@@ -46,19 +36,11 @@ function App() {
           <Route
             index
             // path="/Login"
-            element={
-              <LoginView
-                userNameSetter={setUsername}
-                userName={username}
-                userData={userData}
-              />
-            }
+            element={<LoginView setUserData={setUserData} />}
           />
           <Route
             path="/Signup"
-            element={
-              <SignupView userNameSetter={setUsername} userData={userData} />
-            }
+            element={<SignupView setUserData={setUserData} />}
           />
           <Route
             path="/Chores"
