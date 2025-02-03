@@ -54,6 +54,15 @@ const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
     setPointTotal((prevPoints) =>
       completed ? prevPoints + points : Math.max(prevPoints - points, 0),
     );
+
+    axios
+      .patch(`${import.meta.env.VITE_APP_BACKEND_URL}/missionchores`, null, {
+        params: { missionId, choreId },
+      })
+      .then((response) => {
+        console.log(`Chore ${choreId} status updated.`, response.data);
+      })
+      .catch((err) => console.error("Error updating chore completion:", err));
   };
 
   // Handle Redeem Reward
@@ -64,18 +73,31 @@ const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
 
   // Handle mission completion
   const handleFinishMission = async () => {
-    setMissionFinished(true);
-    try {
-      await axios.patch(
-        `${import.meta.env.VITE_APP_BACKEND_URL}/missions/{missionId}`,
-        {
-          timeElapsed,
-          totalUnredeemedPoints,
-        },
-      );
-    } catch (error) {
-      console.error("Error updating mission data:", error);
+    if (totalUnredeemedPoints == null || timeElapsed == null) {
+      console.error("Missing required fields");
+      return;
     }
+    if (!missionChores || missionChores.length === 0) {
+      console.error("Mission Chores list is empty!");
+      return;
+    }
+    const missionId = missionChores[0].missionId;
+    if (!missionId) {
+      console.error("Mission ID is undefined!");
+      return;
+    }
+    setMissionFinished(true);
+    axios
+      .patch(`${import.meta.env.VITE_APP_BACKEND_URL}/missions/${missionId}`, {
+        totalUnredeemedPoints: totalUnredeemedPoints ?? 0,
+        timeElapsed: timeElapsed ?? 0,
+      })
+      .then((response) => {
+        console.log("Mission updated successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error updating mission data:", error);
+      });
   };
 
   return (
@@ -114,10 +136,8 @@ const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
         open={missionFinished}
         onClose={() => setMissionFinished(false)}
         pointTotal={pointTotal}
-        totalUnredeemedPoints={totalUnredeemedPoints}
         timeElapsed={timeElapsed}
         totalChoresCompleted={chores.filter((chore) => chore.completed).length}
-        onRedeem={handleRedeemReward}
       />
     </>
   );

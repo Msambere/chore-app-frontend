@@ -12,26 +12,24 @@ interface MissionSummaryDialogProps {
   open: boolean;
   onClose: () => void;
   pointTotal: number;
-  totalUnredeemedPoints: number;
   timeElapsed: number;
   totalChoresCompleted: number;
-  onRedeem: () => void;
 }
 
 const MissionSummaryDialog = ({
   open,
   onClose,
   pointTotal,
-  totalUnredeemedPoints,
   timeElapsed,
   totalChoresCompleted,
-  onRedeem,
 }: MissionSummaryDialogProps) => {
   const navigate = useNavigate();
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Mission Summary</DialogTitle>
+      <DialogTitle tabIndex={-1} autoFocus>
+        Mission Summary
+      </DialogTitle>
       <DialogContent>
         <Typography>Total Chores Completed: {totalChoresCompleted}</Typography>
         <Typography>Total Points Earned: {pointTotal}</Typography>
