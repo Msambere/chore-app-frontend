@@ -4,22 +4,38 @@ import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 
 interface TimeProgressProps {
   chores: MissionChoreResponse[];
+  onTimeRunOut: () => void;
+  missionFinished?: boolean;
 }
 
-const TimeProgress = ({ chores }: TimeProgressProps) => {
+const TimeProgress = ({
+  chores,
+  missionFinished,
+  onTimeRunOut,
+}: TimeProgressProps) => {
   const totalDuration =
-    chores.reduce((acc, chore) => acc + chore.duration, 0) * 60 + 59;
+    chores.reduce((acc, chore) => acc + chore.duration, 0) * 60;
   const [remainingTime, setRemainingTime] = useState<number>(totalDuration);
   const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
+    if (missionFinished) return;
+
     if (remainingTime > 0 && chores.some((chore) => !chore.completed)) {
       const timer = setInterval(() => {
-        setRemainingTime((prev) => Math.max(prev - 1, 0));
+        setRemainingTime((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            onTimeRunOut();
+            return 0;
+          }
+          return prev - 1;
+        });
       }, 1000);
+
       return () => clearInterval(timer);
     }
-  }, [remainingTime, chores]);
+  }, [missionFinished, chores]);
 
   useEffect(() => {
     const completedCount = chores.filter((chore) => chore.completed).length;
