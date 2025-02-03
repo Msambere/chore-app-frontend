@@ -20,9 +20,9 @@ const MissionView = ({
     [],
   );
   const navigate = useNavigate();
-
   useEffect(() => {
-    if (userData.username === "Not logged in") {
+    console.log(userData.username);
+    if (userData.username === "") {
       navigate("/");
     }
   }, []);
