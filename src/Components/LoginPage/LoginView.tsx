@@ -8,7 +8,7 @@ import {
 } from "react-hook-form-mui";
 import { Button, Stack } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router";
-import { Dispatch, SetStateAction, useCallback } from "react";
+import {Dispatch, SetStateAction, useCallback, useEffect} from "react";
 import { getUserInfo } from "~/Helper Functions/ApiCalls";
 import UserData from "~/types/Response/UserData";
 
@@ -39,6 +39,7 @@ export default function LoginPage({ setUserData }: LoginViewProps) {
         });
       } else if (response?.message === "User found") {
         setUserData(response);
+        localStorage.setItem("username", response.username);
         navigate("/UserProfile");
       } else {
         setError("username", {
@@ -52,6 +53,12 @@ export default function LoginPage({ setUserData }: LoginViewProps) {
         message: "Failed to log in. Please try again.",
       });
       console.error(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (localStorage.getItem("username") !== "") {
+      navigate("/UserProfile");
     }
   }, []);
 
