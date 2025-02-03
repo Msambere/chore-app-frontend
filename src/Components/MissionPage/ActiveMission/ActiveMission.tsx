@@ -8,18 +8,23 @@ import axios from "axios";
 import MissionSummaryDialog from "./MissionSummaryDialog";
 import FinishMissionButton from "./FinishMissionButton";
 import RedeemRewardButton from "~/Components/MissionPage/ActiveMission/RedeemRewardBotton";
+import UserData from "~/types/Response/UserData";
+import {useNavigate} from "react-router";
 
 interface ActiveMissionProps {
   missionChores: MissionChoreResponse[];
+  userData: UserData;
+  setUserData: (userData: UserData) => void;
 }
 
-const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
+const ActiveMission = ({ missionChores, userData, setUserData }: ActiveMissionProps): JSX.Element => {
   const [chores, setChores] = useState<MissionChoreResponse[]>(missionChores);
   const [pointTotal, setPointTotal] = useState(0);
   const [missionFinished, setMissionFinished] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const maxPoints = missionChores.reduce((acc, chore) => acc + chore.points, 0);
   const [totalUnredeemedPoints, setTotalUnredeemedPoints] = useState(maxPoints);
+  const navigate = useNavigate();
 
   // Track elapsed time
   useEffect(() => {
@@ -34,9 +39,15 @@ const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
   // Track if chores are completed
   useEffect(() => {
     if (chores.length > 0 && chores.every((chore) => chore.completed)) {
-      handleFinishMission();
+      setMissionFinished(true);
     }
   }, [chores]);
+  useEffect(() => {
+    if (missionFinished) {
+      handleFinishMission();
+    }
+  }, [missionFinished]);
+
 
   // Handle chore completion
   const toggleChoreCompletion = (
@@ -86,17 +97,39 @@ const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
       console.error("Mission ID is undefined!");
       return;
     }
-    setMissionFinished(true);
+
     axios
       .patch(`${import.meta.env.VITE_APP_BACKEND_URL}/missions/${missionId}`, {
-        totalUnredeemedPoints: totalUnredeemedPoints ?? 0,
-        timeElapsed: timeElapsed ?? 0,
+        totalUnredeemedPoints: totalUnredeemedPoints,
+        timeElapsed: timeElapsed,
       })
       .then((response) => {
         console.log("Mission updated successfully:", response.data);
+        setMissionFinished(true);
       })
       .catch((error) => {
         console.error("Error updating mission data:", error);
+      });
+
+  //Handle Finalize Mission when click User Profile
+  const handleFinalizeMission = () => {
+    if (!userData) {
+      console.error("User data is missing!");
+      return;
+    }
+
+    axios
+      .get(`${import.meta.env.VITE_APP_BACKEND_URL}/users/${userData.userId}`)
+      .then((response) => {
+        setUserData(response.data);
+        console.log("User data updated successfully!", response.data);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error fetching updated user data:", error);
+      })
+      .finally(() => {
+        console.log("Finalize mission process completed.");
       });
   };
 
@@ -138,9 +171,9 @@ const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
         pointTotal={pointTotal}
         timeElapsed={timeElapsed}
         totalChoresCompleted={chores.filter((chore) => chore.completed).length}
+        handleFinalizeMission={handleFinalizeMission}
       />
     </>
   );
 };
-
 export default ActiveMission;
