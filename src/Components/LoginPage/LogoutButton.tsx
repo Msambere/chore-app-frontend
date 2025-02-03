@@ -17,11 +17,12 @@ const LogoutButton = ({ setUserData }: Props) => {
       firstName: "",
       lastName: "",
       email: "",
-      username: "Not logged in",
+      username: "",
       chores: [],
       missions: [],
       rewards: [],
     });
+    localStorage.setItem("username", "");
     navigate("/");
   };
 

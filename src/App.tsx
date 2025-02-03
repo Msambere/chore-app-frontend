@@ -7,10 +7,10 @@ import RewardsView from "~/Components/RewardsPage/RewardsView";
 import MissionView from "~/Components/MissionPage/MissionView";
 import UserData from "~/types/Response/UserData";
 import { Layout } from "~/Components/Layout/Layout";
-import { getUserInfo } from "~/Helper Functions/ApiCalls";
 import SignupView from "~/Components/LoginPage/Signup";
 import ChoreFormStatic from "~/Components/ChoresPage/ChoreFormStatic";
 import RewardFormStatic from "~/Components/RewardsPage/RewardFormStatic";
+import { getExistngUserApiCall } from "~/Helper Functions/ApiCalls";
 
 function App() {
   const [userData, setUserData] = useState<UserData>({
@@ -19,20 +19,21 @@ function App() {
     firstName: "",
     lastName: "",
     email: "",
-    username: "Not logged in",
+    username: "",
     chores: [],
     missions: [],
     rewards: [],
   });
-  const [username, setUsername] = useState<string>(userData.username);
 
   useEffect(() => {
-    if (username != "Not logged in") {
-      getUserInfo(username).then((response) => {
-        setUserData(response);
-      });
+    console.log(localStorage.getItem("username"));
+    const loggedInUser: string | null = localStorage.getItem("username");
+    if (loggedInUser && loggedInUser !== "") {
+      getExistngUserApiCall(loggedInUser).then((response: UserData) =>
+        setUserData(response),
+      );
     }
-  }, [username]);
+  }, []);
 
   return (
     <BrowserRouter>
@@ -46,19 +47,11 @@ function App() {
           <Route
             index
             // path="/Login"
-            element={
-              <LoginView
-                userNameSetter={setUsername}
-                userName={username}
-                userData={userData}
-              />
-            }
+            element={<LoginView setUserData={setUserData} />}
           />
           <Route
             path="/Signup"
-            element={
-              <SignupView userNameSetter={setUsername} userData={userData} />
-            }
+            element={<SignupView setUserData={setUserData} />}
           />
           <Route
             path="/Chores"
@@ -67,29 +60,26 @@ function App() {
           <Route
             path="/Chores/create"
             element={
-              <ChoreFormStatic userData={userData!} setUserData={setUserData} />
+              <ChoreFormStatic userData={userData} setUserData={setUserData} />
             }
             // element={<ChoreFormComponent userData={userData} setUserData={setUserData} />}
           />
           <Route
             path="/Rewards"
             element={
-              <RewardsView userData={userData!} setUserData={setUserData} />
+              <RewardsView userData={userData} setUserData={setUserData} />
             }
           />
           <Route
             path="/Rewards/create"
             element={
-              <RewardFormStatic
-                userData={userData!}
-                setUserData={setUserData}
-              />
+              <RewardFormStatic userData={userData} setUserData={setUserData} />
             }
           />
           <Route
             path="/Mission"
             element={
-              <MissionView userData={userData!} setUserData={setUserData} />
+              <MissionView userData={userData} setUserData={setUserData} />
             }
           />
         </Route>

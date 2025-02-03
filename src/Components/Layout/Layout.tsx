@@ -8,7 +8,7 @@ interface Props {
   setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
-export function Layout({setUserData}:Props) {
+export function Layout({ setUserData }: Props) {
   const drawerWidth = 240;
   return (
     <Box sx={{ display: "flex" }}>

@@ -10,18 +10,14 @@ import { createUser } from "~/Helper Functions/ApiCalls";
 import { Link as RouterLink, useNavigate } from "react-router";
 import signupSchema from "~/types/Forms/SignupSchema";
 import SignupFormInputs from "~/types/Forms/SignupFormInputs";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import UserData from "~/types/Response/UserData";
 
 interface SignupViewProps {
-  userNameSetter: (value: string) => void;
-  userData: UserData;
+  setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
-export default function SignupView({
-  userNameSetter,
-  userData,
-}: SignupViewProps) {
+export default function SignupView({ setUserData }: SignupViewProps) {
   const formResolver = zodResolver(signupSchema);
   const formContext = useForm<SignupFormInputs>({ resolver: formResolver });
   const { handleSubmit, setError } = formContext;
@@ -32,7 +28,11 @@ export default function SignupView({
       .then((response) => {
         response.json().then((data) => {
           alert(data.message);
-          userNameSetter(data.username);
+          if (data.message === "User created successfully") {
+            setUserData(data);
+            localStorage.setItem("username", data.username);
+            navigate("/UserProfile");
+          }
         });
       })
       .catch((error) => {
@@ -43,12 +43,6 @@ export default function SignupView({
         });
       });
   };
-
-  useEffect(() => {
-    if (userData.username !== "Not logged in") {
-      navigate("/UserProfile");
-    }
-  }, [userData]);
 
   return (
     <FormContainer

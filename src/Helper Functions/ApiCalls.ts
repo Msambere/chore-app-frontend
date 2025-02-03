@@ -65,3 +65,11 @@ export const createNewRewardApiCall = (
       return response.data;
     });
 };
+
+export const getExistngUserApiCall = (username: string): Promise<UserData> =>{
+  return axios
+    .get(`${VITE_APP_BACKEND_URL}/users/${username}`)
+    .then((response) => {
+      return response.data;
+  });
+};
