@@ -10,6 +10,7 @@ import { Layout } from "~/Components/Layout/Layout";
 import SignupView from "~/Components/LoginPage/Signup";
 import ChoreFormStatic from "~/Components/ChoresPage/ChoreFormStatic";
 import RewardFormStatic from "~/Components/RewardsPage/RewardFormStatic";
+import { getUserInfo } from "~/Helper Functions/ApiCalls";
 
 function App() {
   const [userData, setUserData] = useState<UserData>({
@@ -23,6 +24,17 @@ function App() {
     missions: [],
     rewards: [],
   });
+
+  useEffect(() => {
+    if (typeof localStorage.getItem("username") === "string") {
+      try {
+        getUserInfo(localStorage.getItem("username"))
+          .then((response) => setUserData(response))
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, []);
 
   return (
     <BrowserRouter>
