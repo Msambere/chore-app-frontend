@@ -28,7 +28,6 @@ interface CalendarViewProps {
  * and apply it as the background color for that day.
  */
 const CustomPickersDay = styled(PickersDay, {
-  // Prevent styled() from passing 'bgColor' as a DOM attribute
   shouldForwardProp: (prop) => prop !== "bgColor",
 })<{ bgColor?: string }>(({ bgColor }) => ({
   ...(bgColor && {
