@@ -90,6 +90,7 @@ const UserProfileView = ({ userData }: UserProfileViewProps) => {
       </Grid2>
       <Grid2 columns={8} alignItems={"end"}>
         <MissionSummary
+          missionsLength={userData.missions.length}
           mission={userData.missions
             .sort((m2, m1) => m1.missionId - m2.missionId)
             .at(0)}

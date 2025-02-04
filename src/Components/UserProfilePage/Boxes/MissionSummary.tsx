@@ -2,8 +2,9 @@ import { Card, Divider, Typography } from "@mui/material";
 import MissionResponse from "~/types/Response/MissionResponse";
 interface MissionSummaryProps {
   mission?: MissionResponse;
+  missionsLength: number;
 }
-const MissionSummary = ({ mission }: MissionSummaryProps) => {
+const MissionSummary = ({ mission, missionsLength }: MissionSummaryProps) => {
   if (!mission) {
     return <>no missions</>;
   }
@@ -22,7 +23,7 @@ const MissionSummary = ({ mission }: MissionSummaryProps) => {
       <Typography variant="h6">Last Mission Summary</Typography>
       <Divider />
       <Typography variant="body1">
-        Mission Number:{(mission.missionId ?? 0) + 1}
+        Mission Number:{missionsLength + 1}
       </Typography>
       {mission.recurrence && (
         <>
