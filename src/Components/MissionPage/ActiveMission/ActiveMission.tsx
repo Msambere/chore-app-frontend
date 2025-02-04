@@ -10,7 +10,7 @@ import MissionChoresList from "./MissionChoresList";
 import TotalPointsEarned from "./TotalPointsEarned";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 import TimeProgress from "~/Components/MissionPage/ActiveMission/TimeProgress";
-import MissionSummaryDialog from "./MissionSummaryDialog";
+import MissionSummaryDialog from "../ActiveMissionDialog/MissionSummaryDialog";
 import FinishMissionButton from "./FinishMissionButton";
 import RedeemRewardButton from "~/Components/MissionPage/ActiveMission/RedeemRewardBotton";
 import UserData from "~/types/Response/UserData";
@@ -20,6 +20,7 @@ import {
   updateChoreCompletionApiCall,
   updateMissionApiCall,
 } from "~/Helper Functions/ApiCalls";
+import RedeemRewardDialog from "~/Components/MissionPage/ActiveMissionDialog/RedeemRewardDialog";
 
 interface ActiveMissionProps {
   missionChores: MissionChoreResponse[];
@@ -38,6 +39,7 @@ const ActiveMission = ({
   const maxPoints = missionChores.reduce((acc, chore) => acc + chore.points, 0);
   const [totalUnredeemedPoints, setTotalUnredeemedPoints] = useState(maxPoints);
   const [missionData, setMissionData] = useState<MissionResponse | null>(null);
+  const [redeemDialogOpen, setRedeemDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   // Track elapsed time
@@ -84,11 +86,6 @@ const ActiveMission = ({
       });
   };
 
-  // Handle Redeem Reward
-  const handleRedeemReward = () => {
-    setPointTotal((prevPoints) => Math.max(prevPoints - 1, 0));
-    setTotalUnredeemedPoints((prevPoints) => Math.max(prevPoints - 1, 0));
-  };
 
   // Handle mission completion
   const handleFinishMission = async () => {
@@ -111,6 +108,38 @@ const ActiveMission = ({
         console.error(error.message);
       });
   };
+
+  // Handle Redeem Reward
+  const availableRewards = userData.rewards.filter(
+    (reward: { pointsNeeded: number }) => reward.pointsNeeded <= pointTotal,
+  );
+  const handleRedeemReward = (rewardId: number) => {
+    console.log(`Redeeming reward with ID: ${rewardId}`);
+
+    // Update points after redeeming
+    const selectedReward = userData.rewards.find(
+      (reward: { rewardId: number }) => reward.rewardId === rewardId,
+    );
+    if (!selectedReward) return;
+
+    setPointTotal((prevPoints) =>
+      Math.max(prevPoints - selectedReward.pointsNeeded, 0),
+    );
+
+    // Update userData to mark reward as redeemed
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      rewards: prevUserData.rewards.map((reward) =>
+        reward.rewardId === rewardId ? { ...reward, inMission: true } : reward,
+      ),
+    }));
+    setRedeemDialogOpen(false);
+  };
+
+  // const handleRedeemReward = () => {
+  //   setPointTotal((prevPoints) => Math.max(prevPoints - 1, 0));
+  //   setTotalUnredeemedPoints((prevPoints) => Math.max(prevPoints - 1, 0));
+  // };
 
   // Handle Finalize Mission when clicking User Profile
   const handleFinalizeMission = () => {
@@ -165,6 +194,15 @@ const ActiveMission = ({
         timeElapsed={timeElapsed}
         totalChoresCompleted={chores.filter((chore) => chore.completed).length}
         handleFinalizeMission={handleFinalizeMission}
+      />
+
+      {/* Redeem Reward Dialog */}
+      <RedeemRewardDialog
+        open={redeemDialogOpen}
+        onClose={() => setRedeemDialogOpen(false)}
+        rewards={availableRewards}
+        pointTotal={pointTotal}
+        onRedeemReward={handleRedeemReward}
       />
     </>
   );
