@@ -1,28 +1,42 @@
-import {useState} from "react";
-import TextField from '@mui/material/TextField';
-import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import { Dispatch, SetStateAction, useState } from "react";
+import TextField from "@mui/material/TextField";
+import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 
 const filter = createFilterOptions<string>();
 
-interface Props{
+interface Props {
   options: string[];
+  fieldLabel: string;
+  setChoreRequestData: Dispatch<SetStateAction<ChoreRequest>>;
 }
 
-export default function AutocompleteFormField({options}: Props, fieldLabel:string) {
-  const [value, setValue] = useState<string | null>("Any");
+export default function AutocompleteFormField({
+  options,
+  fieldLabel,
+  setChoreRequestData,
+}: Props) {
+  const [value, setValue] = useState<string | null>(null);
+  const [inputValue, setInputValue] = useState<string | undefined>(undefined);
+
+  const handleInputChange = (fieldName: string, fieldValue: string | null) => {
+    console.log(fieldName, fieldValue);
+    setChoreRequestData((prevState: ChoreRequest) => ({
+      ...prevState,
+      [fieldName]: fieldValue,
+    }));
+  };
 
   return (
     <Autocomplete
       value={value}
-      onChange={(event, newValue) => {
-        if (typeof newValue === "string") {
-          setValue(newValue);
-        } else if (newValue && newValue.inputValue) {
-          // Create a new value from the user input
-          setValue(newValue.inputValue);
-        } else {
-          setValue(newValue);
-        }
+      onChange={(event, newValue: string | null) => {
+        setValue(newValue);
+        handleInputChange(fieldLabel, newValue);
+      }}
+      inputValue={inputValue}
+      onInputChange={(event, newInputValue) => {
+        setInputValue(newInputValue);
+        handleInputChange(fieldLabel, newInputValue);
       }}
       filterOptions={(options, params) => {
         const filtered = filter(options, params);
@@ -30,28 +44,26 @@ export default function AutocompleteFormField({options}: Props, fieldLabel:strin
         const { inputValue } = params;
         // Suggest the creation of a new value
         const isExisting = options.some((option) => inputValue === option);
-        if (inputValue !== '' && !isExisting) {
-          filtered.push({
-            inputValue,
-            title: `Add "${inputValue}"`,
-          });
+        if (inputValue !== "" && !isExisting) {
+          filtered.push(inputValue);
         }
 
         return filtered;
       }}
-      selectOnFocus
-      clearOnBlur
-      handleHomeEndKeys
+      // selectOnFocus
+      // clearOnBlur
+      // handleHomeEndKeys
       id={fieldLabel}
       options={options}
-      sx={{ width: 300 }}
       freeSolo
       renderInput={(params) => (
-        <TextField {...params} label={fieldlabel} />
+        <TextField
+          required
+          margin="normal"
+          {...params}
+          label={fieldLabel.charAt(0).toUpperCase() + fieldLabel.slice(1)}
+        />
       )}
     />
   );
-};
-
-
-
+}
