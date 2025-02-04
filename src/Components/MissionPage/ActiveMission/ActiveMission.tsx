@@ -10,14 +10,16 @@ import MissionChoresList from "./MissionChoresList";
 import TotalPointsEarned from "./TotalPointsEarned";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 import TimeProgress from "~/Components/MissionPage/ActiveMission/TimeProgress";
-import axios from "axios";
 import MissionSummaryDialog from "./MissionSummaryDialog";
 import FinishMissionButton from "./FinishMissionButton";
 import RedeemRewardButton from "~/Components/MissionPage/ActiveMission/RedeemRewardBotton";
 import UserData from "~/types/Response/UserData";
 import { useNavigate } from "react-router";
 import MissionResponse from "~/types/Response/MissionResponse";
-import {updateChoreCompletionApiCall, updateMissionApiCall} from "~/Helper Functions/ApiCalls";
+import {
+  updateChoreCompletionApiCall,
+  updateMissionApiCall,
+} from "~/Helper Functions/ApiCalls";
 
 interface ActiveMissionProps {
   missionChores: MissionChoreResponse[];
