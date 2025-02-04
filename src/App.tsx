@@ -9,6 +9,7 @@ import UserData from "~/types/Response/UserData";
 import { Layout } from "~/Components/Layout/Layout";
 import SignupView from "~/Components/LoginPage/Signup";
 import ChoreFormStatic from "~/Components/ChoresPage/ChoreFormStatic";
+import ChoreFormDynamic from "~/Components/ChoresPage/ChoreFormDynamic";
 import RewardFormStatic from "~/Components/RewardsPage/RewardFormStatic";
 import { getExistngUserApiCall } from "~/Helper Functions/ApiCalls";
 
@@ -55,12 +56,15 @@ function App() {
           />
           <Route
             path="/Chores"
-            element={<ChoresListView userData={userData} setUserData={setUserData}/>}
+            element={
+              <ChoresListView userData={userData} setUserData={setUserData} />
+            }
           />
           <Route
             path="/Chores/create"
             element={
-              <ChoreFormStatic userData={userData} setUserData={setUserData} />
+              // <ChoreFormStatic userData={userData} setUserData={setUserData} />
+              <ChoreFormDynamic userData={userData} setUserData={setUserData} />
             }
             // element={<ChoreFormComponent userData={userData} setUserData={setUserData} />}
           />
