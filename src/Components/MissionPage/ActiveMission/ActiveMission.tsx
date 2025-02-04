@@ -1,35 +1,30 @@
-import React, { useState, JSX, useEffect } from "react";
+import React, {
+  useState,
+  JSX,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { Grid2 as Grid } from "@mui/material";
 import MissionChoresList from "./MissionChoresList";
 import TotalPointsEarned from "./TotalPointsEarned";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 import TimeProgress from "~/Components/MissionPage/ActiveMission/TimeProgress";
-import axios from "axios";
 import MissionSummaryDialog from "./MissionSummaryDialog";
 import FinishMissionButton from "./FinishMissionButton";
 import RedeemRewardButton from "~/Components/MissionPage/ActiveMission/RedeemRewardBotton";
 import UserData from "~/types/Response/UserData";
 import { useNavigate } from "react-router";
 import MissionResponse from "~/types/Response/MissionResponse";
-import ChoreResponse from "~/types/Response/ChoreResponse";
-import RewardResponse from "~/types/Response/RewardResponse";
+import {
+  updateChoreCompletionApiCall,
+  updateMissionApiCall,
+} from "~/Helper Functions/ApiCalls";
 
 interface ActiveMissionProps {
   missionChores: MissionChoreResponse[];
   userData: UserData;
-  setUserData: (
-    userData: (prevData: UserData) => {
-      userId: number;
-      firstName: string;
-      lastName: string;
-      email: string;
-      username: string;
-      chores: ChoreResponse[];
-      missions: MissionResponse[];
-      rewards: RewardResponse[];
-      message: string | null;
-    },
-  ) => void;
+  setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
 const ActiveMission = ({
@@ -80,14 +75,13 @@ const ActiveMission = ({
     setPointTotal((prevPoints) =>
       completed ? prevPoints + points : Math.max(prevPoints - points, 0),
     );
-    axios
-      .patch(`${import.meta.env.VITE_APP_BACKEND_URL}/missionchores`, null, {
-        params: { missionId, choreId },
-      })
+    updateChoreCompletionApiCall(missionId, choreId)
       .then((response) => {
-        console.log(`Chore ${choreId} status updated.`, response.data);
+        console.log(`Chore ${choreId} status updated successfully!`, response);
       })
-      .catch((err) => console.error("Error updating chore completion:", err));
+      .catch((error) => {
+        console.error(error.message);
+      });
   };
 
   // Handle Redeem Reward
@@ -98,10 +92,6 @@ const ActiveMission = ({
 
   // Handle mission completion
   const handleFinishMission = async () => {
-    if (totalUnredeemedPoints == null || timeElapsed == null) {
-      console.error("Missing required fields");
-      return;
-    }
     if (!missionChores || missionChores.length === 0) {
       console.error("Mission Chores list is empty!");
       return;
@@ -111,19 +101,14 @@ const ActiveMission = ({
       console.error("Mission ID is undefined!");
       return;
     }
-
-    axios
-      .patch(`${import.meta.env.VITE_APP_BACKEND_URL}/missions/${missionId}`, {
-        totalUnredeemedPoints: totalUnredeemedPoints,
-        timeElapsed: timeElapsed,
-      })
-      .then((response) => {
-        setMissionData(response.data);
-        console.log("Mission updated successfully:", response.data);
+    updateMissionApiCall(missionId, totalUnredeemedPoints, timeElapsed)
+      .then((updatedMissionApiCall) => {
+        setMissionData(updatedMissionApiCall);
+        console.log("Mission updated successfully:", updatedMissionApiCall);
         setMissionFinished(true);
       })
       .catch((error) => {
-        console.error("Error updating mission data:", error);
+        console.error(error.message);
       });
   };
 
