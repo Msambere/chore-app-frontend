@@ -1,4 +1,4 @@
-import { Dispatch, ReactElement, SetStateAction, useEffect } from "react";
+import { Dispatch, JSX, SetStateAction, useEffect } from "react";
 import { useState } from "react";
 import ActiveMission from "~/Components/MissionPage/ActiveMission/ActiveMission";
 import MissionForm from "~/Components/MissionPage/MissionForm/MissionForm";
@@ -14,7 +14,7 @@ interface MissionProps {
 const MissionView = ({
   userData,
   setUserData,
-}: MissionProps): ReactElement<string> => {
+}: MissionProps): JSX.Element => {
   const [startMission, setStartMission] = useState<boolean>(false);
   const [missionChores, setMissionChores] = useState<MissionChoreResponse[]>(
     [],
@@ -30,7 +30,11 @@ const MissionView = ({
   return (
     <main>
       {startMission ? (
-        <ActiveMission missionChores={missionChores} />
+        <ActiveMission
+          missionChores={missionChores}
+          userData={userData}
+          setUserData={setUserData}
+        />
       ) : (
         <MissionForm
           setStartMission={setStartMission}

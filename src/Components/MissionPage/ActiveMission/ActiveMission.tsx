@@ -9,21 +9,40 @@ import MissionSummaryDialog from "./MissionSummaryDialog";
 import FinishMissionButton from "./FinishMissionButton";
 import RedeemRewardButton from "~/Components/MissionPage/ActiveMission/RedeemRewardBotton";
 import UserData from "~/types/Response/UserData";
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
+import MissionResponse from "~/types/Response/MissionResponse";
+import ChoreResponse from "~/types/Response/ChoreResponse";
+import RewardResponse from "~/types/Response/RewardResponse";
 
 interface ActiveMissionProps {
   missionChores: MissionChoreResponse[];
   userData: UserData;
-  setUserData: (userData: UserData) => void;
+  setUserData: (
+    userData: (prevData: UserData) => {
+      userId: number;
+      firstName: string;
+      lastName: string;
+      email: string;
+      username: string;
+      chores: ChoreResponse[];
+      missions: MissionResponse[];
+      rewards: RewardResponse[];
+      message: string | null;
+    },
+  ) => void;
 }
 
-const ActiveMission = ({ missionChores, userData, setUserData }: ActiveMissionProps): JSX.Element => {
+const ActiveMission = ({
+  missionChores,
+  setUserData,
+}: ActiveMissionProps): JSX.Element => {
   const [chores, setChores] = useState<MissionChoreResponse[]>(missionChores);
   const [pointTotal, setPointTotal] = useState(0);
   const [missionFinished, setMissionFinished] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const maxPoints = missionChores.reduce((acc, chore) => acc + chore.points, 0);
   const [totalUnredeemedPoints, setTotalUnredeemedPoints] = useState(maxPoints);
+  const [missionData, setMissionData] = useState<MissionResponse | null>(null);
   const navigate = useNavigate();
 
   // Track elapsed time
@@ -40,14 +59,11 @@ const ActiveMission = ({ missionChores, userData, setUserData }: ActiveMissionPr
   useEffect(() => {
     if (chores.length > 0 && chores.every((chore) => chore.completed)) {
       setMissionFinished(true);
+      handleFinishMission()
+        .then(() => console.log("Mission finished successfully!"))
+        .catch((error) => console.error("Error finishing mission:", error));
     }
   }, [chores]);
-  useEffect(() => {
-    if (missionFinished) {
-      handleFinishMission();
-    }
-  }, [missionFinished]);
-
 
   // Handle chore completion
   const toggleChoreCompletion = (
@@ -61,11 +77,9 @@ const ActiveMission = ({ missionChores, userData, setUserData }: ActiveMissionPr
         chore.choreId === choreId ? { ...chore, completed } : chore,
       ),
     );
-
     setPointTotal((prevPoints) =>
       completed ? prevPoints + points : Math.max(prevPoints - points, 0),
     );
-
     axios
       .patch(`${import.meta.env.VITE_APP_BACKEND_URL}/missionchores`, null, {
         params: { missionId, choreId },
@@ -104,33 +118,27 @@ const ActiveMission = ({ missionChores, userData, setUserData }: ActiveMissionPr
         timeElapsed: timeElapsed,
       })
       .then((response) => {
+        setMissionData(response.data);
         console.log("Mission updated successfully:", response.data);
         setMissionFinished(true);
       })
       .catch((error) => {
         console.error("Error updating mission data:", error);
       });
+  };
 
-  //Handle Finalize Mission when click User Profile
+  // Handle Finalize Mission when clicking User Profile
   const handleFinalizeMission = () => {
-    if (!userData) {
-      console.error("User data is missing!");
+    if (!missionData) {
+      console.error("Mission data is missing!");
       return;
     }
-
-    axios
-      .get(`${import.meta.env.VITE_APP_BACKEND_URL}/users/${userData.userId}`)
-      .then((response) => {
-        setUserData(response.data);
-        console.log("User data updated successfully!", response.data);
-        navigate("/");
-      })
-      .catch((error) => {
-        console.error("Error fetching updated user data:", error);
-      })
-      .finally(() => {
-        console.log("Finalize mission process completed.");
-      });
+    setUserData((prevData: UserData) => ({
+      ...prevData,
+      missions: [...prevData.missions, missionData],
+    }));
+    console.log("User data updated successfully!", missionData);
+    navigate("/UserProfile");
   };
 
   return (

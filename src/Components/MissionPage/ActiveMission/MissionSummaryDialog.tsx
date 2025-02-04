@@ -25,13 +25,9 @@ const MissionSummaryDialog = ({
   totalChoresCompleted,
   handleFinalizeMission,
 }: MissionSummaryDialogProps) => {
-  // const navigate = useNavigate();
-
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle tabIndex={-1} autoFocus>
-        Mission Summary
-      </DialogTitle>
+      <DialogTitle>Mission Summary</DialogTitle>
       <DialogContent>
         <Typography>Total Chores Completed: {totalChoresCompleted}</Typography>
         <Typography>Total Points Earned: {pointTotal}</Typography>
