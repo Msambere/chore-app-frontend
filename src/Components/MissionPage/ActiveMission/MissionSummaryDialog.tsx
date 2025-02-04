@@ -6,7 +6,7 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 
 interface MissionSummaryDialogProps {
   open: boolean;
@@ -14,6 +14,7 @@ interface MissionSummaryDialogProps {
   pointTotal: number;
   timeElapsed: number;
   totalChoresCompleted: number;
+  handleFinalizeMission: () => void;
 }
 
 const MissionSummaryDialog = ({
@@ -22,14 +23,11 @@ const MissionSummaryDialog = ({
   pointTotal,
   timeElapsed,
   totalChoresCompleted,
+  handleFinalizeMission,
 }: MissionSummaryDialogProps) => {
-  const navigate = useNavigate();
-
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle tabIndex={-1} autoFocus>
-        Mission Summary
-      </DialogTitle>
+      <DialogTitle>Mission Summary</DialogTitle>
       <DialogContent>
         <Typography>Total Chores Completed: {totalChoresCompleted}</Typography>
         <Typography>Total Points Earned: {pointTotal}</Typography>
@@ -53,7 +51,7 @@ const MissionSummaryDialog = ({
         <Button
           fullWidth
           variant="outlined"
-          onClick={() => navigate("/")}
+          onClick={handleFinalizeMission}
           color="secondary"
         >
           User Profile

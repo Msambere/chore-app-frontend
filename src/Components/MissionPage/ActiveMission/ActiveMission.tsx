@@ -8,18 +8,42 @@ import axios from "axios";
 import MissionSummaryDialog from "./MissionSummaryDialog";
 import FinishMissionButton from "./FinishMissionButton";
 import RedeemRewardButton from "~/Components/MissionPage/ActiveMission/RedeemRewardBotton";
+import UserData from "~/types/Response/UserData";
+import { useNavigate } from "react-router";
+import MissionResponse from "~/types/Response/MissionResponse";
+import ChoreResponse from "~/types/Response/ChoreResponse";
+import RewardResponse from "~/types/Response/RewardResponse";
 
 interface ActiveMissionProps {
   missionChores: MissionChoreResponse[];
+  userData: UserData;
+  setUserData: (
+    userData: (prevData: UserData) => {
+      userId: number;
+      firstName: string;
+      lastName: string;
+      email: string;
+      username: string;
+      chores: ChoreResponse[];
+      missions: MissionResponse[];
+      rewards: RewardResponse[];
+      message: string | null;
+    },
+  ) => void;
 }
 
-const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
+const ActiveMission = ({
+  missionChores,
+  setUserData,
+}: ActiveMissionProps): JSX.Element => {
   const [chores, setChores] = useState<MissionChoreResponse[]>(missionChores);
   const [pointTotal, setPointTotal] = useState(0);
   const [missionFinished, setMissionFinished] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const maxPoints = missionChores.reduce((acc, chore) => acc + chore.points, 0);
   const [totalUnredeemedPoints, setTotalUnredeemedPoints] = useState(maxPoints);
+  const [missionData, setMissionData] = useState<MissionResponse | null>(null);
+  const navigate = useNavigate();
 
   // Track elapsed time
   useEffect(() => {
@@ -34,7 +58,10 @@ const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
   // Track if chores are completed
   useEffect(() => {
     if (chores.length > 0 && chores.every((chore) => chore.completed)) {
-      handleFinishMission();
+      setMissionFinished(true);
+      handleFinishMission()
+        .then(() => console.log("Mission finished successfully!"))
+        .catch((error) => console.error("Error finishing mission:", error));
     }
   }, [chores]);
 
@@ -50,11 +77,9 @@ const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
         chore.choreId === choreId ? { ...chore, completed } : chore,
       ),
     );
-
     setPointTotal((prevPoints) =>
       completed ? prevPoints + points : Math.max(prevPoints - points, 0),
     );
-
     axios
       .patch(`${import.meta.env.VITE_APP_BACKEND_URL}/missionchores`, null, {
         params: { missionId, choreId },
@@ -86,18 +111,34 @@ const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
       console.error("Mission ID is undefined!");
       return;
     }
-    setMissionFinished(true);
+
     axios
       .patch(`${import.meta.env.VITE_APP_BACKEND_URL}/missions/${missionId}`, {
-        totalUnredeemedPoints: totalUnredeemedPoints ?? 0,
-        timeElapsed: timeElapsed ?? 0,
+        totalUnredeemedPoints: totalUnredeemedPoints,
+        timeElapsed: timeElapsed,
       })
       .then((response) => {
+        setMissionData(response.data);
         console.log("Mission updated successfully:", response.data);
+        setMissionFinished(true);
       })
       .catch((error) => {
         console.error("Error updating mission data:", error);
       });
+  };
+
+  // Handle Finalize Mission when clicking User Profile
+  const handleFinalizeMission = () => {
+    if (!missionData) {
+      console.error("Mission data is missing!");
+      return;
+    }
+    setUserData((prevData: UserData) => ({
+      ...prevData,
+      missions: [...prevData.missions, missionData],
+    }));
+    console.log("User data updated successfully!", missionData);
+    navigate("/UserProfile");
   };
 
   return (
@@ -138,9 +179,9 @@ const ActiveMission = ({ missionChores }: ActiveMissionProps): JSX.Element => {
         pointTotal={pointTotal}
         timeElapsed={timeElapsed}
         totalChoresCompleted={chores.filter((chore) => chore.completed).length}
+        handleFinalizeMission={handleFinalizeMission}
       />
     </>
   );
 };
-
 export default ActiveMission;
