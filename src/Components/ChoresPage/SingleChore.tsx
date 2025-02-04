@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import {
   Accordion,
   AccordionActions,
@@ -17,12 +17,25 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Star } from "@mui/icons-material";
 import ChoreResponse from "~/types/Response/ChoreResponse";
+import { deleteEntityApiCall } from "~/Helper Functions/ApiCalls";
+import UserData from "~/types/Response/UserData";
 
 interface ChoreProps {
   chore: ChoreResponse;
+  setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
-function SingleChore({ chore }: ChoreProps) {
+function SingleChore({ chore, setUserData }: ChoreProps) {
+  const handleDelete = async () => {
+    deleteEntityApiCall("chores", chore.choreId)
+      .then(() => {
+        setUserData((prevState: UserData) => ({
+          ...prevState,
+          chores: prevState.chores.filter((oldChore) => oldChore !== chore),
+        }));
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       <Box sx={{ mb: 1 }}>
@@ -95,7 +108,7 @@ function SingleChore({ chore }: ChoreProps) {
             <AccordionActions>
               <ButtonGroup>
                 <Button>Edit</Button>
-                <Button>Delete</Button>
+                <Button onClick={handleDelete}>Delete</Button>
               </ButtonGroup>
             </AccordionActions>
           </Accordion>
