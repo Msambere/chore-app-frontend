@@ -27,11 +27,14 @@ export default function SignupView({ setUserData }: SignupViewProps) {
     createUser(data)
       .then((response) => {
         response.json().then((data) => {
-          alert(data.message);
           if (data.message === "User created successfully") {
+            alert(
+              "Your new user account has been created! Please check your email to confirm.",
+            );
             setUserData(data);
-            localStorage.setItem("username", data.username);
-            navigate("/UserProfile");
+            navigate("/");
+          } else {
+            alert(data.message);
           }
         });
       })
