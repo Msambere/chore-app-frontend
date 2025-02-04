@@ -113,7 +113,7 @@ export default function ChoreForm({
           }
         >
           <AlertTitle>Warning</AlertTitle>
-          Invalid inputs. Title and Description must be at least 1 char long.
+          Invalid inputs. Title and Description must have at least 1 character.
         </Alert>
       </Collapse>
       <Container maxWidth="sm">
@@ -134,6 +134,7 @@ export default function ChoreForm({
 
           {/* TextField for Adding a Description */}
           <TextField
+            required
             fullWidth
             name="description"
             label="Chore Description"
