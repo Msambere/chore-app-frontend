@@ -23,7 +23,7 @@ const MissionSummary = ({ mission, missionsLength }: MissionSummaryProps) => {
       <Typography variant="h6">Last Mission Summary</Typography>
       <Divider />
       <Typography variant="body1">
-        Mission Number:{missionsLength + 1}
+        Mission Number:{missionsLength}
       </Typography>
       {mission.recurrence && (
         <>
