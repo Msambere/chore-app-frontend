@@ -55,7 +55,7 @@ function App() {
           />
           <Route
             path="/Chores"
-            element={<ChoresListView userData={userData} />}
+            element={<ChoresListView userData={userData} setUserData={setUserData}/>}
           />
           <Route
             path="/Chores/create"
