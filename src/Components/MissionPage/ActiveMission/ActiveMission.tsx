@@ -23,19 +23,6 @@ interface ActiveMissionProps {
   missionChores: MissionChoreResponse[];
   userData: UserData;
   setUserData: Dispatch<SetStateAction<UserData>>;
-  // setUserData: (
-  //   userData: (prevData: UserData) => {
-  //     userId: number;
-  //     firstName: string;
-  //     lastName: string;
-  //     email: string;
-  //     username: string;
-  //     chores: ChoreResponse[];
-  //     missions: MissionResponse[];
-  //     rewards: RewardResponse[];
-  //     message: string | null;
-  //   },
-  // ) => void;
 }
 
 const ActiveMission = ({
