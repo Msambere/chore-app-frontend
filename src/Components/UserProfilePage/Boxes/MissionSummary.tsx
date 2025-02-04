@@ -22,29 +22,28 @@ const MissionSummary = ({ mission, missionsLength }: MissionSummaryProps) => {
     <Card sx={{ minWidth: 275 }}>
       <Typography variant="h6">Last Mission Summary</Typography>
       <Divider />
+      <Typography variant="body1">Mission Number:{missionsLength}</Typography>
       <Typography variant="body1">
-        Mission Number:{missionsLength}
+        Recurrence:{mission?.recurrence ?? "Any"}
       </Typography>
-      {mission.recurrence && (
-        <>
-          <Typography variant="body1">Category:{mission?.category}</Typography>
-          <Typography variant="body1">
-            Completed Chores: {completedChores.length} /{" "}
-            {mission?.missionChores.length}
-          </Typography>
-          {mission.timeElapsed && (
-            <Typography variant="body1">
-              Time Elapsed:{mission.timeElapsed}
-            </Typography>
-          )}
-          <Typography variant="body1">
-            Total points Earned: {completedChoresPoints}
-          </Typography>
-          <Typography variant="body1">
-            Total unredeemed Points: {incompleteChoresPoints}
-          </Typography>
-        </>
+      <Typography variant="body1">
+        Category:{mission?.category ?? "Any"}
+      </Typography>
+      <Typography variant="body1">
+        Completed Chores: {completedChores.length} /{" "}
+        {mission?.missionChores.length}
+      </Typography>
+      {mission.timeElapsed && (
+        <Typography variant="body1">
+          Time Elapsed:{mission.timeElapsed}
+        </Typography>
       )}
+      <Typography variant="body1">
+        Total points Earned: {completedChoresPoints}
+      </Typography>
+      <Typography variant="body1">
+        Total unredeemed Points: {incompleteChoresPoints}
+      </Typography>
     </Card>
   );
 };
