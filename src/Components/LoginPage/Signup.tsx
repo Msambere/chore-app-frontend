@@ -27,10 +27,10 @@ export default function SignupView({ setUserData }: SignupViewProps) {
     createUser(data)
       .then((response) => {
         response.json().then((data) => {
-          alert(data.message);
+          alert(data.message); // Change to custom message telling them to check email etc.
           if (data.message === "User created successfully") {
             setUserData(data);
-            localStorage.setItem("username", data.username);
+            localStorage.setItem("username", data.username); // remove so user isn't automatically logged in
             navigate("/UserProfile");
           }
         });
