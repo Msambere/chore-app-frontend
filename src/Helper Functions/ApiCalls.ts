@@ -5,6 +5,7 @@ import { MissionRequest } from "~/types/Request/MissionRequest";
 import MissionResponse from "~/types/Response/MissionResponse";
 import SignupFormInputs from "~/types/Forms/SignupFormInputs";
 import RewardResponse from "~/types/Response/RewardResponse";
+import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 
 const VITE_APP_BACKEND_URL: string = import.meta.env.VITE_APP_BACKEND_URL;
 
@@ -66,10 +67,44 @@ export const createNewRewardApiCall = (
     });
 };
 
-export const getExistngUserApiCall = (username: string): Promise<UserData> =>{
+export const getExistngUserApiCall = (username: string): Promise<UserData> => {
   return axios
     .get(`${VITE_APP_BACKEND_URL}/users/${username}`)
     .then((response) => {
       return response.data;
-  });
+    });
+};
+
+export const updateChoreCompletionApiCall = (
+  missionId: number,
+  choreId: number,
+): Promise<MissionChoreResponse> => {
+  return axios
+    .patch(`${VITE_APP_BACKEND_URL}/missionchores`, null, {
+      params: { missionId, choreId },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw new Error(`Error updating chore completion: ${error}`);
+    });
+};
+
+export const updateMissionApiCall = (
+  missionId: number,
+  totalUnredeemedPoints: number,
+  timeElapsed: number,
+): Promise<MissionResponse> => {
+  return axios
+    .patch(`${VITE_APP_BACKEND_URL}/missions/${missionId}`, {
+      totalUnredeemedPoints,
+      timeElapsed,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw new Error(`Error updating mission data: ${error}`);
+    });
 };
