@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
+import { Layout } from "~/Components/Layout/Layout";
 import LoginView from "~/Components/LoginPage/LoginView";
 import UserProfileView from "~/Components/UserProfilePage/UserProfileView";
-import ChoresListView from "~/Components/ChoresPage/ChoresListView";
 import RewardsView from "~/Components/RewardsPage/RewardsView";
 import MissionView from "~/Components/MissionPage/MissionView";
-import UserData from "~/types/Response/UserData";
-import { Layout } from "~/Components/Layout/Layout";
 import SignupView from "~/Components/LoginPage/Signup";
-import ChoreFormStatic from "~/Components/ChoresPage/ChoreFormStatic";
-import RewardFormStatic from "~/Components/RewardsPage/RewardFormStatic";
+import ChoresView from "~/Components/ChoresPage/ChoresView";
+import RewardForm from "~/Components/RewardsPage/RewardForm";
+import ChoreForm from "~/Components/ChoresPage/ChoreForm";
+import UserData from "~/types/Response/UserData";
 import { getExistngUserApiCall } from "~/Helper Functions/ApiCalls";
 
 function App() {
@@ -39,14 +39,12 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout setUserData={setUserData} />}>
-          {/*<Route index element={<UserProfileView userData={userData} />} />*/}
           <Route
             path="/UserProfile"
             element={<UserProfileView userData={userData} />}
           />
           <Route
             index
-            // path="/Login"
             element={<LoginView setUserData={setUserData} />}
           />
           <Route
@@ -55,14 +53,15 @@ function App() {
           />
           <Route
             path="/Chores"
-            element={<ChoresListView userData={userData} setUserData={setUserData}/>}
+            element={
+              <ChoresView userData={userData} setUserData={setUserData} />
+            }
           />
           <Route
             path="/Chores/create"
             element={
-              <ChoreFormStatic userData={userData} setUserData={setUserData} />
+              <ChoreForm userData={userData} setUserData={setUserData} />
             }
-            // element={<ChoreFormComponent userData={userData} setUserData={setUserData} />}
           />
           <Route
             path="/Rewards"
@@ -73,7 +72,7 @@ function App() {
           <Route
             path="/Rewards/create"
             element={
-              <RewardFormStatic userData={userData} setUserData={setUserData} />
+              <RewardForm userData={userData} setUserData={setUserData} />
             }
           />
           <Route

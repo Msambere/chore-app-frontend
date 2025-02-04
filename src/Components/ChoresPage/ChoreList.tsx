@@ -1,6 +1,6 @@
 import { Box, Button, Grid2 as Grid } from "@mui/material";
-import { Link as RouterLink, useNavigate } from "react-router";
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import { Link as RouterLink } from "react-router";
+import React, { Dispatch, SetStateAction } from "react";
 import SingleChore from "~/Components/ChoresPage/SingleChore";
 import UserData from "~/types/Response/UserData";
 
@@ -9,14 +9,7 @@ interface ChoresProps {
   setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
-export default function Chores({ userData, setUserData }: ChoresProps) {
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (userData.username === "") {
-      navigate("/");
-    }
-  }, []);
-
+export default function ChoreList({ userData, setUserData }: ChoresProps) {
   return (
     <Grid container spacing={2}>
       {/* Chores List */}
