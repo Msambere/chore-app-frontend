@@ -73,3 +73,14 @@ export const getExistngUserApiCall = (username: string): Promise<UserData> =>{
       return response.data;
   });
 };
+
+export const deleteEntityApiCall = (
+  entityType: string,
+  entityId: number,
+): Promise<string> => {
+  return axios
+    .delete(`${VITE_APP_BACKEND_URL}/${entityType}/${entityId}`)
+    .then((response) => {
+      return response.data.message;
+    });
+};

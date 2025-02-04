@@ -1,14 +1,15 @@
 import { Box, Button, Grid2 as Grid } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router";
-import React, { useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import SingleChore from "~/Components/ChoresPage/SingleChore";
 import UserData from "~/types/Response/UserData";
 
 interface ChoresProps {
   userData: UserData;
+  setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
-export default function Chores({ userData }: ChoresProps) {
+export default function Chores({ userData, setUserData }: ChoresProps) {
   const navigate = useNavigate();
   useEffect(() => {
     if (userData.username === "") {
@@ -25,7 +26,11 @@ export default function Chores({ userData }: ChoresProps) {
             Chores List
           </Box>
           {userData.chores.map((chore) => (
-            <SingleChore key={chore.title} chore={chore} />
+            <SingleChore
+              key={chore.title}
+              chore={chore}
+              setUserData={setUserData}
+            />
           ))}
           <Button
             variant="outlined"

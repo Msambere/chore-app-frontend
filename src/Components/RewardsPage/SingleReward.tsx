@@ -18,6 +18,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Star } from "@mui/icons-material";
 import UserData from "~/types/Response/UserData";
 import RewardResponse from "~/types/Response/RewardResponse";
+import {deleteEntityApiCall} from "~/Helper Functions/ApiCalls";
 
 interface RewardProps {
   reward: RewardResponse;
@@ -26,6 +27,16 @@ interface RewardProps {
 }
 
 export default function SingleReward({ reward, setUserData, userData }: RewardProps) {
+  const handleDelete = async () => {
+    deleteEntityApiCall("rewards", reward.rewardId)
+      .then(() => {
+        setUserData((prevState: UserData) => ({
+          ...prevState,
+          rewards: prevState.rewards.filter((oldReward) => oldReward !== reward),
+        }));
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       <Box sx={{ mb: 1 }}>
@@ -88,7 +99,7 @@ export default function SingleReward({ reward, setUserData, userData }: RewardPr
             <AccordionActions>
               <ButtonGroup>
                 <Button>Edit</Button>
-                <Button>Delete</Button>
+                <Button onClick={handleDelete}>Delete</Button>
               </ButtonGroup>
             </AccordionActions>
           </Accordion>
