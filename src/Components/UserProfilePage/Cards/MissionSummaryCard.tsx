@@ -27,12 +27,6 @@ const MissionSummaryCard = ({
   }
 
   const completedChores = mission.missionChores.filter((m) => m.completed);
-  // const incompleteChores = mission.missionChores.filter((m) => !m.completed);
-  //
-  // const incompleteChoresPoints = incompleteChores.reduce(
-  //   (acc, chore) => acc + chore.points,
-  //    0,
-  //  );
   const completedChoresPoints = completedChores.reduce(
     (acc, chore) => acc + chore.points,
     0,
@@ -71,8 +65,7 @@ const MissionSummaryCard = ({
           <Grid2 size={6} display="flex" alignItems="center">
             <AccessTime sx={{ mr: 1, color: "orange" }} />
             <Typography variant="body1">
-              <strong>Time Elapsed:</strong>{" "}
-              {formatTime(mission.timeElapsed)}
+              <strong>Time Elapsed:</strong> {formatTime(mission.timeElapsed)}
             </Typography>
           </Grid2>
 
@@ -86,7 +79,6 @@ const MissionSummaryCard = ({
           <Grid2 size={6} display="flex" alignItems="center">
             <Star sx={{ mr: 1, color: "gray" }} />
             <Typography variant="body1">
-              {/*<strong>Total Unredeemed Points:</strong> {incompleteChoresPoints}*/}
               <strong>Total Unredeemed Points:</strong>{" "}
               {mission.totalUnredeemedPoints ?? 0}
             </Typography>
