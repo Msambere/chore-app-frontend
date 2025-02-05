@@ -1,31 +1,35 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import {
   Accordion,
   AccordionActions,
   AccordionDetails,
   AccordionSummary,
   Box,
-  Button,
-  ButtonGroup,
   Container,
-  List,
-  ListItem,
-  ListItemText,
-  Rating,
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Star } from "@mui/icons-material";
 import ChoreResponse from "~/types/Response/ChoreResponse";
 import { deleteEntityApiCall } from "~/Helper Functions/ApiCalls";
 import UserData from "~/types/Response/UserData";
+import SingleChoreDetails from "./SingleChoreDetails";
+import EditChoreForm from "~/Components/ChoresPage/EditChoreForm";
 
 interface ChoreProps {
   chore: ChoreResponse;
   setUserData: Dispatch<SetStateAction<UserData>>;
+  recurrenceList: string[];
+  categoryList: string[];
 }
 
-function SingleChore({ chore, setUserData }: ChoreProps) {
+function SingleChore({
+  chore,
+  setUserData,
+  recurrenceList,
+  categoryList,
+}: ChoreProps) {
+  const [isEditing, setEditing] = useState<boolean>(false);
+
   const handleDelete = async () => {
     deleteEntityApiCall("chores", chore.choreId)
       .then(() => {
@@ -36,6 +40,7 @@ function SingleChore({ chore, setUserData }: ChoreProps) {
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <>
       <Box sx={{ mb: 1 }}>
@@ -45,71 +50,27 @@ function SingleChore({ chore, setUserData }: ChoreProps) {
               <Typography component="section">{chore?.title}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              {/*Description*/}
-              <List>
-                <ListItem>
-                  <ListItemText
-                    primary={`Description`}
-                    secondary={chore?.description}
-                  />
-                </ListItem>
-              </List>
-
-              {/*Recurrence*/}
-              <List>
-                <ListItem>
-                  <ListItemText
-                    primary={`Recurrence`}
-                    secondary={chore?.recurrence}
-                  />
-                </ListItem>
-              </List>
-
-              {/*category*/}
-              <List>
-                <ListItem>
-                  <ListItemText
-                    primary={`Category`}
-                    secondary={chore?.category}
-                  />
-                </ListItem>
-              </List>
-
-              {/*duration*/}
-              <List>
-                <ListItem>
-                  <ListItemText
-                    primary={`Duration`}
-                    secondary={chore?.duration}
-                  />
-                </ListItem>
-              </List>
-
-              {/*Difficulty*/}
-              <List>
-                <ListItem>
-                  <ListItemText
-                    primary={`Difficulty`}
-                    secondary={
-                      <Rating
-                        name="hover-feedback"
-                        value={chore?.difficulty}
-                        precision={0.5}
-                        readOnly
-                        emptyIcon={
-                          <Star style={{ opacity: 0.55 }} fontSize="inherit" />
-                        }
-                      />
-                    }
-                  />
-                </ListItem>
-              </List>
+              {isEditing ? (
+                <EditChoreForm
+                  chore={chore}
+                  setUserData={setUserData}
+                  setEditing={setEditing}
+                  recurrenceList={recurrenceList}
+                  categoryList={categoryList}
+                />
+              ) : (
+                <SingleChoreDetails
+                  chore={chore}
+                  setEditing={setEditing}
+                  handleDelete={handleDelete}
+                />
+              )}
             </AccordionDetails>
             <AccordionActions>
-              <ButtonGroup>
-                <Button>Edit</Button>
-                <Button onClick={handleDelete}>Delete</Button>
-              </ButtonGroup>
+              {/*<ButtonGroup>*/}
+              {/*  <Button onClick={() => setEditing(true)}>Edit </Button>*/}
+              {/*  <Button onClick={handleDelete}>Delete</Button>*/}
+              {/*</ButtonGroup>*/}
             </AccordionActions>
           </Accordion>
         </Container>

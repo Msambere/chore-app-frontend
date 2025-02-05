@@ -119,3 +119,16 @@ export const deleteEntityApiCall = (
       return response.data.message;
     });
 };
+
+export const updateEntityApiCall = (
+  entityType: string,
+  entityId: number,
+  requestBody: ChoreRequest | RewardRequest,
+) => {
+  return axios
+    .patch(`${VITE_APP_BACKEND_URL}/${entityType}/${entityId}`, requestBody)
+    .then((response) => {
+      console.log(response.data.message);
+      return response.data;
+    });
+};

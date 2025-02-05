@@ -1,8 +1,10 @@
 import { Box, Button, Grid2 as Grid } from "@mui/material";
 import { Link as RouterLink } from "react-router";
-import React, { Dispatch, SetStateAction } from "react";
+import React, {Dispatch, SetStateAction, useState} from "react";
 import SingleChore from "~/Components/ChoresPage/SingleChore";
 import UserData from "~/types/Response/UserData";
+import {extractUserRecurrences} from "~/Helper Functions/extractUserRecurrences";
+import {extractUserCategories} from "~/Helper Functions/extractUserCategories";
 
 interface ChoresProps {
   userData: UserData;
@@ -10,6 +12,11 @@ interface ChoresProps {
 }
 
 export default function ChoreList({ userData, setUserData }: ChoresProps) {
+  const recurrenceList: string[] = extractUserRecurrences(
+    userData?.chores ?? [],
+  );
+  const categoryList: string[] = extractUserCategories(userData?.chores ?? []);
+
   return (
     <Grid container spacing={2}>
       {/* Chores List */}
@@ -20,9 +27,11 @@ export default function ChoreList({ userData, setUserData }: ChoresProps) {
           </Box>
           {userData.chores.map((chore) => (
             <SingleChore
-              key={chore.title}
+              key={chore.choreId}
               chore={chore}
               setUserData={setUserData}
+              recurrenceList={recurrenceList}
+              categoryList={categoryList}
             />
           ))}
           <Button

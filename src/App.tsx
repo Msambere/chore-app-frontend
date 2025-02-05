@@ -8,7 +8,7 @@ import MissionView from "~/Components/MissionPage/MissionView";
 import SignupView from "~/Components/LoginPage/Signup";
 import ChoresView from "~/Components/ChoresPage/ChoresView";
 import RewardForm from "~/Components/RewardsPage/RewardForm";
-import ChoreForm from "~/Components/ChoresPage/ChoreForm";
+import NewChoreForm from "~/Components/ChoresPage/NewChoreForm";
 import UserData from "~/types/Response/UserData";
 import { getExistngUserApiCall } from "~/Helper Functions/ApiCalls";
 
@@ -60,7 +60,7 @@ function App() {
           <Route
             path="/Chores/create"
             element={
-              <ChoreForm userData={userData} setUserData={setUserData} />
+              <NewChoreForm userData={userData} setUserData={setUserData} />
             }
           />
           <Route
