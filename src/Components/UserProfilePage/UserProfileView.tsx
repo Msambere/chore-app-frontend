@@ -7,6 +7,7 @@ import MissionResponse from "~/types/Response/MissionResponse";
 import dayjs from "dayjs";
 import { Grid2, Toolbar } from "@mui/material";
 import MissionSummary from "~/Components/UserProfilePage/Boxes/MissionSummary";
+import RecommendMission from "~/Components/UserProfilePage/Boxes/RecommendMission";
 
 interface DateRange {
   start: Date;
@@ -97,6 +98,9 @@ const UserProfileView = ({ userData }: UserProfileViewProps) => {
             .sort((m2, m1) => m1.missionId - m2.missionId)
             .at(0)}
         />
+      </Grid2>
+      <Grid2 columns={8} alignItems={"end"}>
+        <RecommendMission chores={userData.chores} userId={userData.userId} />
       </Grid2>
     </Grid2>
   );

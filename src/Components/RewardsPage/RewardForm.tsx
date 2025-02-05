@@ -32,7 +32,7 @@ const defaultRequestData: RewardRequest = {
   pointsNeeded: 2,
 };
 
-export default function RewardFormStatic({
+export default function RewardForm({
   userData,
   setUserData,
 }: RewardProps) {

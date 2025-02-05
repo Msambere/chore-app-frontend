@@ -71,14 +71,6 @@ const MissionForm = ({
         setMissionChores(response.missionChores);
         console.log(response);
         console.log(response.missionChores.length);
-        // setUserData({
-        //   ...userData,
-        //   missions: [...userData.missions, response],
-        // });
-        // setUserData((prevData: UserData) => ({
-        //   ...prevData,
-        //   missions: [...(prevData?.missions ?? []), response],
-        // }));
         setStartMission(true);
         setMissionRequestData(defaultMissionRequest);
       })
