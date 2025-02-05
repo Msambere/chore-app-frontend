@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Stack,
+  Divider,
+  Card,
+  CardContent,
+} from "@mui/material";
 import ChoreResponse from "~/types/Response/ChoreResponse";
 import { extractUserCategories } from "~/Helper Functions/extractUserCategories";
 import { extractUserRecurrences } from "~/Helper Functions/extractUserRecurrences";
-// import { createNewMissionApiCall } from "~/Helper Functions/ApiCalls";
 import { MissionRequest } from "~/types/Request/MissionRequest";
-// import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 
 export interface RecommendMissionProps {
   chores: ChoreResponse[];
@@ -18,11 +23,12 @@ const getRandomNumber = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
-export default function RecommendMission({ chores }: RecommendMissionProps) {
+export default function RecommendMissionCard({
+  chores,
+}: RecommendMissionProps) {
   const [missionRequestData, setMissionRequestData] = useState<
     MissionRequest | undefined
   >();
-  const [error] = useState<string | null>(null);
   useEffect(() => {
     if (!chores?.length) return;
 
@@ -42,50 +48,58 @@ export default function RecommendMission({ chores }: RecommendMissionProps) {
 
   if (!chores?.length) return null;
 
-  // const handleStartMission = async (event: React.SyntheticEvent) => {
-  //   event.preventDefault();
-  //   setError(null);
-  //
-  //   if (!missionRequestData) return;
-  //
-  //   try {
-  //     const response = await createNewMissionApiCall(
-  //       userId,
-  //       missionRequestData,
-  //     );
-  //     setStartMission(true);
-  //     setMissionChores(response.missionChores);
-  //   } catch (err) {
-  //     setError(err instanceof Error ? err.message : "Failed to create mission");
-  //   }
-  // };
-
   return (
-    <Box sx={{ minWidth: 275 }}>
-      <Typography sx={{ mt: 2 }} variant="h6" component="div">
-        Recommend Mission
-      </Typography>
-      <Stack spacing={2} sx={{ mt: 2 }}>
-        {missionRequestData && (
-          <>
+    <Card sx={{ borderRadius: 3, boxShadow: 2 }}>
+      <CardContent>
+        <Typography variant="h5">Recommended Mission</Typography>
+        <Divider sx={{ my: 1 }} />
+
+        {missionRequestData ? (
+          <Stack spacing={1}>
             <Typography variant="body1">
-              Category: {missionRequestData.category}
+              Category:
+              <Typography
+                variant={"subtitle2"}
+                component={"span"}
+                sx={{ ml: 1 }}
+              >
+                {missionRequestData.category}
+              </Typography>
             </Typography>
             <Typography variant="body1">
-              Recurrence: {missionRequestData.recurrence}
+              Recurrence:
+              <Typography
+                variant={"subtitle2"}
+                component={"span"}
+                sx={{ ml: 1 }}
+              >
+                {missionRequestData.recurrence}
+              </Typography>
             </Typography>
             <Typography variant="body1">
-              Time limit: {missionRequestData.timeLimit}
+              Time limit:
+              <Typography
+                variant={"subtitle2"}
+                component={"span"}
+                sx={{ ml: 1 }}
+              >
+                {missionRequestData.timeLimit} min
+              </Typography>
             </Typography>
-          </>
-        )}
-        {error && (
-          <Typography color="error" variant="body2">
-            {error}
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{ mt: 1, borderRadius: 2 }}
+            >
+              Check out Mission!
+            </Button>
+          </Stack>
+        ) : (
+          <Typography variant="body2" color="text.secondary">
+            No recommended mission
           </Typography>
         )}
-        <Button variant="contained">Check out Mission!</Button>
-      </Stack>
-    </Box>
+      </CardContent>
+    </Card>
   );
 }
