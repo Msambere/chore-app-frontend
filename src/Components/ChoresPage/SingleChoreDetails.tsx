@@ -1,13 +1,22 @@
-import { List, ListItem, ListItemText, Rating } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  List,
+  ListItem,
+  ListItemText,
+  Rating,
+} from "@mui/material";
 import { Star } from "@mui/icons-material";
-import React from "react";
 import ChoreResponse from "~/types/Response/ChoreResponse";
+import React, { Dispatch, SetStateAction } from "react";
 
 interface Props {
   chore: ChoreResponse;
+  setEditing: Dispatch<SetStateAction<boolean>>;
+  handleDelete: () => Promise<void>;
 }
 
-const SingleChoreDetails = ({ chore }: Props) => {
+const SingleChoreDetails = ({ chore, setEditing, handleDelete }: Props) => {
   return (
     <>
       {/*Description*/}
@@ -60,6 +69,10 @@ const SingleChoreDetails = ({ chore }: Props) => {
           />
         </ListItem>
       </List>
+      <ButtonGroup>
+        <Button onClick={() => setEditing(true)}>Edit </Button>
+        <Button onClick={handleDelete}>Delete</Button>
+      </ButtonGroup>
     </>
   );
 };

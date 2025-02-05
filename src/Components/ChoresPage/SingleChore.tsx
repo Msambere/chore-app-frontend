@@ -5,8 +5,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Button,
-  ButtonGroup,
   Container,
   Typography,
 } from "@mui/material";
@@ -61,14 +59,18 @@ function SingleChore({
                   categoryList={categoryList}
                 />
               ) : (
-                <SingleChoreDetails chore={chore} />
+                <SingleChoreDetails
+                  chore={chore}
+                  setEditing={setEditing}
+                  handleDelete={handleDelete}
+                />
               )}
             </AccordionDetails>
             <AccordionActions>
-              <ButtonGroup>
-                <Button onClick={() => setEditing(true)}>Edit </Button>
-                <Button onClick={handleDelete}>Delete</Button>
-              </ButtonGroup>
+              {/*<ButtonGroup>*/}
+              {/*  <Button onClick={() => setEditing(true)}>Edit </Button>*/}
+              {/*  <Button onClick={handleDelete}>Delete</Button>*/}
+              {/*</ButtonGroup>*/}
             </AccordionActions>
           </Accordion>
         </Container>
