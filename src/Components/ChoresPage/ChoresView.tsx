@@ -11,7 +11,6 @@ interface ChoresProps {
 const ChoresView = ({ userData, setUserData }: ChoresProps) => {
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(userData.username);
     if (userData.username === "") {
       navigate("/");
     }
