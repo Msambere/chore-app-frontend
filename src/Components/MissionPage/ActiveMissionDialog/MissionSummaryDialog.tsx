@@ -4,9 +4,9 @@ import {
   DialogContent,
   DialogTitle,
   Button,
-  Typography,
+  Typography, Box,
 } from "@mui/material";
-// import { useNavigate } from "react-router";
+import { formatTime } from "~/Helper Functions/FormatTime";
 
 interface MissionSummaryDialogProps {
   open: boolean;
@@ -27,15 +27,26 @@ const MissionSummaryDialog = ({
 }: MissionSummaryDialogProps) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Mission Summary</DialogTitle>
+      <DialogTitle sx={{ textAlign: "center", fontWeight: "bold" }}>
+        🏆 Mission Summary
+      </DialogTitle>
+
       <DialogContent>
-        <Typography>Total Chores Completed: {totalChoresCompleted}</Typography>
-        <Typography>Total Points Earned: {pointTotal}</Typography>
-        <Typography>
-          Time Elapsed: {Math.floor(timeElapsed / 60)} mins {timeElapsed % 60}{" "}
-          secs
-        </Typography>
+        {/* Mission Details */}
+        <Box sx={{ mb: 2, p: 2, backgroundColor: "#e3f2fd", borderRadius: 2 }}>
+          <Typography variant="body1">
+            <strong>Total Chores Completed:</strong> {totalChoresCompleted}
+          </Typography>
+          <Typography variant="body1">
+            <strong>Remaining Points:</strong> {pointTotal}
+          </Typography>
+          <Typography variant="body1">
+            <strong>Time Elapsed:</strong> {formatTime(timeElapsed, true)}
+          </Typography>
+        </Box>
       </DialogContent>
+
+      {/* Action Buttons */}
       <DialogActions
         sx={{ display: "flex", flexDirection: "column", gap: 1, p: 2 }}
       >
@@ -54,7 +65,7 @@ const MissionSummaryDialog = ({
           onClick={handleFinalizeMission}
           color="secondary"
         >
-          User Profile
+          Go to User Profile
         </Button>
       </DialogActions>
     </Dialog>

@@ -4,16 +4,18 @@ interface MissionSummaryProps {
   mission?: MissionResponse;
   missionsLength: number;
 }
+import { formatTime } from "~/Helper Functions/FormatTime";
+
 const MissionSummary = ({ mission, missionsLength }: MissionSummaryProps) => {
   if (!mission) {
     return <>no missions</>;
   }
   const completedChores = mission.missionChores.filter((m) => m.completed);
-  const incompleteChores = mission.missionChores.filter((m) => !m.completed);
-  let incompleteChoresPoints = 0;
-  for (const chore of incompleteChores) {
-    incompleteChoresPoints += chore.points;
-  }
+  // const incompleteChores = mission.missionChores.filter((m) => !m.completed);
+  // let incompleteChoresPoints = 0;
+  // for (const chore of incompleteChores) {
+  //   incompleteChoresPoints += chore.points;
+  // }
   let completedChoresPoints = 0;
   for (const chore of completedChores) {
     completedChoresPoints += chore.points;
@@ -22,27 +24,33 @@ const MissionSummary = ({ mission, missionsLength }: MissionSummaryProps) => {
     <Card sx={{ minWidth: 275 }}>
       <Typography variant="h6">Last Mission Summary</Typography>
       <Divider />
-      <Typography variant="body1">Mission Number:{missionsLength}</Typography>
+      <Typography variant="body1">Mission Number: {missionsLength}</Typography>
       <Typography variant="body1">
-        Recurrence:{mission?.recurrence ?? "Any"}
+        Recurrence: {mission?.recurrence ?? "Any"}
       </Typography>
       <Typography variant="body1">
-        Category:{mission?.category ?? "Any"}
+        Category: {mission?.category ?? "Any"}
       </Typography>
       <Typography variant="body1">
         Completed Chores: {completedChores.length} /{" "}
         {mission?.missionChores.length}
       </Typography>
-      {mission.timeElapsed && (
-        <Typography variant="body1">
-          Time Elapsed:{mission.timeElapsed}
-        </Typography>
-      )}
+      {/*{mission.timeElapsed && (*/}
+      {/*  <Typography variant="body1">*/}
+      {/*    Time Elapsed: {mission.timeElapsed}*/}
+      {/*  </Typography>*/}
+      {/*)}*/}
+      <Typography variant="body1">
+        Time Elapsed: {formatTime(mission.timeElapsed, true)}
+      </Typography>
       <Typography variant="body1">
         Total points Earned: {completedChoresPoints}
       </Typography>
+      {/*<Typography variant="body1">*/}
+      {/*  Total unredeemed Points: {incompleteChoresPoints}*/}
+      {/*</Typography>*/}
       <Typography variant="body1">
-        Total unredeemed Points: {incompleteChoresPoints}
+        Total unredeemed Points: {mission.totalUnredeemedPoints ?? 0}
       </Typography>
     </Card>
   );

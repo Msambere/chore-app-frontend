@@ -10,9 +10,9 @@ import MissionChoresList from "./MissionChoresList";
 import TotalPointsEarned from "./TotalPointsEarned";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 import TimeProgress from "~/Components/MissionPage/ActiveMission/TimeProgress";
-import MissionSummaryDialog from "./MissionSummaryDialog";
+import MissionSummaryDialog from "../ActiveMissionDialog/MissionSummaryDialog";
 import FinishMissionButton from "./FinishMissionButton";
-import RedeemRewardButton from "~/Components/MissionPage/ActiveMission/RedeemRewardBotton";
+import RedeemRewardButton from "~/Components/MissionPage/ActiveMission/RedeemRewardButton";
 import UserData from "~/types/Response/UserData";
 import { useNavigate } from "react-router";
 import MissionResponse from "~/types/Response/MissionResponse";
@@ -20,6 +20,7 @@ import {
   updateChoreCompletionApiCall,
   updateMissionApiCall,
 } from "~/Helper Functions/ApiCalls";
+
 
 interface ActiveMissionProps {
   missionChores: MissionChoreResponse[];
@@ -29,6 +30,7 @@ interface ActiveMissionProps {
 
 const ActiveMission = ({
   missionChores,
+  userData,
   setUserData,
 }: ActiveMissionProps): JSX.Element => {
   const [chores, setChores] = useState<MissionChoreResponse[]>(missionChores);
@@ -84,12 +86,6 @@ const ActiveMission = ({
       });
   };
 
-  // Handle Redeem Reward
-  const handleRedeemReward = () => {
-    setPointTotal((prevPoints) => Math.max(prevPoints - 1, 0));
-    setTotalUnredeemedPoints((prevPoints) => Math.max(prevPoints - 1, 0));
-  };
-
   // Handle mission completion
   const handleFinishMission = async () => {
     if (!missionChores || missionChores.length === 0) {
@@ -101,15 +97,46 @@ const ActiveMission = ({
       console.error("Mission ID is undefined!");
       return;
     }
-    updateMissionApiCall(missionId, totalUnredeemedPoints, timeElapsed)
-      .then((updatedMissionApiCall) => {
-        setMissionData(updatedMissionApiCall);
-        console.log("Mission updated successfully:", updatedMissionApiCall);
-        setMissionFinished(true);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
+    setTotalUnredeemedPoints((prevPoints) => {
+      const updatedPoints = prevPoints;
+
+      updateMissionApiCall(missionId, totalUnredeemedPoints, timeElapsed)
+        .then((updatedMissionApiCall) => {
+          setMissionData(updatedMissionApiCall);
+          console.log("Mission updated successfully:", updatedMissionApiCall);
+          setMissionFinished(true);
+        })
+        .catch((error) => {
+          console.error(error.message);
+        });
+      return updatedPoints;
+    });
+  };
+
+  // Handle Redeem Reward
+  const handleRedeemReward = (rewardId: number) => {
+    console.log(`Redeeming reward with ID: ${rewardId}`);
+
+    // Update points after redeeming
+    const selectedReward = userData.rewards.find(
+      (reward: { rewardId: number }) => reward.rewardId === rewardId,
+    );
+    if (!selectedReward) return;
+
+    setPointTotal((prevPoints) =>
+      Math.max(prevPoints - selectedReward.pointsNeeded, 0),
+    );
+    setTotalUnredeemedPoints((prevPoints) =>
+      Math.max(prevPoints - selectedReward.pointsNeeded, 0),
+    );
+
+    // Update userData to mark reward as redeemed
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      rewards: prevUserData.rewards.map((reward) =>
+        reward.rewardId === rewardId ? { ...reward, inMission: true } : reward,
+      ),
+    }));
   };
 
   // Handle Finalize Mission when clicking User Profile
@@ -151,6 +178,7 @@ const ActiveMission = ({
           <TotalPointsEarned pointTotal={pointTotal} maxPoints={maxPoints} />
           <RedeemRewardButton
             pointTotal={pointTotal}
+            rewards={userData.rewards}
             onRedeem={handleRedeemReward}
           />
           <FinishMissionButton onFinishMission={handleFinishMission} />
