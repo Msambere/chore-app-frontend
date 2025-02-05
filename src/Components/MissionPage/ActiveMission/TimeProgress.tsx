@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
+import { formatTime } from "~/Helper Functions/FormatTime";
 
 interface TimeProgressProps {
   chores: MissionChoreResponse[];
@@ -41,14 +42,6 @@ const TimeProgress = ({
     const completedCount = chores.filter((chore) => chore.completed).length;
     setProgress((completedCount / chores.length) * 100);
   }, [chores]);
-
-  const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-
-    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-  };
 
   return (
     <Box
