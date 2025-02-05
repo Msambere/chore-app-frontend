@@ -38,15 +38,15 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout setUserData={setUserData} />}>
+        <Route
+          path="/"
+          element={<Layout setUserData={setUserData} userData={userData} />}
+        >
           <Route
             path="/UserProfile"
             element={<UserProfileView userData={userData} />}
           />
-          <Route
-            index
-            element={<LoginView setUserData={setUserData} />}
-          />
+          <Route index element={<LoginView setUserData={setUserData} />} />
           <Route
             path="/Signup"
             element={<SignupView setUserData={setUserData} />}

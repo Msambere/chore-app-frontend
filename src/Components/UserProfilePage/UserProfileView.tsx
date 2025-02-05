@@ -1,109 +1,80 @@
-import UserData from "~/types/Response/UserData";
+import { Box, Grid2 } from "@mui/material";
 import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
-import UserProfileInfoBox from "~/Components/UserProfilePage/Boxes/UserProfileInfoBox";
-import CalendarView from "~/Components/UserProfilePage/Boxes/Calander";
-import MissionResponse from "~/types/Response/MissionResponse";
-import dayjs from "dayjs";
-import { Grid2, Toolbar } from "@mui/material";
-import MissionSummary from "~/Components/UserProfilePage/Boxes/MissionSummary";
-import RecommendMission from "~/Components/UserProfilePage/Boxes/RecommendMission";
+import { useEffect } from "react";
 
-interface DateRange {
-  start: Date;
-  end: Date;
-  color: string;
-}
+import UserData from "~/types/Response/UserData";
+import { computePointStats } from "./computePointStats";
+import TasksForTodayCard from "~/Components/UserProfilePage/Cards/TasksForTodayCard";
+import TaskOverviewCard from "~/Components/UserProfilePage/Cards/TaskOverviewCard";
+import PointsSummaryCard from "~/Components/UserProfilePage/Cards/PointSummaryCard";
+import CalendarAndBadgesCard from "~/Components/UserProfilePage/Cards/CalendarAndBadgesCard";
+import RecommendMissionCard from "~/Components/UserProfilePage/Cards/RecommendMissionCard";
+import MissionSummaryCard from "~/Components/UserProfilePage/Cards/MissionSummaryCard";
+
 interface UserProfileViewProps {
   userData: UserData;
 }
-function getMissionProgress(mission: MissionResponse): number {
-  const { missionChores } = mission;
-  if (!missionChores || missionChores.length === 0) {
-    return -1;
-  }
-  let completedMinutes = 0;
-  let totalMinutes = 0;
-  for (const chore of missionChores) {
-    totalMinutes += chore.duration;
-    if (chore.completed) {
-      completedMinutes += chore.duration;
-    }
-  }
-  return (completedMinutes / totalMinutes) * 100;
-}
 
-function getMissionColor(mission: MissionResponse): string {
-  const percentCompleted = getMissionProgress(mission);
-  if (percentCompleted === -1) {
-    return "#bdbdbd";
-  }
-  if (percentCompleted === 100) {
-    return "#66BB6A"; // 100% => green
-  }
-  if (percentCompleted >= 50) {
-    return "#FFA726"; // 50-99% => orange
-  }
-  if (percentCompleted > 0) {
-    return "#FF7043"; // >0-49% => red-orange
-  }
-  return "#EF5350"; // 0% => red
-}
+export default function UserProfileView({ userData }: UserProfileViewProps) {
+  const { currentPointBalance, averagePointsPerMission, totalPointsEarned } =
+    computePointStats(userData);
 
-function buildMissionDateRanges(missions: MissionResponse[]): DateRange[] {
-  const dateRanges: DateRange[] = [];
+  const recentMissions = userData.missions.slice(0, 3);
+  const recentTasks = userData.chores.slice(0, 2);
 
-  for (const mission of missions) {
-    const start = dayjs(mission.dateStarted);
-    const end = start.add(mission.timeLimit, "minutes");
-    const color = getMissionColor(mission);
-
-    dateRanges.push({
-      start: start.toDate(),
-      end: end.toDate(),
-      color,
-    });
-  }
-
-  return dateRanges;
-}
-
-const UserProfileView = ({ userData }: UserProfileViewProps) => {
-  const navigate = useNavigate();
-  const [userDateRanges, setUserDateRanges] = useState<DateRange[]>([]);
-
-  useEffect(() => {
-    if (localStorage.getItem("username") === "") {
-      navigate("/");
-    } else {
-      setUserDateRanges(buildMissionDateRanges(userData.missions));
-    }
-  }, [userData]);
+  const totalTasks = userData.chores.length;
+  const completedTasks = userData.chores.filter((chore) =>
+    userData.missions.some((mission) =>
+      mission.missionChores.some(
+        (mc) => mc.choreId === chore.choreId && mc.completed,
+      ),
+    ),
+  ).length;
+  const taskCompletionRate =
+    totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
   return (
-    <Grid2 container spacing={20}>
-      <Grid2 columns={6} alignItems={"start"}>
-        <UserProfileInfoBox user={userData} />
+    <Box sx={{ flexGrow: 1, p: 1 }}>
+      <Grid2 container spacing={2}>
+        {/* Left Column: Tasks & Recommendation */}
+        <Grid2 size={4} spacing={2} container direction="column">
+          <Grid2>
+            <TasksForTodayCard tasks={recentTasks} />
+          </Grid2>
+          <Grid2>
+            <RecommendMissionCard
+              chores={userData.chores}
+              userId={userData.userId}
+            />
+          </Grid2>
+        </Grid2>
+        <Grid2 size={4} container direction="column">
+          <Grid2>
+            <TaskOverviewCard
+              completionRate={taskCompletionRate}
+              recentMissions={recentMissions}
+            />
+          </Grid2>
+          <Grid2>
+            <PointsSummaryCard
+              currentPointBalance={currentPointBalance}
+              averagePointsPerMission={averagePointsPerMission}
+              totalPointsEarned={totalPointsEarned}
+            />
+          </Grid2>
+        </Grid2>
+        <Grid2 size={4}>
+          <CalendarAndBadgesCard missions={userData.missions} />
+        </Grid2>
+        <Grid2 size={12}>
+          {userData.missions.length > 0 && (
+            <MissionSummaryCard
+              missionsLength={userData.missions.length}
+              mission={userData.missions[0]}
+            />
+          )}
+        </Grid2>
       </Grid2>
-      <Grid2 columns={8} alignItems={"start"}>
-        <Toolbar />
-      </Grid2>
-      <Grid2 columns={6} alignItems={"end"}>
-        <CalendarView dateRanges={userDateRanges} />
-      </Grid2>
-      <Grid2 columns={8} alignItems={"end"}>
-        <MissionSummary
-          missionsLength={userData.missions.length}
-          mission={userData.missions
-            .sort((m2, m1) => m1.missionId - m2.missionId)
-            .at(0)}
-        />
-      </Grid2>
-      <Grid2 columns={8} alignItems={"end"}>
-        <RecommendMission chores={userData.chores} userId={userData.userId} />
-      </Grid2>
-    </Grid2>
+    </Box>
   );
-};
-
-export default UserProfileView;
+}
