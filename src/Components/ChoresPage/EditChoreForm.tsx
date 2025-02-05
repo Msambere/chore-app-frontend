@@ -221,6 +221,9 @@ function EditChoreForm({
             <Button type="submit" variant="outlined">
               Edit chore!
             </Button>
+            <Button variant="outlined" onClick={() => setEditing(false)}>
+              Cancel
+            </Button>
           </Box>
         </form>
       </Container>
