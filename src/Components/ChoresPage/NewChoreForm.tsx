@@ -39,6 +39,7 @@ export default function NewChoreForm({
 }: ChoreCreateComponentProps) {
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const recurrenceList: string[] = extractUserRecurrences(
     userData?.chores ?? [],
   );
@@ -83,6 +84,7 @@ export default function NewChoreForm({
       })
       .catch((error) => {
         console.log(error.response);
+        setErrorMsg(error.response.data.message);
         setOpen(true);
       })
       .finally(() => {
@@ -106,6 +108,7 @@ export default function NewChoreForm({
               size="small"
               onClick={() => {
                 setOpen(false);
+                setErrorMsg("");
               }}
             >
               <CloseIcon fontSize="inherit" />
@@ -113,7 +116,7 @@ export default function NewChoreForm({
           }
         >
           <AlertTitle>Warning</AlertTitle>
-          Invalid inputs. Title and Description must have at least 1 character.
+          {errorMsg}
         </Alert>
       </Collapse>
       <Container maxWidth="sm">
