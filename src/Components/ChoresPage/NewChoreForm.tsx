@@ -33,7 +33,7 @@ const defaultRequestData: ChoreRequest = {
   difficulty: 0,
 };
 
-export default function ChoreForm({
+export default function NewChoreForm({
   userData,
   setUserData,
 }: ChoreCreateComponentProps) {
