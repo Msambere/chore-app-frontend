@@ -21,7 +21,6 @@ import {
   updateMissionApiCall,
 } from "~/Helper Functions/ApiCalls";
 
-
 interface ActiveMissionProps {
   missionChores: MissionChoreResponse[];
   userData: UserData;
@@ -157,7 +156,7 @@ const ActiveMission = ({
     <>
       <Grid container spacing={2}>
         {/* Left Panel - Chores List */}
-        <Grid size={4}>
+        <Grid size={4} direction="column">
           <MissionChoresList
             chores={chores}
             onToggleChore={toggleChoreCompletion}
