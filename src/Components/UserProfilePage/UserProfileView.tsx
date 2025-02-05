@@ -1,5 +1,4 @@
 import { Box, Grid2 } from "@mui/material";
-import { useNavigate } from "react-router";
 import { useEffect } from "react";
 
 import UserData from "~/types/Response/UserData";
@@ -32,6 +31,18 @@ export default function UserProfileView({ userData }: UserProfileViewProps) {
   ).length;
   const taskCompletionRate =
     totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+  // sort mission and display the latest one
+  const sortedMissions = [...userData.missions].sort(
+    (a, b) => b.missionId - a.missionId,
+  );
+  const lastMission = sortedMissions[0];
+
+  // just a print statement to make sure userData is updated correctly
+  // when user completed Mission
+  useEffect(() => {
+    console.log("UserData updated in UserProfileView:", userData);
+  }, [userData]);
 
   return (
     <Box sx={{ flexGrow: 1, p: 1 }}>
@@ -69,8 +80,8 @@ export default function UserProfileView({ userData }: UserProfileViewProps) {
         <Grid2 size={12}>
           {userData.missions.length > 0 && (
             <MissionSummaryCard
-              missionsLength={userData.missions.length}
-              mission={userData.missions[0]}
+              missionsLength={sortedMissions.length}
+              mission={lastMission}
             />
           )}
         </Grid2>
