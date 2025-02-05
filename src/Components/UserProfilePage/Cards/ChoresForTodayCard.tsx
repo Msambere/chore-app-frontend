@@ -10,11 +10,13 @@ import {
 } from "@mui/material";
 import ChoreResponse from "~/types/Response/ChoreResponse";
 
-interface TasksForTodayCardProps {
-  tasks: ChoreResponse[];
+interface ChoresForTodayCardProps {
+  chores: ChoreResponse[];
 }
 
-export default function TasksForTodayCard({ tasks }: TasksForTodayCardProps) {
+export default function ChoresForTodayCard({
+  chores,
+}: ChoresForTodayCardProps) {
   return (
     <Card sx={{ borderRadius: 3, boxShadow: 2 }}>
       <CardContent>
@@ -26,11 +28,11 @@ export default function TasksForTodayCard({ tasks }: TasksForTodayCardProps) {
           }}
         >
           <Box sx={{ flex: 1 }}>
-            <Typography variant="h5">Tasks for Today</Typography>
+            <Typography variant="h5">Chores for today</Typography>
             <Divider sx={{ my: 1 }} />
             <List dense>
-              {tasks.length > 0 ? (
-                tasks.map((task) => (
+              {chores.length > 0 ? (
+                chores.map((task) => (
                   <ListItem key={task.choreId}>
                     <ListItemText
                       primary={task.title}
@@ -40,7 +42,7 @@ export default function TasksForTodayCard({ tasks }: TasksForTodayCardProps) {
                 ))
               ) : (
                 <Typography variant="body2" color="text.secondary">
-                  No tasks available
+                  No chores available
                 </Typography>
               )}
             </List>
