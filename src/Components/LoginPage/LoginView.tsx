@@ -6,14 +6,7 @@ import {
   PasswordElement,
   TextFieldElement,
 } from "react-hook-form-mui";
-import {
-  Button,
-  Container,
-  Divider,
-  Stack,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { Button, Container, Stack, Typography } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router";
 import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
 import { getUserInfo } from "~/Helper Functions/ApiCalls";
