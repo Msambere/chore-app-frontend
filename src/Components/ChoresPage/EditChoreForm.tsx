@@ -43,6 +43,7 @@ function EditChoreForm({
     defaultChoreRequestData,
   );
   const [openAlert, setOpenAlert] = React.useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = React.useState<string>("");
 
   const convertDifficultyToString = (difficulty: number) => {
     if (difficulty === 1) return "Easy";
@@ -89,7 +90,8 @@ function EditChoreForm({
         setEditing(false);
       })
       .catch((error) => {
-        console.log(error.response);
+        console.log(error.response.data.message);
+        setErrorMsg(error.response.data.message);
         setOpenAlert(true);
       })
       .finally(() => {
@@ -112,6 +114,7 @@ function EditChoreForm({
               size="small"
               onClick={() => {
                 setOpenAlert(false);
+                setErrorMsg("");
               }}
             >
               <CloseIcon fontSize="inherit" />
@@ -119,7 +122,7 @@ function EditChoreForm({
           }
         >
           <AlertTitle>Warning</AlertTitle>
-          Invalid inputs. Please check console log.
+          {errorMsg}
         </Alert>
       </Collapse>
       <Container maxWidth="sm">
