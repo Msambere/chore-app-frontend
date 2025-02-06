@@ -28,9 +28,9 @@ interface ActiveMissionProps {
 }
 
 const ActiveMission = ({
-  missionChores,
   userData,
   setUserData,
+  missionChores,
 }: ActiveMissionProps): JSX.Element => {
   const [chores, setChores] = useState<MissionChoreResponse[]>(missionChores);
   const [missionFinished, setMissionFinished] = useState(false);

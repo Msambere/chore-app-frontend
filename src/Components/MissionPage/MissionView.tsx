@@ -1,4 +1,4 @@
-import { Dispatch, JSX, SetStateAction, useEffect } from "react";
+import React, { Dispatch, JSX, SetStateAction, useEffect } from "react";
 import { useState } from "react";
 import ActiveMission from "~/Components/MissionPage/ActiveMission/ActiveMission";
 import MissionForm from "~/Components/MissionPage/MissionForm/MissionForm";
@@ -9,13 +9,20 @@ import { useNavigate } from "react-router";
 interface MissionProps {
   userData: UserData;
   setUserData: Dispatch<SetStateAction<UserData>>;
+  setStartMission: Dispatch<SetStateAction<boolean>>;
+  startMission: boolean;
+  missionChores: MissionChoreResponse[];
+  setMissionChores: Dispatch<SetStateAction<MissionChoreResponse[]>>;
 }
 
-const MissionView = ({ userData, setUserData }: MissionProps): JSX.Element => {
-  const [startMission, setStartMission] = useState<boolean>(false);
-  const [missionChores, setMissionChores] = useState<MissionChoreResponse[]>(
-    [],
-  );
+const MissionView = ({
+  userData,
+  setUserData,
+  setStartMission,
+  startMission,
+  missionChores,
+  setMissionChores,
+}: MissionProps): JSX.Element => {
   const navigate = useNavigate();
   useEffect(() => {
     console.log(userData.username);
