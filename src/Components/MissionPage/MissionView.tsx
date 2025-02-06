@@ -11,10 +11,7 @@ interface MissionProps {
   setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
-const MissionView = ({
-  userData,
-  setUserData,
-}: MissionProps): JSX.Element => {
+const MissionView = ({ userData, setUserData }: MissionProps): JSX.Element => {
   const [startMission, setStartMission] = useState<boolean>(false);
   const [missionChores, setMissionChores] = useState<MissionChoreResponse[]>(
     [],

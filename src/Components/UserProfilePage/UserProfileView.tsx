@@ -36,11 +36,7 @@ export default function UserProfileView({ userData }: UserProfileViewProps) {
   const taskCompletionRate =
     totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
-  // sort mission and display the latest one
-  const sortedMissions = [...userData.missions].sort(
-    (a, b) => b.missionId - a.missionId,
-  );
-  const lastMission = sortedMissions[0];
+  const lastMission = recentMissions[0];
 
   // just a print statement to make sure userData is updated correctly
   // when user completed Mission
@@ -88,7 +84,7 @@ export default function UserProfileView({ userData }: UserProfileViewProps) {
         <Grid2 size={12}>
           {userData.missions.length > 0 && (
             <MissionSummaryCard
-              missionsLength={sortedMissions.length}
+              missionsLength={recentMissions.length}
               mission={lastMission}
             />
           )}

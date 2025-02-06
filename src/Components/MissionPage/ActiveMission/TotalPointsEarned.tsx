@@ -4,15 +4,15 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 
 interface TotalPointsEarnedProps {
-  pointTotal: number;
+  totalUnredeemPoints: number;
   maxPoints: number;
 }
 
 const TotalPointsEarned = ({
-  pointTotal,
+  totalUnredeemPoints,
   maxPoints,
 }: TotalPointsEarnedProps): JSX.Element => {
-  const progress = (pointTotal / maxPoints) * 100;
+  const progress = (totalUnredeemPoints / maxPoints) * 100;
 
   return (
     <Box sx={{ flexGrow: 1, p: 1 }}>
@@ -22,7 +22,7 @@ const TotalPointsEarned = ({
       <Card sx={{ borderRadius: 3, boxShadow: 2, width: "100%" }}>
         <CardContent>
           <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
-            {pointTotal} pts
+            {totalUnredeemPoints} pts
           </Typography>
           {/* Vertical Progress Bar */}
           <Box

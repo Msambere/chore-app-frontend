@@ -33,11 +33,10 @@ const ActiveMission = ({
   setUserData,
 }: ActiveMissionProps): JSX.Element => {
   const [chores, setChores] = useState<MissionChoreResponse[]>(missionChores);
-  const [pointTotal, setPointTotal] = useState(0);
   const [missionFinished, setMissionFinished] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const maxPoints = missionChores.reduce((acc, chore) => acc + chore.points, 0);
-  const [totalUnredeemedPoints, setTotalUnredeemedPoints] = useState(maxPoints);
+  const [totalUnredeemedPoints, setTotalUnredeemedPoints] = useState(0);
   const [missionData, setMissionData] = useState<MissionResponse | null>(null);
   const navigate = useNavigate();
 
@@ -73,7 +72,7 @@ const ActiveMission = ({
         chore.choreId === choreId ? { ...chore, completed } : chore,
       ),
     );
-    setPointTotal((prevPoints) =>
+    setTotalUnredeemedPoints((prevPoints) =>
       completed ? prevPoints + points : Math.max(prevPoints - points, 0),
     );
     updateChoreCompletionApiCall(missionId, choreId)
@@ -96,20 +95,15 @@ const ActiveMission = ({
       console.error("Mission ID is undefined!");
       return;
     }
-    setTotalUnredeemedPoints((prevPoints) => {
-      const updatedPoints = prevPoints;
-
-      updateMissionApiCall(missionId, totalUnredeemedPoints, timeElapsed)
-        .then((updatedMissionApiCall) => {
-          setMissionData(updatedMissionApiCall);
-          console.log("Mission updated successfully:", updatedMissionApiCall);
-          setMissionFinished(true);
-        })
-        .catch((error) => {
-          console.error(error.message);
-        });
-      return updatedPoints;
-    });
+    updateMissionApiCall(missionId, totalUnredeemedPoints, timeElapsed)
+      .then((updatedMissionApiCall) => {
+        setMissionData(updatedMissionApiCall);
+        console.log("Mission updated successfully:", updatedMissionApiCall);
+        setMissionFinished(true);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
   };
 
   // Handle Redeem Reward
@@ -122,13 +116,9 @@ const ActiveMission = ({
     );
     if (!selectedReward) return;
 
-    setPointTotal((prevPoints) =>
-      Math.max(prevPoints - selectedReward.pointsNeeded, 0),
-    );
     setTotalUnredeemedPoints((prevPoints) =>
       Math.max(prevPoints - selectedReward.pointsNeeded, 0),
     );
-
     // Update userData to mark reward as redeemed
     setUserData((prevUserData) => ({
       ...prevUserData,
@@ -174,9 +164,12 @@ const ActiveMission = ({
 
         {/* Right Panel - Total Points Earned */}
         <Grid size={4}>
-          <TotalPointsEarned pointTotal={pointTotal} maxPoints={maxPoints} />
+          <TotalPointsEarned
+            totalUnredeemPoints={totalUnredeemedPoints}
+            maxPoints={maxPoints}
+          />
           <RedeemRewardButton
-            pointTotal={pointTotal}
+            pointTotal={totalUnredeemedPoints}
             rewards={userData.rewards}
             onRedeem={handleRedeemReward}
           />
@@ -188,7 +181,7 @@ const ActiveMission = ({
       <MissionSummaryDialog
         open={missionFinished}
         onClose={() => setMissionFinished(false)}
-        pointTotal={pointTotal}
+        pointTotal={totalUnredeemedPoints}
         timeElapsed={timeElapsed}
         totalChoresCompleted={chores.filter((chore) => chore.completed).length}
         handleFinalizeMission={handleFinalizeMission}
