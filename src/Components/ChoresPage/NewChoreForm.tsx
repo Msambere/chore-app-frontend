@@ -29,8 +29,8 @@ const defaultRequestData: ChoreRequest = {
   description: "",
   recurrence: "",
   category: "",
-  duration: 0,
-  difficulty: 0,
+  duration: 5,
+  difficulty: 1,
 };
 
 export default function NewChoreForm({ userData, setUserData }: Props) {
@@ -126,6 +126,7 @@ export default function NewChoreForm({ userData, setUserData }: Props) {
             label="Chore Title"
             margin="normal"
             variant="outlined"
+            value={choreRequestData.title}
             placeholder="Give your chore a title"
             onChange={(event) =>
               handleInputChange(event.target.name, event.target.value)
@@ -142,6 +143,7 @@ export default function NewChoreForm({ userData, setUserData }: Props) {
             multiline
             rows={2}
             variant="outlined"
+            defaultValue={defaultRequestData.description}
             placeholder="Tell us more about the chore"
             onChange={(event) =>
               handleInputChange(event.target.name, event.target.value)
@@ -150,18 +152,20 @@ export default function NewChoreForm({ userData, setUserData }: Props) {
 
           {/* Autocomplete input for  selecting Recurrence*/}
           <AutocompleteFormField
+            defaultValue={defaultRequestData.recurrence}
             options={recurrenceList}
             fieldLabel={"recurrence"}
             setChoreRequestData={setChoreRequestData}
           />
 
           <AutocompleteFormField
+            defaultValue={defaultRequestData.category}
             options={categoryList}
             fieldLabel={"category"}
             setChoreRequestData={setChoreRequestData}
           />
 
-          {/* TextField for Chore Length */}
+          {/* TextField for Chore duration */}
           <TextField
             required
             fullWidth
@@ -169,11 +173,12 @@ export default function NewChoreForm({ userData, setUserData }: Props) {
             name="duration"
             label="Duration"
             margin="normal"
+            value={choreRequestData.duration}
             onChange={(event) =>
               handleInputChange(event.target.name, event.target.value)
             }
           >
-            {[0, 5, 10, 15, 20, 25, 30, 35, 40, 45].map((time, index) => (
+            {[5, 10, 15, 20, 25, 30, 35, 40, 45].map((time, index) => (
               <MenuItem key={index} value={time}>
                 {time}
               </MenuItem>
@@ -188,6 +193,7 @@ export default function NewChoreForm({ userData, setUserData }: Props) {
             name="difficulty"
             label="Difficulty"
             margin="normal"
+            defaultValue={"Easy"}
             onChange={(event) =>
               handleInputChange(event.target.name, event.target.value)
             }
