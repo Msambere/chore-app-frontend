@@ -5,7 +5,7 @@ import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 const filter = createFilterOptions<string>();
 
 interface Props {
-  defaultValue?: string;
+  defaultValue: string;
   options: string[];
   fieldLabel: string;
   setChoreRequestData: Dispatch<SetStateAction<ChoreRequest>>;
@@ -17,8 +17,8 @@ export default function AutocompleteFormField({
   setChoreRequestData,
   defaultValue,
 }: Props) {
-  const [value, setValue] = useState<string | null>(null);
-  const [inputValue, setInputValue] = useState<string | undefined>(undefined);
+  const [value, setValue] = useState<string | null>(defaultValue);
+  const [inputValue, setInputValue] = useState<string>(defaultValue);
 
   const handleInputChange = (fieldName: string, fieldValue: string | null) => {
     setChoreRequestData((prevState: ChoreRequest) => ({
