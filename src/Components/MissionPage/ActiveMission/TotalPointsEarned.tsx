@@ -12,18 +12,18 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import RewardResponse from "~/types/Response/RewardResponse";
 
 interface TotalPointsEarnedProps {
-  pointTotal: number;
+  totalUnredeemPoints: number;
   maxPoints: number;
-  rewards: RewardResponse[]; // or however your rewards are typed
+  rewards: RewardResponse[];
 }
 
 const TotalPointsEarned = ({
-  pointTotal,
+  totalUnredeemPoints,
   maxPoints,
   rewards,
 }: TotalPointsEarnedProps) => {
   const theme = useTheme();
-  const progress = maxPoints ? (pointTotal / maxPoints) * 100 : 0;
+  const progress = maxPoints ? (totalUnredeemPoints / maxPoints) * 100 : 0;
 
   const redeemedRewards = rewards.filter((r) => r.inMission);
 
@@ -35,7 +35,7 @@ const TotalPointsEarned = ({
         </Typography>
 
         <Typography variant="h3" sx={{ fontWeight: "bold" }}>
-          {pointTotal}
+          {totalUnredeemPoints}
           <Typography component="span" variant="body1">
             {" "}
             pts
