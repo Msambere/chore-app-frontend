@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 import {
   Box,
   Card,
@@ -21,10 +21,10 @@ const TotalPointsEarned = ({
   totalUnredeemPoints,
   maxPoints,
   rewards,
-}: TotalPointsEarnedProps) => {
+}: TotalPointsEarnedProps): JSX.Element => {
   const theme = useTheme();
-  const progress = maxPoints ? (totalUnredeemPoints / maxPoints) * 100 : 0;
 
+  const progress = (totalUnredeemPoints / maxPoints) * 100;
   const redeemedRewards = rewards.filter((r) => r.inMission);
 
   return (

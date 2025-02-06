@@ -36,7 +36,6 @@ const MissionForm = ({
   setMissionChores,
   setStartMission,
   userData,
-  setUserData,
 }: MissionProps) => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [recurrenceOptions, setRecurrenceOptions] = useState<string[]>();
