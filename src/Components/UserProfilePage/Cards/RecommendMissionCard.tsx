@@ -68,8 +68,8 @@ export default function RecommendMissionCard({
       .then((response) => {
         setMissionChores(response.missionChores);
         setStartMission(true);
-        navigate("/Mission");
         console.log("Mission Created:", response);
+        navigate("/Mission");
       })
       .catch((error) => {
         console.error("Error creating mission:", error.response.data.message);
