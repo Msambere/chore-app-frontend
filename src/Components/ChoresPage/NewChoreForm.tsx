@@ -173,7 +173,7 @@ export default function NewChoreForm({
               handleInputChange(event.target.name, event.target.value)
             }
           >
-            {[0, 5, 10, 15, 20, 25, 30, 35, 40, 45].map((time, index) => (
+            {[5, 10, 15, 20, 25, 30, 35, 40, 45].map((time, index) => (
               <MenuItem key={index} value={time}>
                 {time}
               </MenuItem>

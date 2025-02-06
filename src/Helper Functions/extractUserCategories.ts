@@ -5,5 +5,5 @@ export const extractUserCategories = (chores: ChoreResponse[]): string[] => {
   chores.forEach((chore) => {
     categories.add(chore.category);
   });
-  return Array.from(categories);
+  return Array.from(categories).sort();
 };
