@@ -18,20 +18,25 @@ const RedeemRewardButton = ({
   const availableRewards = rewards.filter(
     (reward) => reward.pointsNeeded <= pointTotal,
   );
+
   return (
     <>
       <Button
         variant="contained"
         color="primary"
         fullWidth
-        sx={{ mt: 2 }}
+        sx={{
+          mt: 2,
+          borderRadius: 2,
+          fontWeight: "bold",
+        }}
         onClick={() => setRedeemDialogOpen(true)}
         disabled={availableRewards.length === 0}
       >
         Redeem Reward
       </Button>
 
-      {/* Redeem Reward Pop-up */}
+      {/* Dialog for reward redemption */}
       <RedeemRewardDialog
         open={redeemDialogOpen}
         onClose={() => setRedeemDialogOpen(false)}
