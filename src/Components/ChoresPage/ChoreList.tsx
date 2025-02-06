@@ -1,10 +1,10 @@
 import { Box, Button, Grid2 as Grid } from "@mui/material";
 import { Link as RouterLink } from "react-router";
-import React, {Dispatch, SetStateAction, useState} from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import SingleChore from "~/Components/ChoresPage/SingleChore";
 import UserData from "~/types/Response/UserData";
-import {extractUserRecurrences} from "~/Helper Functions/extractUserRecurrences";
-import {extractUserCategories} from "~/Helper Functions/extractUserCategories";
+import { extractUserRecurrences } from "~/Helper Functions/extractUserRecurrences";
+import { extractUserCategories } from "~/Helper Functions/extractUserCategories";
 
 interface ChoresProps {
   userData: UserData;

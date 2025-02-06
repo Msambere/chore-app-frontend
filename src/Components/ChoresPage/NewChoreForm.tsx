@@ -10,7 +10,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import ChoreResponse from "~/types/Response/ChoreResponse";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import UserData from "~/types/Response/UserData";
 import { useNavigate } from "react-router";
 import { extractUserRecurrences } from "~/Helper Functions/extractUserRecurrences";
@@ -19,7 +19,7 @@ import { createNewChoreApiCall } from "~/Helper Functions/ApiCalls";
 import CloseIcon from "@mui/icons-material/Close";
 import AutocompleteFormField from "~/Components/SharedComponents/AutocompleteFormField";
 
-interface ChoreCreateComponentProps {
+interface Props {
   userData: UserData;
   setUserData: Dispatch<SetStateAction<UserData>>;
 }
@@ -29,16 +29,14 @@ const defaultRequestData: ChoreRequest = {
   description: "",
   recurrence: "",
   category: "",
-  duration: 0,
-  difficulty: 0,
+  duration: 5,
+  difficulty: 1,
 };
 
-export default function NewChoreForm({
-  userData,
-  setUserData,
-}: ChoreCreateComponentProps) {
+export default function NewChoreForm({ userData, setUserData }: Props) {
   const navigate = useNavigate();
-  const [open, setOpen] = useState<boolean>(false);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const recurrenceList: string[] = extractUserRecurrences(
     userData?.chores ?? [],
   );
@@ -71,7 +69,7 @@ export default function NewChoreForm({
 
   const handleCreateChore = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    createNewChoreApiCall(userData?.userId ?? 0, choreRequestData)
+    createNewChoreApiCall(userData.userId, choreRequestData)
       .then((response: ChoreResponse) => {
         console.log(response);
         setUserData((prevData: UserData) => ({
@@ -83,10 +81,11 @@ export default function NewChoreForm({
       })
       .catch((error) => {
         console.log(error.response);
-        setOpen(true);
+        setErrorMsg(error.response.data.message);
+        setOpenAlert(true);
       })
       .finally(() => {
-        console.log("Always print");
+        console.log("End of handleCreateChore");
       });
   };
 
@@ -95,7 +94,7 @@ export default function NewChoreForm({
       <Box component="span" style={{ fontSize: "2em" }}>
         Create a Chore
       </Box>
-      <Collapse in={open}>
+      <Collapse in={openAlert}>
         <Alert
           variant="outlined"
           severity="warning"
@@ -105,7 +104,8 @@ export default function NewChoreForm({
               color="inherit"
               size="small"
               onClick={() => {
-                setOpen(false);
+                setOpenAlert(false);
+                setErrorMsg("");
               }}
             >
               <CloseIcon fontSize="inherit" />
@@ -113,7 +113,7 @@ export default function NewChoreForm({
           }
         >
           <AlertTitle>Warning</AlertTitle>
-          Invalid inputs. Title and Description must have at least 1 character.
+          {errorMsg}
         </Alert>
       </Collapse>
       <Container maxWidth="sm">
@@ -126,6 +126,7 @@ export default function NewChoreForm({
             label="Chore Title"
             margin="normal"
             variant="outlined"
+            value={choreRequestData.title}
             placeholder="Give your chore a title"
             onChange={(event) =>
               handleInputChange(event.target.name, event.target.value)
@@ -142,6 +143,7 @@ export default function NewChoreForm({
             multiline
             rows={2}
             variant="outlined"
+            defaultValue={defaultRequestData.description}
             placeholder="Tell us more about the chore"
             onChange={(event) =>
               handleInputChange(event.target.name, event.target.value)
@@ -150,18 +152,20 @@ export default function NewChoreForm({
 
           {/* Autocomplete input for  selecting Recurrence*/}
           <AutocompleteFormField
+            defaultValue={defaultRequestData.recurrence}
             options={recurrenceList}
             fieldLabel={"recurrence"}
             setChoreRequestData={setChoreRequestData}
           />
 
           <AutocompleteFormField
+            defaultValue={defaultRequestData.category}
             options={categoryList}
             fieldLabel={"category"}
             setChoreRequestData={setChoreRequestData}
           />
 
-          {/* TextField for Chore Length */}
+          {/* TextField for Chore duration */}
           <TextField
             required
             fullWidth
@@ -169,6 +173,7 @@ export default function NewChoreForm({
             name="duration"
             label="Duration"
             margin="normal"
+            value={choreRequestData.duration}
             onChange={(event) =>
               handleInputChange(event.target.name, event.target.value)
             }
@@ -180,7 +185,7 @@ export default function NewChoreForm({
             ))}
           </TextField>
 
-          {/* Textfield forSelect a set difficulty level */}
+          {/* TextField forSelect a set difficulty level */}
           <TextField
             required
             fullWidth
@@ -188,6 +193,7 @@ export default function NewChoreForm({
             name="difficulty"
             label="Difficulty"
             margin="normal"
+            defaultValue={"Easy"}
             onChange={(event) =>
               handleInputChange(event.target.name, event.target.value)
             }

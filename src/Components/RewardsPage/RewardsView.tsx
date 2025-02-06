@@ -11,7 +11,6 @@ const RewardsView = ({ userData, setUserData }: RewardsProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(userData.username);
     if (userData.username === "") {
       navigate("/");
     }

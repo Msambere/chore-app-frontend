@@ -13,31 +13,29 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import UserData from "~/types/Response/UserData";
 import { useNavigate } from "react-router";
 import CloseIcon from "@mui/icons-material/Close";
 import { createNewRewardApiCall } from "~/Helper Functions/ApiCalls";
 import RewardResponse from "~/types/Response/RewardResponse";
 
-interface RewardProps {
+interface Props {
   userData: UserData;
   setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
 const defaultRequestData: RewardRequest = {
   name: "",
-  description: "",
+  description: null,
   inMission: false,
   pointsNeeded: 2,
 };
 
-export default function RewardForm({
-  userData,
-  setUserData,
-}: RewardProps) {
+export default function NewRewardForm({ userData, setUserData }: Props) {
   const navigate = useNavigate();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [rewardRequestData, setRewardRequestData] =
     useState<RewardRequest>(defaultRequestData);
 
@@ -74,11 +72,12 @@ export default function RewardForm({
         navigate("/Rewards");
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data.message);
+        setErrorMsg(error.response.data.message);
         setOpenAlert(true);
       })
       .finally(() => {
-        console.log("Always print");
+        console.log("End of handleCreateReward");
       });
   };
 
@@ -98,6 +97,7 @@ export default function RewardForm({
               size="small"
               onClick={() => {
                 setOpenAlert(false);
+                setErrorMsg("");
               }}
             >
               <CloseIcon fontSize="inherit" />
@@ -105,7 +105,7 @@ export default function RewardForm({
           }
         >
           <AlertTitle>Warning</AlertTitle>
-          Invalid inputs.
+          {errorMsg}
         </Alert>
       </Collapse>
       <Container maxWidth="sm">
@@ -118,7 +118,7 @@ export default function RewardForm({
             label="Reward Name"
             margin="normal"
             variant="outlined"
-            placeholder="Give your rward a name"
+            placeholder="Give your reward a name"
             onChange={(event) =>
               handleInputChange(event.target.name, event.target.value)
             }
@@ -146,6 +146,7 @@ export default function RewardForm({
             select
             name="pointsNeeded"
             label="Points Needed"
+            value={rewardRequestData.pointsNeeded}
             margin="normal"
             onChange={(event) =>
               handleInputChange(event.target.name, event.target.value)
@@ -169,6 +170,10 @@ export default function RewardForm({
               id="demo-simple-select-helper"
               value={rewardRequestData.inMission}
               label="Reward Type"
+              name="inMission"
+              onChange={(event) =>
+                handleInputChange(event.target.name, event.target.value)
+              }
             >
               <MenuItem value={"true"}>In Mission</MenuItem>
               <MenuItem value={"false"}>Out of Mission</MenuItem>

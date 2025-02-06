@@ -32,11 +32,9 @@ const CustomPickersDay = styled(PickersDay, {
 })) as typeof PickersDay;
 
 const buildMissionDateRanges = (missions: MissionResponse[]): DateRange[] => {
-  return missions.map((mission) => ({
+  return missions?.map((mission) => ({
     start: new Date(mission.dateStarted),
-    end: dayjs(mission.dateStarted)
-      .add(mission.timeLimit || 0, "minutes")
-      .toDate(),
+    end: dayjs(mission.dateStarted).add(mission.timeLimit, "minutes").toDate(),
     color: getMissionColor(mission),
   }));
 };

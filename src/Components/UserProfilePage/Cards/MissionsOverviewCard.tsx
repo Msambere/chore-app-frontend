@@ -10,19 +10,19 @@ import {
 } from "@mui/material";
 import MissionResponse from "~/types/Response/MissionResponse";
 
-interface TaskOverviewCardProps {
+interface MissionsOverviewCardProps {
   completionRate: number;
   recentMissions: MissionResponse[];
 }
 
-export default function TaskOverviewCard({
+export default function MissionsOverviewCard({
   completionRate,
   recentMissions,
-}: TaskOverviewCardProps) {
+}: MissionsOverviewCardProps) {
   return (
     <Card sx={{ borderRadius: 3, boxShadow: 2, height: "100%" }}>
       <CardContent>
-        <Typography variant="h5">Task Overview</Typography>
+        <Typography variant="h5">Chores Overview</Typography>
         <Divider sx={{ my: 2 }} />
 
         {/* Task Progress */}
@@ -38,16 +38,16 @@ export default function TaskOverviewCard({
               {completionRate}%
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Completed tasks
+              Completed Chores
             </Typography>
           </Box>
 
           <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
 
-          {/* Task Timeline */}
+          {/* Mission Timeline */}
           <Box sx={{ flex: 2 }}>
             <Typography variant="body1" fontWeight="bold">
-              Task Timeline
+              Missions Timeline
             </Typography>
             <List dense>
               {recentMissions.length > 0 ? (
