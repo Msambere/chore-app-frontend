@@ -5,11 +5,10 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
-import { Grid2 as Grid } from "@mui/material";
+import { Box, Paper, Grid2 as Grid } from "@mui/material";
 import MissionChoresList from "./MissionChoresList";
 import TotalPointsEarned from "./TotalPointsEarned";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
-import TimeProgress from "~/Components/MissionPage/ActiveMission/TimeProgress";
 import MissionSummaryDialog from "../ActiveMissionDialog/MissionSummaryDialog";
 import FinishMissionButton from "./FinishMissionButton";
 import RedeemRewardButton from "~/Components/MissionPage/ActiveMission/RedeemRewardButton";
@@ -143,37 +142,60 @@ const ActiveMission = ({
   };
 
   return (
-    <>
-      <Grid container spacing={2}>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        p: { xs: 1, sm: 2 },
+      }}
+    >
+      <Grid container spacing={3}>
         {/* Left Panel - Chores List */}
-        <Grid size={4} direction="column">
-          <MissionChoresList
-            chores={chores}
-            onToggleChore={toggleChoreCompletion}
-          />
+        <Grid size={8}>
+          <Paper
+            sx={{
+              p: 2,
+              borderRadius: 3,
+              boxShadow: 3,
+              height: "100%",
+              transition: "transform 0.3s ease",
+              "&:hover": { transform: "translateY(-2px)" },
+            }}
+          >
+            <MissionChoresList
+              chores={chores}
+              onToggleChore={toggleChoreCompletion}
+              missionFinished={missionFinished}
+              onTimeRunOut={handleFinishMission}
+            />
+          </Paper>
         </Grid>
 
-        {/* Middle Panel - Time & Progress */}
+        {/* Points & Rewards Panel */}
         <Grid size={4}>
-          <TimeProgress
-            chores={chores}
-            missionFinished={missionFinished}
-            onTimeRunOut={handleFinishMission}
-          />
-        </Grid>
-
-        {/* Right Panel - Total Points Earned */}
-        <Grid size={4}>
-          <TotalPointsEarned
-            totalUnredeemPoints={totalUnredeemedPoints}
-            maxPoints={maxPoints}
-          />
-          <RedeemRewardButton
-            pointTotal={totalUnredeemedPoints}
-            rewards={userData.rewards}
-            onRedeem={handleRedeemReward}
-          />
-          <FinishMissionButton onFinishMission={handleFinishMission} />
+          <Paper
+            sx={{
+              p: 2,
+              borderRadius: 3,
+              boxShadow: 3,
+              height: "100%",
+              transition: "transform 0.3s ease",
+              display: "flex",
+              flexDirection: "column",
+              "&:hover": { transform: "translateY(-2px)" },
+            }}
+          >
+            <TotalPointsEarned
+              totalUnredeemPoints={totalUnredeemedPoints}
+              maxPoints={maxPoints}
+              rewards={userData.rewards}
+            />
+            <RedeemRewardButton
+              pointTotal={totalUnredeemedPoints}
+              rewards={userData.rewards}
+              onRedeem={handleRedeemReward}
+            />
+            <FinishMissionButton onFinishMission={handleFinishMission} />
+          </Paper>
         </Grid>
       </Grid>
 
@@ -186,7 +208,8 @@ const ActiveMission = ({
         totalChoresCompleted={chores.filter((chore) => chore.completed).length}
         handleFinalizeMission={handleFinalizeMission}
       />
-    </>
+    </Box>
   );
 };
+
 export default ActiveMission;
