@@ -48,10 +48,10 @@ const MissionForm = ({
   useEffect(() => {
     const recurrenceList: string[] = extractUserRecurrences(userData.chores);
     recurrenceList.push("Any");
-    setRecurrenceOptions(recurrenceList);
+    setRecurrenceOptions(recurrenceList.sort());
     const categoryList: string[] = extractUserCategories(userData.chores);
     categoryList.push("Any");
-    setCategoryOptions(categoryList);
+    setCategoryOptions(categoryList.sort());
   }, []);
 
   const handleInputChange = (
