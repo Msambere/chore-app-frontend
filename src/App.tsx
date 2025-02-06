@@ -7,7 +7,7 @@ import RewardsView from "~/Components/RewardsPage/RewardsView";
 import MissionView from "~/Components/MissionPage/MissionView";
 import SignupView from "~/Components/LoginPage/Signup";
 import ChoresView from "~/Components/ChoresPage/ChoresView";
-import RewardForm from "~/Components/RewardsPage/RewardForm";
+import NewRewardForm from "~/Components/RewardsPage/NewRewardForm";
 import NewChoreForm from "~/Components/ChoresPage/NewChoreForm";
 import UserData from "~/types/Response/UserData";
 import { getExistngUserApiCall } from "~/Helper Functions/ApiCalls";
@@ -72,7 +72,7 @@ function App() {
           <Route
             path="/Rewards/create"
             element={
-              <RewardForm userData={userData} setUserData={setUserData} />
+              <NewRewardForm userData={userData} setUserData={setUserData} />
             }
           />
           <Route
