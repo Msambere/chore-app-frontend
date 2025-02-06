@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import {
   Accordion,
-  AccordionActions,
   AccordionDetails,
   AccordionSummary,
   Box,
@@ -47,7 +46,7 @@ function SingleChore({
         <Container maxWidth="sm">
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography component="section">{chore?.title}</Typography>
+              <Typography component="section">{chore.title}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               {isEditing ? (
@@ -66,12 +65,6 @@ function SingleChore({
                 />
               )}
             </AccordionDetails>
-            <AccordionActions>
-              {/*<ButtonGroup>*/}
-              {/*  <Button onClick={() => setEditing(true)}>Edit </Button>*/}
-              {/*  <Button onClick={handleDelete}>Delete</Button>*/}
-              {/*</ButtonGroup>*/}
-            </AccordionActions>
           </Accordion>
         </Container>
       </Box>

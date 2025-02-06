@@ -10,7 +10,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import ChoreResponse from "~/types/Response/ChoreResponse";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import UserData from "~/types/Response/UserData";
 import { useNavigate } from "react-router";
 import { extractUserRecurrences } from "~/Helper Functions/extractUserRecurrences";
@@ -19,7 +19,7 @@ import { createNewChoreApiCall } from "~/Helper Functions/ApiCalls";
 import CloseIcon from "@mui/icons-material/Close";
 import AutocompleteFormField from "~/Components/SharedComponents/AutocompleteFormField";
 
-interface ChoreCreateComponentProps {
+interface Props {
   userData: UserData;
   setUserData: Dispatch<SetStateAction<UserData>>;
 }
@@ -33,12 +33,9 @@ const defaultRequestData: ChoreRequest = {
   difficulty: 0,
 };
 
-export default function NewChoreForm({
-  userData,
-  setUserData,
-}: ChoreCreateComponentProps) {
+export default function NewChoreForm({ userData, setUserData }: Props) {
   const navigate = useNavigate();
-  const [open, setOpen] = useState<boolean>(false);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState("");
   const recurrenceList: string[] = extractUserRecurrences(
     userData?.chores ?? [],
@@ -72,7 +69,7 @@ export default function NewChoreForm({
 
   const handleCreateChore = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    createNewChoreApiCall(userData?.userId ?? 0, choreRequestData)
+    createNewChoreApiCall(userData.userId, choreRequestData)
       .then((response: ChoreResponse) => {
         console.log(response);
         setUserData((prevData: UserData) => ({
@@ -85,10 +82,10 @@ export default function NewChoreForm({
       .catch((error) => {
         console.log(error.response);
         setErrorMsg(error.response.data.message);
-        setOpen(true);
+        setOpenAlert(true);
       })
       .finally(() => {
-        console.log("Always print");
+        console.log("End of handleCreateChore");
       });
   };
 
@@ -97,7 +94,7 @@ export default function NewChoreForm({
       <Box component="span" style={{ fontSize: "2em" }}>
         Create a Chore
       </Box>
-      <Collapse in={open}>
+      <Collapse in={openAlert}>
         <Alert
           variant="outlined"
           severity="warning"
@@ -107,7 +104,7 @@ export default function NewChoreForm({
               color="inherit"
               size="small"
               onClick={() => {
-                setOpen(false);
+                setOpenAlert(false);
                 setErrorMsg("");
               }}
             >
@@ -183,7 +180,7 @@ export default function NewChoreForm({
             ))}
           </TextField>
 
-          {/* Textfield forSelect a set difficulty level */}
+          {/* TextField forSelect a set difficulty level */}
           <TextField
             required
             fullWidth
