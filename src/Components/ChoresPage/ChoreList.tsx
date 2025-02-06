@@ -14,7 +14,6 @@ interface ChoresProps {
 }
 
 export default function ChoreList({
-  userData,
   setUserData,
   recurrenceList,
   categoryList,

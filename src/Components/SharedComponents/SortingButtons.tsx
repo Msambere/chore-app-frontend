@@ -30,13 +30,13 @@ const SortingButtons = ({
   sortValue,
   sortOrder,
 }: Props) => {
-  const handleSortValueChange = (event) => {
-    setSortValue(event.target.value);
+  const handleSortValueChange = (newValue: string) => {
+    setSortValue(newValue);
     console.log(sortValue);
   };
 
-  const handleSortOrderChange = (event) => {
-    setSortOrder(event.target.value);
+  const handleSortOrderChange = (newValue: string) => {
+    setSortOrder(newValue);
     console.log(sortOrder);
   };
   const sortOptions = [
@@ -55,7 +55,7 @@ const SortingButtons = ({
           id="sort-value-options"
           label="Sort by"
           value={sortValue}
-          onChange={handleSortValueChange}
+          onChange={(event) => handleSortValueChange(event.target.value)}
           MenuProps={MenuProps}
         >
           {sortOptions.map((option) => (
@@ -71,7 +71,7 @@ const SortingButtons = ({
           labelId="sort-order-label"
           id="sort-order-options"
           value={sortOrder}
-          onChange={handleSortOrderChange}
+          onChange={(event) => handleSortOrderChange(event.target.value)}
           autoWidth
           label="Sort Order:"
         >
