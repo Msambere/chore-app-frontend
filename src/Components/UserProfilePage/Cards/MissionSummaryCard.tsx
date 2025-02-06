@@ -65,7 +65,7 @@ const MissionSummaryCard = ({
           <Grid2 size={6} display="flex" alignItems="center">
             <AccessTime sx={{ mr: 1, color: "orange" }} />
             <Typography variant="body1">
-              <strong>Time Elapsed:</strong> {formatTime(mission.timeElapsed)}
+              <strong>Time Elapsed:</strong> {formatTime(mission.timeElapsed, true)}
             </Typography>
           </Grid2>
 
