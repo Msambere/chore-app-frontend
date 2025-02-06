@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Card,
+  CardContent,
+  ListItem,
+  List,
+} from "@mui/material";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 import { formatTime } from "~/Helper Functions/FormatTime";
 
@@ -44,77 +52,65 @@ const TimeProgress = ({
   }, [chores]);
 
   return (
-    <Box
-      sx={{
-        p: 3,
-        bgcolor: "#e0e0e0",
-        borderRadius: 1,
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        textAlign: "center",
-      }}
-    >
+    <Box sx={{ flexGrow: 1, p: 1 }}>
       <Typography
         variant="h6"
         sx={{ fontWeight: "bold", mb: 2, alignSelf: "flex-start" }}
       >
         Time & Progress:
       </Typography>
+      <List sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        {/* Remaining Time Section */}
+        <ListItem>
+          <Card sx={{ borderRadius: 3, boxShadow: 2, width: "100%" }}>
+            <CardContent>
+              <Typography
+                variant="subtitle1"
+                sx={{ fontWeight: "bold", mb: 2 }}
+              >
+                Remaining Time:
+              </Typography>
+              <Typography variant="h4" color="black">
+                {formatTime(remainingTime)}
+              </Typography>
+            </CardContent>
+          </Card>
+        </ListItem>
 
-      {/* Remaining Time Section */}
-      <Box
-        sx={{
-          border: "1px solid black",
-          borderRadius: 2,
-          padding: 2,
-        }}
-      >
-        <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 2 }}>
-          Remaining Time:
-        </Typography>
-        <Typography variant="h4" color="black">
-          {formatTime(remainingTime)}
-        </Typography>
-      </Box>
-
-      {/* Progress Bar Section */}
-      <Box
-        sx={{
-          border: "1px solid black",
-          borderRadius: 2,
-          padding: 2,
-          textAlign: "center",
-        }}
-      >
-        <Typography variant="body1" fontWeight="bold">
-          Progress
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            mt: 1,
-          }}
-        >
-          <CircularProgress
-            variant="determinate"
-            value={progress}
-            size={80}
-            thickness={5}
-            sx={{ color: progress === 100 ? "green" : "primary.main" }}
-          />
-          <Typography
-            variant="caption"
-            component="div"
-            sx={{ position: "absolute" }}
-          >
-            {`${Math.round(progress)}%`}
-          </Typography>
-        </Box>
-      </Box>
+        {/* Progress Bar Section */}
+        <ListItem>
+          <Card sx={{ borderRadius: 3, boxShadow: 2, width: "100%" }}>
+            <CardContent>
+              <Typography variant="body1" fontWeight="bold">
+                Progress
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mt: 1,
+                }}
+              >
+                <CircularProgress
+                  variant="determinate"
+                  value={progress}
+                  size={80}
+                  thickness={5}
+                  sx={{ color: progress === 100 ? "green" : "primary.main" }}
+                />
+                <Typography
+                  variant="caption"
+                  component="div"
+                  sx={{ position: "absolute" }}
+                >
+                  {`${Math.round(progress)}%`}
+                </Typography>
+              </Box>
+            </CardContent>
+          </Card>
+        </ListItem>
+      </List>
     </Box>
   );
 };
