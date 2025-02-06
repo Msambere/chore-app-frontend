@@ -56,7 +56,7 @@ export default function AutocompleteFormField({
       // clearOnBlur
       // handleHomeEndKeys
       id={fieldLabel}
-      options={options}
+      options={options.sort()}
       freeSolo
       renderInput={(params) => (
         <TextField

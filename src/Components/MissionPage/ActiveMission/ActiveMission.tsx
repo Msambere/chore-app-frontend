@@ -5,11 +5,10 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
-import { Grid2 as Grid } from "@mui/material";
+import { Box, Paper, Grid2 as Grid } from "@mui/material";
 import MissionChoresList from "./MissionChoresList";
 import TotalPointsEarned from "./TotalPointsEarned";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
-import TimeProgress from "~/Components/MissionPage/ActiveMission/TimeProgress";
 import MissionSummaryDialog from "../ActiveMissionDialog/MissionSummaryDialog";
 import FinishMissionButton from "./FinishMissionButton";
 import RedeemRewardButton from "~/Components/MissionPage/ActiveMission/RedeemRewardButton";
@@ -28,16 +27,15 @@ interface ActiveMissionProps {
 }
 
 const ActiveMission = ({
-  missionChores,
   userData,
   setUserData,
+  missionChores,
 }: ActiveMissionProps): JSX.Element => {
   const [chores, setChores] = useState<MissionChoreResponse[]>(missionChores);
-  const [pointTotal, setPointTotal] = useState(0);
   const [missionFinished, setMissionFinished] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const maxPoints = missionChores.reduce((acc, chore) => acc + chore.points, 0);
-  const [totalUnredeemedPoints, setTotalUnredeemedPoints] = useState(maxPoints);
+  const [totalUnredeemedPoints, setTotalUnredeemedPoints] = useState(0);
   const [missionData, setMissionData] = useState<MissionResponse | null>(null);
   const navigate = useNavigate();
 
@@ -73,7 +71,7 @@ const ActiveMission = ({
         chore.choreId === choreId ? { ...chore, completed } : chore,
       ),
     );
-    setPointTotal((prevPoints) =>
+    setTotalUnredeemedPoints((prevPoints) =>
       completed ? prevPoints + points : Math.max(prevPoints - points, 0),
     );
     updateChoreCompletionApiCall(missionId, choreId)
@@ -96,20 +94,15 @@ const ActiveMission = ({
       console.error("Mission ID is undefined!");
       return;
     }
-    setTotalUnredeemedPoints((prevPoints) => {
-      const updatedPoints = prevPoints;
-
-      updateMissionApiCall(missionId, totalUnredeemedPoints, timeElapsed)
-        .then((updatedMissionApiCall) => {
-          setMissionData(updatedMissionApiCall);
-          console.log("Mission updated successfully:", updatedMissionApiCall);
-          setMissionFinished(true);
-        })
-        .catch((error) => {
-          console.error(error.message);
-        });
-      return updatedPoints;
-    });
+    updateMissionApiCall(missionId, totalUnredeemedPoints, timeElapsed)
+      .then((updatedMissionApiCall) => {
+        setMissionData(updatedMissionApiCall);
+        console.log("Mission updated successfully:", updatedMissionApiCall);
+        setMissionFinished(true);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
   };
 
   // Handle Redeem Reward
@@ -122,13 +115,9 @@ const ActiveMission = ({
     );
     if (!selectedReward) return;
 
-    setPointTotal((prevPoints) =>
-      Math.max(prevPoints - selectedReward.pointsNeeded, 0),
-    );
     setTotalUnredeemedPoints((prevPoints) =>
       Math.max(prevPoints - selectedReward.pointsNeeded, 0),
     );
-
     // Update userData to mark reward as redeemed
     setUserData((prevUserData) => ({
       ...prevUserData,
@@ -153,34 +142,60 @@ const ActiveMission = ({
   };
 
   return (
-    <>
-      <Grid container spacing={2}>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        p: { xs: 1, sm: 2 },
+      }}
+    >
+      <Grid container spacing={3}>
         {/* Left Panel - Chores List */}
-        <Grid size={4} direction="column">
-          <MissionChoresList
-            chores={chores}
-            onToggleChore={toggleChoreCompletion}
-          />
+        <Grid size={8}>
+          <Paper
+            sx={{
+              p: 2,
+              borderRadius: 3,
+              boxShadow: 3,
+              height: "100%",
+              transition: "transform 0.3s ease",
+              "&:hover": { transform: "translateY(-2px)" },
+            }}
+          >
+            <MissionChoresList
+              chores={chores}
+              onToggleChore={toggleChoreCompletion}
+              missionFinished={missionFinished}
+              onTimeRunOut={handleFinishMission}
+            />
+          </Paper>
         </Grid>
 
-        {/* Middle Panel - Time & Progress */}
+        {/* Points & Rewards Panel */}
         <Grid size={4}>
-          <TimeProgress
-            chores={chores}
-            missionFinished={missionFinished}
-            onTimeRunOut={handleFinishMission}
-          />
-        </Grid>
-
-        {/* Right Panel - Total Points Earned */}
-        <Grid size={4}>
-          <TotalPointsEarned pointTotal={pointTotal} maxPoints={maxPoints} />
-          <RedeemRewardButton
-            pointTotal={pointTotal}
-            rewards={userData.rewards}
-            onRedeem={handleRedeemReward}
-          />
-          <FinishMissionButton onFinishMission={handleFinishMission} />
+          <Paper
+            sx={{
+              p: 2,
+              borderRadius: 3,
+              boxShadow: 3,
+              height: "100%",
+              transition: "transform 0.3s ease",
+              display: "flex",
+              flexDirection: "column",
+              "&:hover": { transform: "translateY(-2px)" },
+            }}
+          >
+            <TotalPointsEarned
+              totalUnredeemPoints={totalUnredeemedPoints}
+              maxPoints={maxPoints}
+              rewards={userData.rewards}
+            />
+            <RedeemRewardButton
+              pointTotal={totalUnredeemedPoints}
+              rewards={userData.rewards}
+              onRedeem={handleRedeemReward}
+            />
+            <FinishMissionButton onFinishMission={handleFinishMission} />
+          </Paper>
         </Grid>
       </Grid>
 
@@ -188,12 +203,13 @@ const ActiveMission = ({
       <MissionSummaryDialog
         open={missionFinished}
         onClose={() => setMissionFinished(false)}
-        pointTotal={pointTotal}
+        pointTotal={totalUnredeemedPoints}
         timeElapsed={timeElapsed}
         totalChoresCompleted={chores.filter((chore) => chore.completed).length}
         handleFinalizeMission={handleFinalizeMission}
       />
-    </>
+    </Box>
   );
 };
+
 export default ActiveMission;

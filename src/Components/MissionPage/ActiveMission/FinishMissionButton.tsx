@@ -7,10 +7,14 @@ interface FinishMissionButtonProps {
 const FinishMissionButton = ({ onFinishMission }: FinishMissionButtonProps) => {
   return (
     <Button
-      variant="contained"
+      variant="outlined"
       color="error"
       fullWidth
-      sx={{ mt: 2 }}
+      sx={{
+        mt: 2,
+        borderRadius: 2,
+        fontWeight: "bold",
+      }}
       onClick={onFinishMission}
     >
       Finish Mission
