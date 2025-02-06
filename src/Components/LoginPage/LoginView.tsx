@@ -64,7 +64,8 @@ export default function LoginPage({ setUserData }: LoginViewProps) {
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem("username") !== "") {
+    const storedUser = localStorage.getItem("username");
+    if (storedUser !== null && storedUser !== "") {
       navigate("/UserProfile");
     }
   }, []);
