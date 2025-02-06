@@ -45,15 +45,17 @@ export function Layout({ setUserData, userData }: Props) {
                   width: 40,
                   height: 40,
                   borderRadius: "50%",
-                  bgcolor: "#f97316",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                 }}
               >
-                <Typography sx={{ color: "white", fontWeight: "bold" }}>
-                  CC
-                </Typography>
+                <img
+                  width={"50px"}
+                  src={`logo.svg`}
+                  loading="lazy"
+                  alt={"CC"}
+                />
               </Box>
             </Box>
 

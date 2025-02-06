@@ -1,77 +1,101 @@
-import React, { JSX } from "react";
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import React from "react";
+import {
+  Box,
+  Card,
+  LinearProgress,
+  Typography,
+  useTheme,
+  CardContent,
+  Stack,
+} from "@mui/material";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
-import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
+import RewardResponse from "~/types/Response/RewardResponse";
 
 interface TotalPointsEarnedProps {
   pointTotal: number;
   maxPoints: number;
+  rewards: RewardResponse[]; // or however your rewards are typed
 }
 
 const TotalPointsEarned = ({
   pointTotal,
   maxPoints,
-}: TotalPointsEarnedProps): JSX.Element => {
-  const progress = (pointTotal / maxPoints) * 100;
+  rewards,
+}: TotalPointsEarnedProps) => {
+  const theme = useTheme();
+  const progress = maxPoints ? (pointTotal / maxPoints) * 100 : 0;
+
+  const redeemedRewards = rewards.filter((r) => r.inMission);
 
   return (
-    <Box sx={{ flexGrow: 1, p: 1 }}>
-      <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
-        Total Points Earned
-      </Typography>
-      <Card sx={{ borderRadius: 3, boxShadow: 2, width: "100%" }}>
-        <CardContent>
-          <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
-            {pointTotal} pts
-          </Typography>
-          {/* Vertical Progress Bar */}
-          <Box
-            sx={{
-              height: "200px",
-              width: "25px",
-              bgcolor: "#d3d3d3",
-              borderRadius: "10px",
-              overflow: "hidden",
-              position: "relative",
-            }}
-          >
-            <Box
-              sx={{
-                position: "absolute",
-                bottom: 0,
-                width: "100%",
-                height: `${progress}%`,
-                bgcolor: "green",
-                transition: "height 0.5s ease-in-out",
-              }}
-            />
-          </Box>
+    <Card sx={{ borderRadius: 2, boxShadow: 2 }}>
+      <CardContent>
+        <Typography variant="h6" fontWeight="bold" mb={1}>
+          Total Points
+        </Typography>
 
-          {/* Reward Icons Moved Outside the Bar */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "30px",
-              ml: 2,
-            }}
-          >
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <EmojiEventsIcon sx={{ color: "Green", fontSize: 40 }} />
-              <Typography variant="caption">Grand Reward</Typography>
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <CardGiftcardIcon sx={{ color: "blue", fontSize: 40 }} />
-              <Typography variant="caption">Big Reward</Typography>
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <CardGiftcardIcon sx={{ color: "red", fontSize: 40 }} />
-              <Typography variant="caption">Starter Reward</Typography>
-            </Box>
+        <Typography variant="h3" sx={{ fontWeight: "bold" }}>
+          {pointTotal}
+          <Typography component="span" variant="body1">
+            {" "}
+            pts
+          </Typography>
+        </Typography>
+
+        <LinearProgress
+          variant="determinate"
+          value={progress}
+          sx={{
+            mt: 2,
+            height: 10,
+            borderRadius: 5,
+            "& .MuiLinearProgress-bar": {
+              borderRadius: 5,
+              backgroundColor:
+                progress === 100 ? "success.main" : "primary.main",
+            },
+          }}
+        />
+
+        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
+          <Typography variant="caption" color="text.secondary">
+            0
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            {maxPoints} pts
+          </Typography>
+        </Box>
+
+        {/* Render an icon for each redeemed reward */}
+        {redeemedRewards.length > 0 && (
+          <Box mt={2}>
+            <Typography variant="body2" sx={{ fontWeight: "bold", mb: 1 }}>
+              Redeemed Rewards
+            </Typography>
+            <Stack direction="row" spacing={1}>
+              {redeemedRewards.slice(0, 4).map((reward) => (
+                <Stack
+                  key={reward.rewardId}
+                  direction="row"
+                  alignItems="center"
+                  spacing={0.5}
+                  sx={{
+                    p: 1,
+                    borderRadius: 1,
+                    bgcolor: theme.palette.grey[100],
+                  }}
+                >
+                  <EmojiEventsIcon sx={{ color: theme.palette.warning.main }} />
+                  <Typography variant="body2" color="text.secondary">
+                    {reward.name}
+                  </Typography>
+                </Stack>
+              ))}
+            </Stack>
           </Box>
-        </CardContent>
-      </Card>
-    </Box>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 

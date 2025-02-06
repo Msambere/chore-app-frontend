@@ -8,7 +8,6 @@ import {
   Avatar,
   Typography,
   Box,
-  Link,
 } from "@mui/material";
 import {
   Home,
@@ -16,9 +15,8 @@ import {
   CardGiftcard,
   Assignment,
   ExitToApp,
-  Login,
 } from "@mui/icons-material";
-import { Link as RouterLink } from "react-router";
+import { Link as RouterLink, useLocation } from "react-router";
 import LogoutButton from "~/Components/LoginPage/LogoutButton";
 import { Dispatch, SetStateAction } from "react";
 import UserData from "~/types/Response/UserData";
@@ -36,6 +34,7 @@ const menuItems = [
 ];
 
 const Sidebar = ({ setUserData, userData }: Props) => {
+  const location = useLocation();
   return (
     userData.username !== "" && (
       <Box
@@ -69,7 +68,15 @@ const Sidebar = ({ setUserData, userData }: Props) => {
               <ListItemButton
                 component={RouterLink}
                 to={item.route}
-                sx={{ borderRadius: 2, mx: 1, my: 0.5 }}
+                sx={{
+                  borderRadius: 2,
+                  mx: 1,
+                  my: 0.5,
+                  borderStyle: "solid",
+                  borderWidth: "1px",
+                  borderColor:
+                    item.route === location.pathname ? "#3b82f6" : "white",
+                }}
               >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} />
