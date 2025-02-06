@@ -1,6 +1,6 @@
 interface RewardRequest {
   name: string;
-  description: string;
+  description: string | null;
   inMission: boolean;
   pointsNeeded: number;
 }

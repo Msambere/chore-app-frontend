@@ -17,11 +17,10 @@ export default function RewardList({ userData, setUserData }: RewardsProps) {
           <Box component="span" style={{ fontSize: "2em" }}>
             Rewards List
           </Box>
-          {userData?.rewards.map((reward) => (
+          {userData.rewards.map((reward) => (
             <SingleReward
-              key={reward.name}
+              key={reward.rewardId}
               reward={reward}
-              userData={userData}
               setUserData={setUserData}
             />
           ))}
