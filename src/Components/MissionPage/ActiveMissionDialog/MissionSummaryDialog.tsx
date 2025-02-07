@@ -4,7 +4,8 @@ import {
   DialogContent,
   DialogTitle,
   Button,
-  Typography, Box,
+  Typography,
+  Box,
 } from "@mui/material";
 import { formatTime } from "~/Helper Functions/FormatTime";
 
@@ -33,7 +34,7 @@ const MissionSummaryDialog = ({
 
       <DialogContent>
         {/* Mission Details */}
-        <Box sx={{ mb: 2, p: 2, backgroundColor: "#e3f2fd", borderRadius: 2 }}>
+        <Box sx={{ mb: 2, p: 2, borderRadius: 2 }}>
           <Typography variant="body1">
             <strong>Total Chores Completed:</strong> {totalChoresCompleted}
           </Typography>

@@ -180,10 +180,10 @@ const MissionForm = ({
           </Button>
         </form>
 
-        {/* If you want a "Back" button */}
         <Button
           variant="text"
           color="secondary"
+          fullWidth
           onClick={() => window.history.back()}
           sx={{ marginTop: 2 }}
         >

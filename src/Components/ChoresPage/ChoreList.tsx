@@ -1,6 +1,5 @@
-import { Box, Button, Grid2 as Grid } from "@mui/material";
-import { Link as RouterLink } from "react-router";
 import React, { Dispatch, SetStateAction } from "react";
+import { Box, Typography, Grid2 as Grid } from "@mui/material";
 import SingleChore from "~/Components/ChoresPage/SingleChore";
 import UserData from "~/types/Response/UserData";
 import ChoreResponse from "~/types/Response/ChoreResponse";
@@ -20,41 +19,53 @@ export default function ChoreList({
   chores,
 }: ChoresProps) {
   return (
-    <Grid container spacing={2}>
-      {/* Chores List */}
-      <Grid size={12}>
-        <Box sx={{ p: 3, bgcolor: "#cfe8fc", borderRadius: 1, height: "100%" }}>
-          <Box component="span" style={{ fontSize: "2em" }}>
-            Chores List
-          </Box>
-          {chores.length > 0 ? (
-            chores.map((chore) => (
+    <Box
+      sx={{
+        position: "relative",
+        minHeight: "100vh",
+        background: (theme) => theme.palette.background.default,
+      }}
+    >
+      <Box
+        sx={{
+          p: 4,
+          textAlign: "center",
+          borderRadius: 10,
+          backdropFilter: "blur(10px)",
+          mx: "auto",
+          mt: 3,
+          mb: 2,
+        }}
+      >
+        <Typography variant="h3" sx={{ fontWeight: "bold" }} gutterBottom>
+          Chores List
+        </Typography>
+        {chores.length === 0 ? (
+          <Typography variant="h6" color="text.secondary">
+            Uh oh, no chores yet. Tap the “+” button to add one!
+          </Typography>
+        ) : (
+          <Typography variant="h6" color="text.secondary">
+            Keep track of your chores!
+          </Typography>
+        )}
+      </Box>
+
+      {/* Grid of Chores */}
+      <Box sx={{ maxWidth: 1200, mx: "auto", px: 2 }}>
+        <Grid container spacing={3}>
+          {chores.map((chore) => (
+            <Grid key={chore.choreId} size={4}>
               <SingleChore
-                key={chore.choreId}
                 chore={chore}
                 setUserData={setUserData}
                 recurrenceList={recurrenceList}
                 categoryList={categoryList}
               />
-            ))
-          ) : (
-            <div>
-              {" "}
-              <h2>
-                Uh oh, looks like you do not have any chores. Click the button
-                button below to make some!
-              </h2>
-            </div>
-          )}
-          <Button
-            variant="outlined"
-            to={"/Chores/create"}
-            component={RouterLink}
-          >
-            Add New Chore
-          </Button>
-        </Box>
-      </Grid>
-    </Grid>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    </Box>
   );
 }
