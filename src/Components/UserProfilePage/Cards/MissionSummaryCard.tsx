@@ -50,7 +50,8 @@ const MissionSummaryCard = ({
           <Grid2 size={6} display="flex" alignItems="center">
             <Category sx={{ mr: 1, color: "secondary.main" }} />
             <Typography variant="body1">
-              <strong>Category:</strong> {mission.category ?? "Any"}
+              <strong>Category & Recurrence:</strong> {mission.category ?? "Any"}{" "}
+              & {mission.recurrence ?? "Any"}
             </Typography>
           </Grid2>
 

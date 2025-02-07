@@ -4,11 +4,10 @@ import {
   List,
   ListItem,
   ListItemText,
-  Rating,
 } from "@mui/material";
-import { Star } from "@mui/icons-material";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import RewardResponse from "~/types/Response/RewardResponse";
+import ConfirmationDialog from "~/Components/SharedComponents/ConfirmationDeleteDialog";
 
 interface Props {
   reward: RewardResponse;
@@ -17,6 +16,11 @@ interface Props {
 }
 
 const SingleRewardDetails = ({ reward, setEditing, handleDelete }: Props) => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <>
       {/*Description*/}
@@ -69,9 +73,29 @@ const SingleRewardDetails = ({ reward, setEditing, handleDelete }: Props) => {
       {/*  </ListItem>*/}
       {/*</List>*/}
       <ButtonGroup>
-        <Button onClick={() => setEditing(true)}>Edit </Button>
-        <Button onClick={handleDelete}>Delete</Button>
+        <Button
+          onClick={() => setEditing(true)}
+          sx={{ flex: 1, fontWeight: "bold" }}
+        >
+          Edit
+        </Button>
+        <Button
+          color="error"
+          onClick={handleOpen}
+          sx={{ flex: 1, fontWeight: "bold" }}
+        >
+          Delete
+        </Button>
       </ButtonGroup>
+      <ConfirmationDialog
+        open={open}
+        onClose={handleClose}
+        onConfirm={() => {
+          handleDelete().then(() => handleClose());
+        }}
+        title="Confirm Delete"
+        message="Are you sure you want to delete this reward? This action cannot be undone."
+      />
     </>
   );
 };

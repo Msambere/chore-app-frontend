@@ -6,6 +6,8 @@ import SortingButtons from "~/Components/SharedComponents/SortingButtons";
 import { extractUserRecurrences } from "~/Helper Functions/extractUserRecurrences";
 import { extractUserCategories } from "~/Helper Functions/extractUserCategories";
 import sortData from "~/Helper Functions/sortData";
+import FilterButton from "~/Components/SharedComponents/FilterButton";
+import filterData from "~/Helper Functions/filterData";
 
 interface ChoresProps {
   userData: UserData;
@@ -27,6 +29,7 @@ const ChoresView = ({ userData, setUserData }: ChoresProps) => {
 
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortValue, setSortValue] = useState<string>("title");
+  const [filterValues, setFilterValues] = useState<string[]>([]);
 
   return (
     <>
@@ -38,9 +41,24 @@ const ChoresView = ({ userData, setUserData }: ChoresProps) => {
         sortValue={sortValue}
         sortOrder={sortOrder}
       />
+      <FilterButton
+        recurrenceList={recurrenceList}
+        categoryList={categoryList}
+        setFilterValues={setFilterValues}
+        filterValues={filterValues}
+      />
       <ChoreList
         userData={userData}
-        chores={sortData(userData.chores, sortValue, sortOrder)} //use sorted function on this sortData( UserData.chores, sortOptions, sortValue, sortOrder)
+        chores={sortData(
+          filterData(
+            userData.chores,
+            filterValues,
+            recurrenceList,
+            categoryList,
+          ),
+          sortValue,
+          sortOrder,
+        )}
         setUserData={setUserData}
         recurrenceList={recurrenceList}
         categoryList={categoryList}
