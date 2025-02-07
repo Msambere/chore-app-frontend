@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  Typography,
-  Box,
-  Grid2,
-} from "@mui/material";
+import { Card, CardContent, Typography, Box, Grid2 } from "@mui/material";
 import React from "react";
 
 interface PointsSummaryCardProps {
