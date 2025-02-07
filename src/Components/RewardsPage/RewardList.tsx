@@ -17,13 +17,24 @@ export default function RewardList({ userData, setUserData }: RewardsProps) {
           <Box component="span" style={{ fontSize: "2em" }}>
             Rewards List
           </Box>
-          {userData.rewards.map((reward) => (
-            <SingleReward
-              key={reward.rewardId}
-              reward={reward}
-              setUserData={setUserData}
-            />
-          ))}
+
+          {userData.rewards.length > 0 ? (
+            userData.rewards.map((reward) => (
+              <SingleReward
+                key={reward.rewardId}
+                reward={reward}
+                setUserData={setUserData}
+              />
+            ))
+          ) : (
+            <div>
+              {" "}
+              <h2>
+                Uh oh, looks like you do not have any rewards. Click the button
+                below to make some!
+              </h2>
+            </div>
+          )}
           <Button
             variant="outlined"
             to={"/Rewards/create"}

@@ -27,15 +27,25 @@ export default function ChoreList({
           <Box component="span" style={{ fontSize: "2em" }}>
             Chores List
           </Box>
-          {chores.map((chore) => (
-            <SingleChore
-              key={chore.choreId}
-              chore={chore}
-              setUserData={setUserData}
-              recurrenceList={recurrenceList}
-              categoryList={categoryList}
-            />
-          ))}
+          {chores.length > 0 ? (
+            chores.map((chore) => (
+              <SingleChore
+                key={chore.choreId}
+                chore={chore}
+                setUserData={setUserData}
+                recurrenceList={recurrenceList}
+                categoryList={categoryList}
+              />
+            ))
+          ) : (
+            <div>
+              {" "}
+              <h2>
+                Uh oh, looks like you do not have any chores. Click the button
+                button below to make some!
+              </h2>
+            </div>
+          )}
           <Button
             variant="outlined"
             to={"/Chores/create"}
