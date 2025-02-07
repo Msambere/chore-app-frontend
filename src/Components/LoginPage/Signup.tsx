@@ -26,7 +26,6 @@ export default function SignupView() {
             alert(
               "Your new user account has been created! Please check your email to confirm.",
             );
-            // setUserData(data);
             navigate("/");
           } else {
             alert(data.message);
