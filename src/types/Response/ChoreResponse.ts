@@ -1,5 +1,6 @@
 export default interface ChoreResponse {
-  message: string | null;
+  [key: string]: string | number;
+  message: string;
   title: string;
   description: string;
   recurrence: string;

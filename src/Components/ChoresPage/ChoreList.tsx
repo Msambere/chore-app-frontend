@@ -3,20 +3,22 @@ import { Link as RouterLink } from "react-router";
 import React, { Dispatch, SetStateAction } from "react";
 import SingleChore from "~/Components/ChoresPage/SingleChore";
 import UserData from "~/types/Response/UserData";
-import { extractUserRecurrences } from "~/Helper Functions/extractUserRecurrences";
-import { extractUserCategories } from "~/Helper Functions/extractUserCategories";
+import ChoreResponse from "~/types/Response/ChoreResponse";
 
 interface ChoresProps {
   userData: UserData;
   setUserData: Dispatch<SetStateAction<UserData>>;
+  recurrenceList: string[];
+  categoryList: string[];
+  chores: ChoreResponse[];
 }
 
-export default function ChoreList({ userData, setUserData }: ChoresProps) {
-  const recurrenceList: string[] = extractUserRecurrences(
-    userData?.chores ?? [],
-  );
-  const categoryList: string[] = extractUserCategories(userData?.chores ?? []);
-
+export default function ChoreList({
+  setUserData,
+  recurrenceList,
+  categoryList,
+  chores,
+}: ChoresProps) {
   return (
     <Grid container spacing={2}>
       {/* Chores List */}
@@ -25,7 +27,7 @@ export default function ChoreList({ userData, setUserData }: ChoresProps) {
           <Box component="span" style={{ fontSize: "2em" }}>
             Chores List
           </Box>
-          {userData.chores.map((chore) => (
+          {chores.map((chore) => (
             <SingleChore
               key={chore.choreId}
               chore={chore}
