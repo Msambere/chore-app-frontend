@@ -44,6 +44,10 @@ export default function NewChoreForm({ userData, setUserData }: Props) {
   const [choreRequestData, setChoreRequestData] =
     useState<ChoreRequest>(defaultRequestData);
 
+  const handleCancel = () => {
+    navigate("/Rewards");
+  };
+
   useEffect(() => {
     if (userData.username === "Not logged in") {
       navigate("/");
@@ -214,6 +218,14 @@ export default function NewChoreForm({ userData, setUserData }: Props) {
           >
             <Button type="submit" variant="outlined">
               Create a new chore!
+            </Button>
+            <Button
+              type="submit"
+              color="secondary"
+              variant="outlined"
+              onClick={handleCancel}
+            >
+              Cancel
             </Button>
           </Box>
         </form>
