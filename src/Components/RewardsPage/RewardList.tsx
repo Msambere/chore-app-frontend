@@ -30,8 +30,8 @@ export default function RewardList({ userData, setUserData }: RewardsProps) {
             <div>
               {" "}
               <h2>
-                Uh oh, looks like you don&#39;t have any rewards. Click the
-                button below to make some!
+                Uh oh, looks like you do not have any rewards. Click the button
+                below to make some!
               </h2>
             </div>
           )}

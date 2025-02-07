@@ -41,7 +41,7 @@ export default function ChoreList({
             <div>
               {" "}
               <h2>
-                Uh oh, looks like you don&#39;t have any chores. Click the
+                Uh oh, looks like you do not have any chores. Click the button
                 button below to make some!
               </h2>
             </div>
