@@ -1,24 +1,25 @@
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import {
-  Alert,
-  AlertTitle,
-  Button,
-  Collapse,
-  FormControl,
-  FormHelperText,
-  IconButton,
-  InputLabel,
+  Box,
+  Container,
+  TextField,
   MenuItem,
   Select,
+  FormControl,
+  InputLabel,
+  FormHelperText,
+  Button,
+  Collapse,
+  Alert,
+  AlertTitle,
+  IconButton,
+  Typography,
 } from "@mui/material";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import UserData from "~/types/Response/UserData";
-import { useNavigate } from "react-router";
 import CloseIcon from "@mui/icons-material/Close";
 import { createNewRewardApiCall } from "~/Helper Functions/ApiCalls";
 import RewardResponse from "~/types/Response/RewardResponse";
+import UserData from "~/types/Response/UserData";
 
 interface Props {
   userData: UserData;
@@ -86,125 +87,125 @@ export default function NewRewardForm({ userData, setUserData }: Props) {
   };
 
   return (
-    <Box sx={{ mb: 2 }}>
-      <Box component="span" style={{ fontSize: "2em" }}>
-        Create a Reward
-      </Box>
-      <Collapse in={openAlert}>
-        <Alert
-          variant="outlined"
-          severity="warning"
-          action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setOpenAlert(false);
-                setErrorMsg("");
-              }}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-        >
-          <AlertTitle>Warning</AlertTitle>
-          {errorMsg}
-        </Alert>
-      </Collapse>
-      <Container maxWidth="sm">
-        <form onSubmit={handleCreateReward}>
-          {/* TextField for Adding a NAME */}
-          <TextField
-            fullWidth
-            required
-            name="name"
-            label="Reward Name"
-            margin="normal"
-            variant="outlined"
-            placeholder="Give your reward a name"
-            onChange={(event) =>
-              handleInputChange(event.target.name, event.target.value)
-            }
-          />
+    <Box
+      sx={{
+        minHeight: "100vh",
+        p: 2,
+      }}
+    >
+      <Box
+        sx={{
+          p: 4,
+          mt: 3,
+          mb: 3,
+          mx: "auto",
+          maxWidth: 600,
+          backdropFilter: "blur(8px)",
+          borderRadius: 2,
+          boxShadow: 3,
+        }}
+      >
+        <Typography variant="h4" sx={{ fontWeight: "bold", mb: 2 }}>
+          Create a Reward
+        </Typography>
 
-          {/* TextField for Adding a Description */}
-          <TextField
-            fullWidth
-            name="description"
-            label="Reward Description"
-            margin="normal"
-            multiline
-            rows={2}
+        <Collapse in={openAlert} sx={{ mb: 2 }}>
+          <Alert
             variant="outlined"
-            placeholder="Tell us more about the reward"
-            onChange={(event) =>
-              handleInputChange(event.target.name, event.target.value)
-            }
-          />
-
-          {/* TextField for points needed*/}
-          <TextField
-            required
-            fullWidth
-            select
-            name="pointsNeeded"
-            label="Points Needed"
-            value={rewardRequestData.pointsNeeded}
-            margin="normal"
-            onChange={(event) =>
-              handleInputChange(event.target.name, event.target.value)
+            severity="warning"
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setOpenAlert(false);
+                  setErrorMsg("");
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
             }
           >
-            {[2, 3, 4, 5].map((time, index) => (
-              <MenuItem key={index} value={time}>
-                {time}
-              </MenuItem>
-            ))}
-          </TextField>
+            <AlertTitle>Warning</AlertTitle>
+            {errorMsg}
+          </Alert>
+        </Collapse>
 
-          {/* Select for in mission*/}
-
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-helper-label">
-              Reward Type
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={rewardRequestData.inMission}
-              label="Reward Type"
-              name="inMission"
-              onChange={(event) =>
-                handleInputChange(event.target.name, event.target.value)
-              }
-            >
-              <MenuItem value={"true"}>In Mission</MenuItem>
-              <MenuItem value={"false"}>Out of Mission</MenuItem>
-            </Select>
-            <FormHelperText>When can you access this reward?</FormHelperText>
-          </FormControl>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end", // Aligns items to the right
-              mt: 2, // Optional: Add some margin-top
-            }}
-          >
-            <Button type="submit" variant="outlined">
-              Create a new reward!
-            </Button>
-            <Button
-              type="submit"
-              color="secondary"
+        <Container maxWidth="sm" disableGutters>
+          <form onSubmit={handleCreateReward}>
+            <TextField
+              required
+              fullWidth
+              name="name"
+              label="Reward Name"
+              margin="normal"
               variant="outlined"
-              onClick={handleCancel}
+              value={rewardRequestData.name}
+              onChange={(e) => handleInputChange(e.target.name, e.target.value)}
+            />
+
+            <TextField
+              fullWidth
+              name="description"
+              label="Reward Description"
+              margin="normal"
+              multiline
+              rows={2}
+              variant="outlined"
+              placeholder="Tell us more about the reward"
+              value={rewardRequestData.description ?? ""}
+              onChange={(e) => handleInputChange(e.target.name, e.target.value)}
+            />
+
+            <TextField
+              required
+              fullWidth
+              select
+              name="pointsNeeded"
+              label="Points Needed"
+              value={rewardRequestData.pointsNeeded}
+              margin="normal"
+              onChange={(e) => handleInputChange(e.target.name, e.target.value)}
             >
-              Cancel
-            </Button>
-          </Box>
-        </form>
-      </Container>
+              {[2, 3, 4, 5].map((points) => (
+                <MenuItem key={points} value={points}>
+                  {points}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            <FormControl fullWidth sx={{ mt: 2 }}>
+              <InputLabel>Reward Type</InputLabel>
+              <Select
+                name="inMission"
+                label="Reward Type"
+                value={rewardRequestData.inMission}
+                onChange={(e) =>
+                  handleInputChange(e.target.name, e.target.value)
+                }
+              >
+                <MenuItem value={"true"}>In Mission</MenuItem>
+                <MenuItem value={"false"}>Out of Mission</MenuItem>
+              </Select>
+              <FormHelperText>When can you access this reward?</FormHelperText>
+            </FormControl>
+
+            <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
+              <Button type="submit" variant="contained" sx={{ mr: 2 }}>
+                Create Reward
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
+            </Box>
+          </form>
+        </Container>
+      </Box>
     </Box>
   );
 }

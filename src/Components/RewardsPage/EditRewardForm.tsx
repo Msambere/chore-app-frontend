@@ -12,11 +12,12 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  TextField,
+  Typography,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { updateEntityApiCall } from "~/Helper Functions/ApiCalls";
 import UserData from "~/types/Response/UserData";
-import CloseIcon from "@mui/icons-material/Close";
-import TextField from "@mui/material/TextField";
 import RewardResponse from "~/types/Response/RewardResponse";
 
 interface Props {
@@ -25,69 +26,67 @@ interface Props {
   setEditing: Dispatch<SetStateAction<boolean>>;
 }
 
-function EditRewardForm({ reward, setUserData, setEditing }: Props) {
-  const defaultRewardRequestData: RewardRequest = {
-    name: reward.name,
-    description: reward.description,
-    inMission: reward.inMission,
-    pointsNeeded: reward.pointsNeeded,
-  };
+const defaultRewardRequestData = (reward: RewardResponse): RewardRequest => ({
+  name: reward.name,
+  description: reward.description,
+  inMission: reward.inMission,
+  pointsNeeded: reward.pointsNeeded,
+});
+
+export default function EditRewardForm({
+  reward,
+  setUserData,
+  setEditing,
+}: Props) {
   const [rewardRequestData, setRewardRequestData] = useState<RewardRequest>(
-    defaultRewardRequestData,
+    defaultRewardRequestData(reward),
   );
-  const [openAlert, setOpenAlert] = React.useState<boolean>(false);
-  const [errorMsg, setErrorMsg] = React.useState<string>("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleInputChange = (
     fieldName: string,
-    fieldValue: string | number | boolean,
-  ): void => {
-    if (fieldValue === "true") {
-      fieldValue = true;
-    }
-    if (fieldValue === "false") {
-      fieldValue = false;
-    }
-    console.log(fieldName, fieldValue);
-    setRewardRequestData({ ...rewardRequestData, [fieldName]: fieldValue });
+    value: string | number | boolean,
+  ) => {
+    if (value === "true") value = true;
+    if (value === "false") value = false;
+    setRewardRequestData((prev) => ({ ...prev, [fieldName]: value }));
   };
 
-  const handleEditReward = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    console.log(rewardRequestData);
-    console.log(reward.rewardId);
-    updateEntityApiCall("rewards", reward.rewardId, rewardRequestData)
-      .then((updatedReward: RewardResponse) => {
-        console.log(updatedReward);
-        // Delete old version of reward
-        setUserData((prevState: UserData) => ({
-          ...prevState,
-          rewards: prevState.rewards.filter(
-            (oldReward) => oldReward.rewardId !== updatedReward.rewardId,
-          ),
-        }));
-        // Add updated reward
-        setUserData((prevData: UserData) => ({
-          ...prevData,
-          rewards: [...(prevData?.rewards ?? []), updatedReward],
-        }));
-        setRewardRequestData(defaultRewardRequestData);
-        setEditing(false);
-      })
-      .catch((error) => {
-        console.log(error.response.data.message);
-        setErrorMsg(error.response.data.message);
-        setOpenAlert(true);
-      })
-      .finally(() => {
-        console.log("Update Entity finished");
-      });
+  const handleEditReward = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    try {
+      const updatedReward = await updateEntityApiCall(
+        "rewards",
+        reward.rewardId,
+        rewardRequestData,
+      );
+      // Remove old version, add updated
+      setUserData((prev) => ({
+        ...prev,
+        rewards: prev.rewards
+          .filter((r) => r.rewardId !== updatedReward.rewardId)
+          .concat(updatedReward),
+      }));
+      setEditing(false);
+    } catch (error: unknown) {
+      const axiosError = error as {
+        response?: { data?: { message?: string } };
+      };
+      console.error(axiosError?.response?.data?.message);
+      setErrorMsg(
+        axiosError?.response?.data?.message || "Failed to edit reward",
+      );
+      setOpenAlert(true);
+    }
   };
+
   return (
     <Box sx={{ mb: 2 }}>
-      <Box component="span" style={{ fontSize: "1.5em" }}>
-        Edit your Reward
-      </Box>
+      <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
+        Edit Reward
+      </Typography>
+
       <Collapse in={openAlert}>
         <Alert
           variant="outlined"
@@ -110,9 +109,9 @@ function EditRewardForm({ reward, setUserData, setEditing }: Props) {
           {errorMsg}
         </Alert>
       </Collapse>
-      <Container maxWidth="sm">
+
+      <Container maxWidth="sm" disableGutters>
         <form onSubmit={handleEditReward}>
-          {/* TextField for editing name */}
           <TextField
             fullWidth
             required
@@ -120,79 +119,57 @@ function EditRewardForm({ reward, setUserData, setEditing }: Props) {
             label="Reward Name"
             margin="normal"
             variant="outlined"
-            defaultValue={rewardRequestData.name}
-            onChange={(event) =>
-              handleInputChange(event.target.name, event.target.value)
-            }
+            value={rewardRequestData.name}
+            onChange={(e) => handleInputChange(e.target.name, e.target.value)}
           />
 
-          {/* TextField for editing description */}
           <TextField
-            required
             fullWidth
+            required
             name="description"
             label="Reward Description"
             margin="normal"
             multiline
             rows={2}
             variant="outlined"
-            defaultValue={rewardRequestData.description}
-            onChange={(event) =>
-              handleInputChange(event.target.name, event.target.value)
-            }
+            value={rewardRequestData.description || ""}
+            onChange={(e) => handleInputChange(e.target.name, e.target.value)}
           />
 
-          {/* TextField for points needed*/}
           <TextField
-            required
             fullWidth
+            required
             select
             name="pointsNeeded"
             label="Points Needed"
             margin="normal"
-            defaultValue={rewardRequestData.pointsNeeded}
-            onChange={(event) =>
-              handleInputChange(event.target.name, event.target.value)
-            }
+            value={rewardRequestData.pointsNeeded}
+            onChange={(e) => handleInputChange(e.target.name, e.target.value)}
           >
-            {[2, 3, 4, 5].map((time, index) => (
-              <MenuItem key={index} value={time}>
-                {time}
+            {[2, 3, 4, 5].map((points) => (
+              <MenuItem key={points} value={points}>
+                {points}
               </MenuItem>
             ))}
           </TextField>
 
-          {/* Select for in mission*/}
-
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-helper-label">
-              Reward Type
-            </InputLabel>
+          <FormControl fullWidth sx={{ mt: 2 }}>
+            <InputLabel>Reward Type</InputLabel>
             <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              defaultValue={rewardRequestData.inMission}
-              value={rewardRequestData.inMission}
-              label="Reward Type"
               name="inMission"
-              onChange={(event) =>
-                handleInputChange(event.target.name, event.target.value)
-              }
+              label="Reward Type"
+              value={rewardRequestData.inMission}
+              onChange={(e) => handleInputChange(e.target.name, e.target.value)}
             >
               <MenuItem value={"true"}>In Mission</MenuItem>
               <MenuItem value={"false"}>Out of Mission</MenuItem>
             </Select>
             <FormHelperText>When can you access this reward?</FormHelperText>
           </FormControl>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end", // Aligns items to the right
-              mt: 2, // Optional: Add some margin-top
-            }}
-          >
-            <Button type="submit" variant="outlined">
-              Edit reward!
+
+          <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+            <Button type="submit" variant="contained" sx={{ mr: 2 }}>
+              Save
             </Button>
             <Button variant="outlined" onClick={() => setEditing(false)}>
               Cancel
@@ -203,4 +180,3 @@ function EditRewardForm({ reward, setUserData, setEditing }: Props) {
     </Box>
   );
 }
-export default EditRewardForm;

@@ -45,7 +45,7 @@ export default function NewChoreForm({ userData, setUserData }: Props) {
     useState<ChoreRequest>(defaultRequestData);
 
   const handleCancel = () => {
-    navigate("/Rewards");
+    navigate("/Chores");
   };
 
   useEffect(() => {
