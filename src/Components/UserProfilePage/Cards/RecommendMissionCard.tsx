@@ -162,7 +162,9 @@ export default function RecommendMissionCard({
                 component={"span"}
                 sx={{ ml: 1 }}
               >
-                {missionRequestData.timeLimit} min
+                {missionRequestData.timeLimit === null
+                  ? "Let's do them all!"
+                  : `${missionRequestData.timeLimit} min`}
               </Typography>
             </Typography>
             <Button
