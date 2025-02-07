@@ -17,6 +17,7 @@ import { getExistngUserApiCall } from "~/Helper Functions/ApiCalls";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 import PrivateRoutes from "~/Components/Layout/PrivateRoutes";
 import { makeAppTheme } from "~/Theme/theme";
+import NotFound404 from "~/Components/Layout/NotFound404";
 
 function App() {
   const [userData, setUserData] = useState<UserData>({
@@ -135,7 +136,7 @@ function App() {
                 }
               />
             </Route>
-            <Route path="*" element={<h1> 404: There is nothing here!</h1>} />
+            <Route path="*" element={<NotFound404 />} />
           </Route>
         </Routes>
       </BrowserRouter>
