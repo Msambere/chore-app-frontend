@@ -50,8 +50,8 @@ const MissionSummaryCard = ({
           <Grid2 size={6} display="flex" alignItems="center">
             <Category sx={{ mr: 1, color: "secondary.main" }} />
             <Typography variant="body1">
-              <strong>Category & Recurrence:</strong> {mission.category ?? "Any"}{" "}
-              & {mission.recurrence ?? "Any"}
+              <strong>Category & Recurrence:</strong>{" "}
+              {mission.category ?? "Any"} & {mission.recurrence ?? "Any"}
             </Typography>
           </Grid2>
 
@@ -66,7 +66,8 @@ const MissionSummaryCard = ({
           <Grid2 size={6} display="flex" alignItems="center">
             <AccessTime sx={{ mr: 1, color: "orange" }} />
             <Typography variant="body1">
-              <strong>Time Elapsed:</strong> {formatTime(mission.timeElapsed, true)}
+              <strong>Time Elapsed:</strong>{" "}
+              {formatTime(mission.timeElapsed, true)}
             </Typography>
           </Grid2>
 

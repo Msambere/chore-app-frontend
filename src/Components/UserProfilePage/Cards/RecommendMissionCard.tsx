@@ -25,6 +25,19 @@ export interface RecommendMissionProps {
   setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
+//check if any chore match category and recurrence
+const checkForMatchingChores = (
+  chores: ChoreResponse[],
+  recurrence: string,
+  category: string,
+): boolean => {
+  if (!chores?.length) return false;
+
+  return chores.some(
+    (chore) => chore.recurrence === recurrence && chore.category === category,
+  );
+};
+
 const getRandomNumber = (min: number, max: number) => {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -41,24 +54,62 @@ export default function RecommendMissionCard({
   const [missionRequestData, setMissionRequestData] = useState<
     MissionRequest | undefined
   >();
+  const timeLimitOptions: (number | "Let's do them all!")[] = [
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    35,
+    40,
+    45,
+    "Let's do them all!",
+  ];
   useEffect(() => {
     if (!chores?.length) return;
 
     const extractedCategories = extractUserCategories(chores);
     const extractedRecurrence = extractUserRecurrences(chores);
 
-    const randomCategory = getRandomNumber(0, extractedCategories.length);
-    const randomRecurrence = getRandomNumber(0, extractedRecurrence.length);
-    const randomTimeLimit = getRandomNumber(10, 45);
+    const validCombinations = extractedRecurrence.flatMap((recurrence) =>
+      extractedCategories
+        .filter((category) =>
+          checkForMatchingChores(chores, recurrence, category),
+        )
+        .map((category) => ({ recurrence, category })),
+    );
 
-    setMissionRequestData({
-      recurrence: extractedRecurrence[randomRecurrence],
-      category: extractedCategories[randomCategory],
-      timeLimit: randomTimeLimit,
-    });
+    if (validCombinations.length) {
+      const randomCombination =
+        validCombinations[getRandomNumber(0, validCombinations.length)];
+      const randomTimeLimit =
+        timeLimitOptions[getRandomNumber(0, timeLimitOptions.length)];
+
+      const newMission = {
+        recurrence: randomCombination.recurrence,
+        category: randomCombination.category,
+        timeLimit:
+          randomTimeLimit === "Let's do them all!" ? null : randomTimeLimit,
+      };
+      setMissionRequestData(newMission);
+      console.log(" New Recommended Mission:", newMission);
+    }
   }, [chores]);
 
-  if (!chores?.length) return null;
+  if (!chores?.length) {
+    return (
+      <Card sx={{ borderRadius: 3, boxShadow: 2 }}>
+        <CardContent>
+          <Typography variant="h5">Recommended Mission</Typography>
+          <Divider sx={{ my: 1 }} />
+          <Typography variant="body2" color="text.secondary">
+            No recommended mission
+          </Typography>
+        </CardContent>
+      </Card>
+    );
+  }
 
   const handleCheckOutMission = (event: React.SyntheticEvent) => {
     event.preventDefault();
