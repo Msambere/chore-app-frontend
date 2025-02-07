@@ -39,6 +39,10 @@ export default function NewRewardForm({ userData, setUserData }: Props) {
   const [rewardRequestData, setRewardRequestData] =
     useState<RewardRequest>(defaultRequestData);
 
+  const handleCancel = () => {
+    navigate("/Rewards");
+  };
+
   useEffect(() => {
     if (userData.username === "Not logged in") {
       navigate("/");
@@ -189,6 +193,14 @@ export default function NewRewardForm({ userData, setUserData }: Props) {
           >
             <Button type="submit" variant="outlined">
               Create a new reward!
+            </Button>
+            <Button
+              type="submit"
+              color="secondary"
+              variant="outlined"
+              onClick={handleCancel}
+            >
+              Cancel
             </Button>
           </Box>
         </form>
