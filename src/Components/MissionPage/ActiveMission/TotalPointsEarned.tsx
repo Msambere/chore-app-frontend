@@ -82,7 +82,7 @@ const TotalPointsEarned = ({
                   sx={{
                     p: 1,
                     borderRadius: 1,
-                    bgcolor: theme.palette.grey[100],
+                    bgcolor: "info",
                   }}
                 >
                   <EmojiEventsIcon sx={{ color: theme.palette.warning.main }} />

@@ -9,13 +9,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import {
-  Home,
-  ListAlt,
-  CardGiftcard,
-  Assignment,
-  ExitToApp,
-} from "@mui/icons-material";
+import { Home, ListAlt, CardGiftcard, Assignment } from "@mui/icons-material";
 import { Link as RouterLink, useLocation } from "react-router";
 import LogoutButton from "~/Components/LoginPage/LogoutButton";
 import { Dispatch, SetStateAction } from "react";
@@ -24,6 +18,7 @@ import UserData from "~/types/Response/UserData";
 interface Props {
   setUserData: Dispatch<SetStateAction<UserData>>;
   userData: UserData;
+  open: boolean;
 }
 
 const menuItems = [
@@ -33,7 +28,7 @@ const menuItems = [
   { label: "Mission", route: "/Mission", icon: <Assignment /> },
 ];
 
-const Sidebar = ({ setUserData, userData }: Props) => {
+const Sidebar = ({ setUserData, userData, open }: Props) => {
   const location = useLocation();
   return (
     userData.username !== "" && (
@@ -46,22 +41,27 @@ const Sidebar = ({ setUserData, userData }: Props) => {
           flexDirection: "column",
         }}
       >
-        {/* Profile Section */}
-        <Box sx={{ textAlign: "center", p: 3 }}>
+        <Box sx={{ textAlign: "center", pb: 2 }}>
           <Avatar
-            sx={{ width: 64, height: 64, mx: "auto", bgcolor: "primary.main" }}
+            sx={{
+              width: 64,
+              height: 64,
+              mx: open ? "auto" : "10px",
+              bgcolor: "primary.main",
+              transition: "width 0.3s ease",
+            }}
             src={`https://avatar.iran.liara.run/public/girl?username=${userData?.username}`}
           >
-            {userData?.firstName[0] + userData?.lastName[0]}
+            {open && userData?.firstName[0] + userData?.lastName[0]}
           </Avatar>
-          <Typography variant="h6" sx={{ mt: 1, fontWeight: "bold" }}>
-            {userData?.firstName} {userData?.lastName}
-          </Typography>
+          {open && (
+            <Typography variant="h6" sx={{ mt: 1 }}>
+              {userData?.firstName} {userData?.lastName}
+            </Typography>
+          )}
         </Box>
 
         <Divider />
-
-        {/* Navigation */}
         <List>
           {menuItems.map((item) => (
             <ListItem key={item.label} disablePadding>
@@ -69,13 +69,14 @@ const Sidebar = ({ setUserData, userData }: Props) => {
                 component={RouterLink}
                 to={item.route}
                 sx={{
+                  width: open ? "200px" : "50px",
                   borderRadius: 2,
                   mx: 1,
                   my: 0.5,
-                  borderStyle: "solid",
-                  borderWidth: "1px",
-                  borderColor:
-                    item.route === location.pathname ? "#3b82f6" : "white",
+                  backgroundColor:
+                    item.route === location.pathname
+                      ? "background.default"
+                      : "background.paper",
                 }}
               >
                 <ListItemIcon>{item.icon}</ListItemIcon>
@@ -84,21 +85,16 @@ const Sidebar = ({ setUserData, userData }: Props) => {
             </ListItem>
           ))}
         </List>
-
         <Divider />
-        {/* Logout Button */}
-        {
-          <Box sx={{ mt: "auto", p: 2 }}>
-            <ListItem disablePadding>
-              <ListItemButton sx={{ borderRadius: 2, mx: 1 }}>
-                <ListItemIcon>
-                  <ExitToApp />
-                </ListItemIcon>
+        <Box sx={{ mt: "auto" }}>
+          <ListItem disablePadding>
+            <ListItemButton sx={{ borderRadius: 2, mx: 1 }}>
+              <ListItemIcon>
                 <LogoutButton setUserData={setUserData} />
-              </ListItemButton>
-            </ListItem>
-          </Box>
-        }
+              </ListItemIcon>
+            </ListItemButton>
+          </ListItem>
+        </Box>
       </Box>
     )
   );

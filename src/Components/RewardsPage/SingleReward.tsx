@@ -1,18 +1,20 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Container,
+  Card,
+  CardContent,
+  CardActions,
   Typography,
+  IconButton,
+  Box,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import UserData from "~/types/Response/UserData";
 import RewardResponse from "~/types/Response/RewardResponse";
 import { deleteEntityApiCall } from "~/Helper Functions/ApiCalls";
-import SingleRewardDetails from "~/Components/RewardsPage/SingleRewardDetails";
-import EditRewardForm from "~/Components/RewardsPage/EditRewardForm";
+import EditRewardForm from "./EditRewardForm";
+import SingleRewardDetails from "./SingleRewardDetails";
+import ConfirmationDeleteDialog from "~/Components/SharedComponents/ConfirmationDeleteDialog";
 
 interface RewardProps {
   reward: RewardResponse;
@@ -21,45 +23,73 @@ interface RewardProps {
 
 export default function SingleReward({ reward, setUserData }: RewardProps) {
   const [isEditing, setEditing] = useState<boolean>(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
-  const handleDelete = async () => {
-    deleteEntityApiCall("rewards", reward.rewardId)
-      .then(() => {
-        setUserData((prevState: UserData) => ({
-          ...prevState,
-          rewards: prevState.rewards.filter(
-            (oldReward) => oldReward !== reward,
-          ),
-        }));
-      })
-      .catch((err) => console.log(err));
+  const handleDeleteConfirm = async () => {
+    try {
+      await deleteEntityApiCall("rewards", reward.rewardId);
+      setUserData((prev) => ({
+        ...prev,
+        rewards: prev.rewards.filter((old) => old !== reward),
+      }));
+    } catch (err) {
+      console.error(err);
+    }
   };
+
   return (
     <>
-      <Box sx={{ mb: 1 }}>
-        <Container maxWidth="sm">
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography component="section">{reward.name}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              {isEditing ? (
-                <EditRewardForm
-                  reward={reward}
-                  setUserData={setUserData}
-                  setEditing={setEditing}
-                />
-              ) : (
-                <SingleRewardDetails
-                  reward={reward}
-                  setEditing={setEditing}
-                  handleDelete={handleDelete}
-                />
-              )}
-            </AccordionDetails>
-          </Accordion>
-        </Container>
-      </Box>
+      <Card
+        sx={{
+          height: "100%",
+          borderRadius: 3,
+          boxShadow: 3,
+          transition: "transform 0.3s, box-shadow 0.3s",
+          "&:hover": {
+            transform: "translateY(-3px)",
+            boxShadow: 6,
+          },
+        }}
+      >
+        <CardContent>
+          {isEditing ? (
+            <EditRewardForm
+              reward={reward}
+              setUserData={setUserData}
+              setEditing={setEditing}
+            />
+          ) : (
+            <Box>
+              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
+                {reward.name}
+              </Typography>
+              <SingleRewardDetails reward={reward} />
+            </Box>
+          )}
+        </CardContent>
+
+        {!isEditing && (
+          <CardActions sx={{ justifyContent: "flex-end" }}>
+            <IconButton color="primary" onClick={() => setEditing(true)}>
+              <EditIcon />
+            </IconButton>
+            <IconButton color="error" onClick={() => setOpenDeleteDialog(true)}>
+              <DeleteIcon />
+            </IconButton>
+          </CardActions>
+        )}
+      </Card>
+
+      <ConfirmationDeleteDialog
+        open={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+        onConfirm={() => {
+          handleDeleteConfirm();
+          setOpenDeleteDialog(false);
+        }}
+        title="Confirm Delete"
+        message="Are you sure you want to delete this reward? This action cannot be undone."
+      />
     </>
   );
 }

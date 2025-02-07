@@ -1,7 +1,8 @@
-import { Button } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { Dispatch, SetStateAction } from "react";
 import UserData from "~/types/Response/UserData";
 import { useNavigate } from "react-router";
+import { ExitToApp } from "@mui/icons-material";
 
 interface Props {
   setUserData: Dispatch<SetStateAction<UserData>>;
@@ -26,7 +27,11 @@ const LogoutButton = ({ setUserData }: Props) => {
     navigate("/");
   };
 
-  return <Button onClick={handleLogout}>Log Out</Button>;
+  return (
+    <IconButton onClick={handleLogout}>
+      <ExitToApp />
+    </IconButton>
+  );
 };
 
 export default LogoutButton;

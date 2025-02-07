@@ -53,7 +53,9 @@ const RedeemRewardDialog: React.FC<RedeemRewardDialogProps> = ({
                 <ListItem
                   key={reward.rewardId}
                   sx={{
-                    bgcolor: isRedeemable ? "#e3f2fd" : "#f5f5f5",
+                    bgcolor: isRedeemable
+                      ? "background.paper"
+                      : "background.default",
                     borderRadius: 2,
                     mb: 1,
                     p: 2,

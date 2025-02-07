@@ -12,18 +12,22 @@ import { Outlet } from "react-router";
 import { Dispatch, SetStateAction, useState } from "react";
 import UserData from "~/types/Response/UserData";
 
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+
 interface Props {
   setUserData: Dispatch<SetStateAction<UserData>>;
   userData: UserData;
+  mode: "light" | "dark";
+  toggleMode: () => void;
 }
 
-export function Layout({ setUserData, userData }: Props) {
+export function Layout({ setUserData, userData, mode, toggleMode }: Props) {
   const [open, setOpen] = useState(true);
   const drawerWidth = open ? 240 : 80;
 
   return (
     <Box sx={{ display: "flex" }}>
-      {/* TOP BAR */}
       {userData.username !== "" && (
         <AppBar
           position="fixed"
@@ -38,7 +42,7 @@ export function Layout({ setUserData, userData }: Props) {
           <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
               <IconButton onClick={() => setOpen(!open)}>
-                <MenuIcon sx={{ color: "black" }} />
+                <MenuIcon sx={{ color: "primary" }} />
               </IconButton>
               <Box
                 sx={{
@@ -51,30 +55,32 @@ export function Layout({ setUserData, userData }: Props) {
                 }}
               >
                 <img
-                  width={"50px"}
+                  width={"55px"}
                   src={`logo.svg`}
                   loading="lazy"
                   alt={"CC"}
                 />
               </Box>
             </Box>
-
-            {/* Title */}
             <Typography
               variant="h6"
               sx={{
                 flexGrow: 1,
                 textAlign: "center",
                 fontWeight: "bold",
-                color: "#1e293b",
+                color: "text.primary",
               }}
             >
               ChoreChamp
             </Typography>
+
+            <IconButton onClick={toggleMode} sx={{ mr: 2 }}>
+              {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
+            </IconButton>
           </Toolbar>
         </AppBar>
       )}
-      {/* DRAWER */}
+
       {userData.username !== "" && (
         <Drawer
           variant="permanent"
@@ -89,7 +95,7 @@ export function Layout({ setUserData, userData }: Props) {
           }}
         >
           <Toolbar />
-          <SideBar setUserData={setUserData} userData={userData} />
+          <SideBar setUserData={setUserData} userData={userData} open={open} />
         </Drawer>
       )}
 

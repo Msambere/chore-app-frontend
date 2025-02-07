@@ -1,9 +1,4 @@
-import {
-  Box,
-  Divider,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Tooltip, Typography } from "@mui/material";
 import {
   MilitaryTech,
   EmojiEvents,

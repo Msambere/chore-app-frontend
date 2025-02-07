@@ -146,7 +146,7 @@ const MissionChoresList = ({
               key={chore.choreId}
               disableGutters
               sx={{
-                bgcolor: chore.completed ? "success.lighter" : "grey.100",
+                bgcolor: chore.completed ? "success.light" : "background.paper",
                 borderRadius: 2,
                 minHeight: 56,
                 px: 2,
@@ -162,10 +162,8 @@ const MissionChoresList = ({
                 <Avatar
                   src=""
                   sx={{
-                    bgcolor: chore.completed
-                      ? "success.light"
-                      : "primary.light",
-                    color: "#fff",
+                    bgcolor: chore.completed ? "success" : "primary",
+                    color: "primary.contrastText",
                   }}
                 >
                   {chore.choreId}
@@ -211,7 +209,7 @@ const MissionChoresList = ({
                   }
                 >
                   {chore.completed ? (
-                    <RadioButtonCheckedRounded sx={{ color: "green" }} />
+                    <RadioButtonCheckedRounded sx={{ color: "success" }} />
                   ) : (
                     <RadioButtonUnchecked />
                   )}
