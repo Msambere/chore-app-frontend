@@ -37,6 +37,7 @@ const MissionView = ({
           missionChores={missionChores}
           userData={userData}
           setUserData={setUserData}
+          setStartMission={setStartMission}
         />
       ) : (
         <MissionForm

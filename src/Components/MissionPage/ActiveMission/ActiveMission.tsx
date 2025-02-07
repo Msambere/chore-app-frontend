@@ -24,12 +24,14 @@ interface ActiveMissionProps {
   missionChores: MissionChoreResponse[];
   userData: UserData;
   setUserData: Dispatch<SetStateAction<UserData>>;
+  setStartMission: Dispatch<SetStateAction<boolean>>;
 }
 
 const ActiveMission = ({
   userData,
   setUserData,
   missionChores,
+  setStartMission,
 }: ActiveMissionProps): JSX.Element => {
   const [chores, setChores] = useState<MissionChoreResponse[]>(missionChores);
   const [missionFinished, setMissionFinished] = useState(false);
@@ -137,6 +139,7 @@ const ActiveMission = ({
       ...prevData,
       missions: [...prevData.missions, missionData],
     }));
+    setStartMission(false);
     console.log("User data updated successfully!", missionData);
     navigate("/UserProfile");
   };
