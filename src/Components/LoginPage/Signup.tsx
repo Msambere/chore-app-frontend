@@ -10,20 +10,15 @@ import { createUser } from "~/Helper Functions/ApiCalls";
 import { Link as RouterLink, useNavigate } from "react-router";
 import signupSchema from "~/types/Forms/SignupSchema";
 import SignupFormInputs from "~/types/Forms/SignupFormInputs";
-import { Dispatch, SetStateAction } from "react";
-import UserData from "~/types/Response/UserData";
 
-interface SignupViewProps {
-  setUserData: Dispatch<SetStateAction<UserData>>;
-}
-
-export default function SignupView({ setUserData }: SignupViewProps) {
+export default function SignupView() {
   const formResolver = zodResolver(signupSchema);
   const formContext = useForm<SignupFormInputs>({ resolver: formResolver });
   const { handleSubmit, setError } = formContext;
   const navigate = useNavigate();
 
   const onSubmit = async (data: SignupFormInputs) => {
+    console.log("Submiting new user", data);
     createUser(data)
       .then((response) => {
         response.json().then((data) => {
@@ -31,7 +26,6 @@ export default function SignupView({ setUserData }: SignupViewProps) {
             alert(
               "Your new user account has been created! Please check your email to confirm.",
             );
-            setUserData(data);
             navigate("/");
           } else {
             alert(data.message);
@@ -53,15 +47,15 @@ export default function SignupView({ setUserData }: SignupViewProps) {
       handleSubmit={handleSubmit(onSubmit)}
       resolver={formResolver}
     >
-      <Stack spacing={2}>
+      <Stack spacing={2} maxWidth={0.7} m={"auto"}>
         <TextFieldElement name={"firstName"} label={"First Name"} required />
         <TextFieldElement name={"lastName"} label={"Last Name"} required />
         <TextFieldElement name={"username"} label={"Username"} required />
         <TextFieldElement name={"email"} label={"Email"} required />
         <PasswordElement name={"password"} label={"Password"} required />
       </Stack>
-      <Box sx={{ margin: 4 }}>
-        <Button component={RouterLink} to={"/Login"}>
+      <Box sx={{ maxWidth: 0.7, margin: "auto" }}>
+        <Button component={RouterLink} to={"/"}>
           Back to Login
         </Button>{" "}
         <Button variant={"contained"} type={"submit"} color={"primary"}>
