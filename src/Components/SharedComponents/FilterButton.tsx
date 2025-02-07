@@ -17,74 +17,55 @@ const MenuProps = {
   },
 };
 
-function getStyles(
-  recurrence: string,
-  sortValues: readonly string[],
-  theme: Theme,
-) {
-  return {
-    fontWeight: sortValues.includes(recurrence)
-      ? theme.typography.fontWeightMedium
-      : theme.typography.fontWeightRegular,
-  };
-}
+// function getStyles(
+//   recurrence: string,
+//   filterValues: readonly string[],
+//   theme: Theme,
+// ) {
+//   return {
+//     fontWeight: filterValues.includes(recurrence)
+//       ? theme.typography.fontWeightMedium
+//       : theme.typography.fontWeightRegular,
+//   };
+// }
 
 interface Props {
   recurrenceList: string[];
   categoryList: string[];
-  setSortOrder: Dispatch<SetStateAction<string>>;
-  setSortValues: Dispatch<SetStateAction<string[]>>;
-  sortValues: string[];
-  sortOrder: string;
+  setFilterValues: Dispatch<SetStateAction<string[]>>;
+  filterValues: string[];
 }
 
-const SortingButtons = ({
+const FilterButton = ({
   recurrenceList,
   categoryList,
-  setSortOrder,
-  setSortValues,
-  sortValues,
-  sortOrder,
+  setFilterValues,
+  filterValues,
 }: Props) => {
   const theme = useTheme();
 
-  const handleSortValueChange = (event) => {
+  const handlefilterValueChange = (event) => {
     // setSortValue(event.target.value);
     const {
       target: { value },
     } = event;
-    setSortValues(
+    setFilterValues(
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value,
     );
-    console.log(sortValues);
-  };
-
-  // const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-  //   const {
-  //     target: { value },
-  //   } = event;
-  //   setPersonName(
-  //     // On autofill we get a stringified value.
-  //     typeof value === 'string' ? value.split(',') : value,
-  //   );
-  // };
-
-  const handleSortOrderChange = (event) => {
-    setSortOrder(event.target.value);
-    console.log(sortOrder);
+    console.log(filterValues);
   };
 
   return (
     <div>
       <FormControl sx={{ m: 1, minWidth: 125 }}>
-        <InputLabel htmlFor="sort-value-options">Sort by: </InputLabel>
+        <InputLabel htmlFor="filter-value-options">Filter by: </InputLabel>
         <Select
-          id="sort-value-options"
-          label="Sort by"
+          id="filter-value-options"
+          label="filter by"
           multiple
-          value={sortValues}
-          onChange={handleSortValueChange}
+          value={filterValues}
+          onChange={handlefilterValueChange}
           input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
           renderValue={(value) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
@@ -100,7 +81,7 @@ const SortingButtons = ({
             <MenuItem
               key={recurrence}
               value={recurrence}
-              style={getStyles(recurrence, sortValues, theme)}
+              // style={getStyles(recurrence, sortValues, theme)}
             >
               {recurrence}
             </MenuItem>
@@ -110,29 +91,15 @@ const SortingButtons = ({
             <MenuItem
               key={category}
               value={category}
-              style={getStyles(category, sortValues, theme)}
+              // style={getStyles(category, sortValues, theme)}
             >
               {category}
             </MenuItem>
           ))}
         </Select>
       </FormControl>
-      <FormControl sx={{ m: 1, minWidth: 125 }}>
-        <InputLabel id="sort-order-label">Sort Order:</InputLabel>
-        <Select
-          labelId="sort-order-label"
-          id="sort-order-options"
-          value={sortOrder}
-          onChange={handleSortOrderChange}
-          autoWidth
-          label="Sort Order:"
-        >
-          <MenuItem value={"asc"}>Ascending</MenuItem>
-          <MenuItem value={"desc"}>Descending</MenuItem>
-        </Select>
-      </FormControl>
     </div>
   );
 };
 
-export default SortingButtons;
+export default FilterButton;
