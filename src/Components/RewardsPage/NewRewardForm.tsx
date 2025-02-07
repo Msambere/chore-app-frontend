@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import UserData from "~/types/Response/UserData";
-import { useNavigate, useNavigation} from "react-router";
+import { useNavigate } from "react-router";
 import CloseIcon from "@mui/icons-material/Close";
 import { createNewRewardApiCall } from "~/Helper Functions/ApiCalls";
 import RewardResponse from "~/types/Response/RewardResponse";
@@ -38,11 +38,10 @@ export default function NewRewardForm({ userData, setUserData }: Props) {
   const [errorMsg, setErrorMsg] = useState("");
   const [rewardRequestData, setRewardRequestData] =
     useState<RewardRequest>(defaultRequestData);
-  const navigation = useNavigation();
 
   const handleCancel = () => {
-    navigate(-1);
-  }
+    navigate("/Rewards");
+  };
 
   useEffect(() => {
     if (userData.username === "Not logged in") {
@@ -194,6 +193,14 @@ export default function NewRewardForm({ userData, setUserData }: Props) {
           >
             <Button type="submit" variant="outlined">
               Create a new reward!
+            </Button>
+            <Button
+              type="submit"
+              color="secondary"
+              variant="outlined"
+              onClick={handleCancel}
+            >
+              Cancel
             </Button>
           </Box>
         </form>
