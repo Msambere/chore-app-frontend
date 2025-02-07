@@ -11,6 +11,7 @@ import NewRewardForm from "~/Components/RewardsPage/NewRewardForm";
 import NewChoreForm from "~/Components/ChoresPage/NewChoreForm";
 import UserData from "~/types/Response/UserData";
 import { getExistngUserApiCall } from "~/Helper Functions/ApiCalls";
+import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 
 function App() {
   const [userData, setUserData] = useState<UserData>({
@@ -24,7 +25,10 @@ function App() {
     missions: [],
     rewards: [],
   });
-
+  const [startMission, setStartMission] = useState<boolean>(false);
+  const [missionChores, setMissionChores] = useState<MissionChoreResponse[]>(
+    [],
+  );
   useEffect(() => {
     console.log(localStorage.getItem("username"));
     const loggedInUser: string | null = localStorage.getItem("username");
@@ -44,7 +48,14 @@ function App() {
         >
           <Route
             path="/UserProfile"
-            element={<UserProfileView userData={userData} />}
+            element={
+              <UserProfileView
+                userData={userData}
+                setUserData={setUserData}
+                setStartMission={setStartMission}
+                setMissionChores={setMissionChores}
+              />
+            }
           />
           <Route index element={<LoginView setUserData={setUserData} />} />
           <Route
@@ -78,7 +89,14 @@ function App() {
           <Route
             path="/Mission"
             element={
-              <MissionView userData={userData} setUserData={setUserData} />
+              <MissionView
+                userData={userData}
+                setUserData={setUserData}
+                setStartMission={setStartMission}
+                startMission={startMission}
+                missionChores={missionChores}
+                setMissionChores={setMissionChores}
+              />
             }
           />
         </Route>

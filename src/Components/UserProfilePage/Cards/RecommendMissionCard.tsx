@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Button,
   Typography,
@@ -11,10 +11,18 @@ import ChoreResponse from "~/types/Response/ChoreResponse";
 import { extractUserCategories } from "~/Helper Functions/extractUserCategories";
 import { extractUserRecurrences } from "~/Helper Functions/extractUserRecurrences";
 import { MissionRequest } from "~/types/Request/MissionRequest";
+import UserData from "~/types/Response/UserData";
+import { createNewMissionApiCall } from "~/Helper Functions/ApiCalls";
+import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
+import { useNavigate } from "react-router";
 
 export interface RecommendMissionProps {
   chores: ChoreResponse[];
   userId: number;
+  setMissionChores: Dispatch<SetStateAction<MissionChoreResponse[]>>;
+  setStartMission: React.Dispatch<React.SetStateAction<boolean>>;
+  userData: UserData;
+  setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
 const getRandomNumber = (min: number, max: number) => {
@@ -25,7 +33,11 @@ const getRandomNumber = (min: number, max: number) => {
 
 export default function RecommendMissionCard({
   chores,
+  setMissionChores,
+  setStartMission,
+  userData,
 }: RecommendMissionProps) {
+  const navigate = useNavigate();
   const [missionRequestData, setMissionRequestData] = useState<
     MissionRequest | undefined
   >();
@@ -47,6 +59,22 @@ export default function RecommendMissionCard({
   }, [chores]);
 
   if (!chores?.length) return null;
+
+  const handleCheckOutMission = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    if (!missionRequestData) return;
+
+    createNewMissionApiCall(userData.userId, missionRequestData)
+      .then((response) => {
+        setMissionChores(response.missionChores);
+        setStartMission(true);
+        navigate("/Mission");
+        console.log("Mission Created:", response);
+      })
+      .catch((error) => {
+        console.error("Error creating mission:", error.response.data.message);
+      });
+  };
 
   return (
     <Card sx={{ borderRadius: 3, boxShadow: 2 }}>
@@ -90,6 +118,7 @@ export default function RecommendMissionCard({
               variant="contained"
               fullWidth
               sx={{ mt: 1, borderRadius: 2 }}
+              onClick={handleCheckOutMission}
             >
               Check out Mission!
             </Button>

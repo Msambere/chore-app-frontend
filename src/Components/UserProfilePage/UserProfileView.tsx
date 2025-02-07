@@ -1,5 +1,5 @@
 import { Box, Grid2 } from "@mui/material";
-import { useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import UserData from "~/types/Response/UserData";
 import { computePointStats } from "./computePointStats";
@@ -9,12 +9,22 @@ import PointsSummaryCard from "~/Components/UserProfilePage/Cards/PointSummaryCa
 import CalendarAndBadgesCard from "~/Components/UserProfilePage/Cards/CalendarAndBadgesCard";
 import RecommendMissionCard from "~/Components/UserProfilePage/Cards/RecommendMissionCard";
 import MissionSummaryCard from "~/Components/UserProfilePage/Cards/MissionSummaryCard";
+import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 
 interface UserProfileViewProps {
   userData: UserData;
+  setUserData: Dispatch<SetStateAction<UserData>>;
+  setStartMission: Dispatch<SetStateAction<boolean>>;
+  setMissionChores: Dispatch<SetStateAction<MissionChoreResponse[]>>;
 }
 
-export default function UserProfileView({ userData }: UserProfileViewProps) {
+export default function UserProfileView({
+  userData,
+  setUserData,
+  setStartMission,
+  setMissionChores,
+}: UserProfileViewProps) {
+
   const { currentPointBalance, averagePointsPerMission, totalPointsEarned } =
     computePointStats(userData);
 
@@ -24,6 +34,7 @@ export default function UserProfileView({ userData }: UserProfileViewProps) {
   const recentTasks = userData.chores
     .sort((a, b) => b.choreId - a.choreId)
     .slice(0, 2);
+  const lastMission = recentMissions[0];
 
   const totalTasks = userData.chores.length;
   const completedTasks = userData.chores.filter((chore) =>
@@ -36,14 +47,6 @@ export default function UserProfileView({ userData }: UserProfileViewProps) {
   const taskCompletionRate =
     totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
-  // sort mission and display the latest one
-  const sortedMissions = [...userData.missions].sort(
-    (a, b) => b.missionId - a.missionId,
-  );
-  const lastMission = sortedMissions[0];
-
-  // just a print statement to make sure userData is updated correctly
-  // when user completed Mission
   useEffect(() => {
     console.log("UserData updated in UserProfileView:", userData);
   }, [userData]);
@@ -60,6 +63,10 @@ export default function UserProfileView({ userData }: UserProfileViewProps) {
             <RecommendMissionCard
               chores={userData.chores}
               userId={userData.userId}
+              setMissionChores={setMissionChores}
+              setStartMission={setStartMission}
+              userData={userData}
+              setUserData={setUserData}
             />
           </Grid2>
         </Grid2>
@@ -88,7 +95,7 @@ export default function UserProfileView({ userData }: UserProfileViewProps) {
         <Grid2 size={12}>
           {userData.missions.length > 0 && (
             <MissionSummaryCard
-              missionsLength={sortedMissions.length}
+              missionsLength={recentMissions.length}
               mission={lastMission}
             />
           )}

@@ -36,7 +36,6 @@ const MissionForm = ({
   setMissionChores,
   setStartMission,
   userData,
-  setUserData,
 }: MissionProps) => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [recurrenceOptions, setRecurrenceOptions] = useState<string[]>();
@@ -48,10 +47,10 @@ const MissionForm = ({
   useEffect(() => {
     const recurrenceList: string[] = extractUserRecurrences(userData.chores);
     recurrenceList.push("Any");
-    setRecurrenceOptions(recurrenceList);
+    setRecurrenceOptions(recurrenceList.sort());
     const categoryList: string[] = extractUserCategories(userData.chores);
     categoryList.push("Any");
-    setCategoryOptions(categoryList);
+    setCategoryOptions(categoryList.sort());
   }, []);
 
   const handleInputChange = (

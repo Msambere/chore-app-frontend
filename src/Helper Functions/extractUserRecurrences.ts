@@ -5,5 +5,5 @@ export const extractUserRecurrences = (chores: ChoreResponse[]): string[] => {
   chores.forEach((chore) => {
     recurrences.add(chore.recurrence);
   });
-  return Array.from(recurrences);
+  return Array.from(recurrences).sort();
 };
