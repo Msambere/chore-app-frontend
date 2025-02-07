@@ -1,5 +1,5 @@
 import { Box, Grid2 } from "@mui/material";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 
 import UserData from "~/types/Response/UserData";
 import { computePointStats } from "./computePointStats";
@@ -24,7 +24,6 @@ export default function UserProfileView({
   setStartMission,
   setMissionChores,
 }: UserProfileViewProps) {
-
   const { currentPointBalance, averagePointsPerMission, totalPointsEarned } =
     computePointStats(userData);
 
