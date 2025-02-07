@@ -8,14 +8,6 @@ interface RewardsProps {
 }
 
 const RewardsView = ({ userData, setUserData }: RewardsProps) => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (userData.username === "") {
-      navigate("/");
-    }
-  }, []);
-
   return <RewardList userData={userData} setUserData={setUserData} />;
 };
 

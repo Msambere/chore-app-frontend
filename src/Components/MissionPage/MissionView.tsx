@@ -22,14 +22,6 @@ const MissionView = ({
   missionChores,
   setMissionChores,
 }: MissionProps): JSX.Element => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    console.log(userData.username);
-    if (userData.username === "") {
-      navigate("/");
-    }
-  }, []);
-
   return (
     <main>
       {startMission ? (
