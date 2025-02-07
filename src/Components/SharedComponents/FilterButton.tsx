@@ -1,10 +1,9 @@
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import React, { Dispatch, SetStateAction } from "react";
 import { Box, Chip, ListSubheader, OutlinedInput } from "@mui/material";
-import { Theme, useTheme } from "@mui/material/styles";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -16,18 +15,6 @@ const MenuProps = {
     },
   },
 };
-
-// function getStyles(
-//   recurrence: string,
-//   filterValues: readonly string[],
-//   theme: Theme,
-// ) {
-//   return {
-//     fontWeight: filterValues.includes(recurrence)
-//       ? theme.typography.fontWeightMedium
-//       : theme.typography.fontWeightRegular,
-//   };
-// }
 
 interface Props {
   recurrenceList: string[];
@@ -42,18 +29,11 @@ const FilterButton = ({
   setFilterValues,
   filterValues,
 }: Props) => {
-  const theme = useTheme();
+  const handleFilterValueChange = (event: SelectChangeEvent<string[]>) => {
+    const { value } = event.target;
 
-  const handlefilterValueChange = (event) => {
-    // setSortValue(event.target.value);
-    const {
-      target: { value },
-    } = event;
-    setFilterValues(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value,
-    );
-    console.log(filterValues);
+    // Ensure value is always an array
+    setFilterValues(typeof value === "string" ? value.split(",") : value);
   };
 
   return (
@@ -64,8 +44,9 @@ const FilterButton = ({
           id="filter-value-options"
           label="filter by"
           multiple
+          name="filter-values"
           value={filterValues}
-          onChange={handlefilterValueChange}
+          onChange={handleFilterValueChange}
           input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
           renderValue={(value) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
@@ -78,21 +59,13 @@ const FilterButton = ({
         >
           <ListSubheader> Recurrence </ListSubheader>
           {recurrenceList.map((recurrence) => (
-            <MenuItem
-              key={recurrence}
-              value={recurrence}
-              // style={getStyles(recurrence, sortValues, theme)}
-            >
+            <MenuItem key={recurrence} value={recurrence}>
               {recurrence}
             </MenuItem>
           ))}
           <ListSubheader>Category</ListSubheader>
           {categoryList.map((category) => (
-            <MenuItem
-              key={category}
-              value={category}
-              // style={getStyles(category, sortValues, theme)}
-            >
+            <MenuItem key={category} value={category}>
               {category}
             </MenuItem>
           ))}
