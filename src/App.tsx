@@ -12,6 +12,7 @@ import NewChoreForm from "~/Components/ChoresPage/NewChoreForm";
 import UserData from "~/types/Response/UserData";
 import { getExistngUserApiCall } from "~/Helper Functions/ApiCalls";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
+import PrivateRoutes from "~/Components/Layout/PrivateRoutes";
 
 function App() {
   const [userData, setUserData] = useState<UserData>({
@@ -46,59 +47,59 @@ function App() {
           path="/"
           element={<Layout setUserData={setUserData} userData={userData} />}
         >
-          <Route
-            path="/UserProfile"
-            element={
-              <UserProfileView
-                userData={userData}
-                setUserData={setUserData}
-                setStartMission={setStartMission}
-                setMissionChores={setMissionChores}
-              />
-            }
-          />
           <Route index element={<LoginView setUserData={setUserData} />} />
-          <Route
-            path="/Signup"
-            element={<SignupView setUserData={setUserData} />}
-          />
-          <Route
-            path="/Chores"
-            element={
-              <ChoresView userData={userData} setUserData={setUserData} />
-            }
-          />
-          <Route
-            path="/Chores/create"
-            element={
-              <NewChoreForm userData={userData} setUserData={setUserData} />
-            }
-          />
-          <Route
-            path="/Rewards"
-            element={
-              <RewardsView userData={userData} setUserData={setUserData} />
-            }
-          />
-          <Route
-            path="/Rewards/create"
-            element={
-              <NewRewardForm userData={userData} setUserData={setUserData} />
-            }
-          />
-          <Route
-            path="/Mission"
-            element={
-              <MissionView
-                userData={userData}
-                setUserData={setUserData}
-                setStartMission={setStartMission}
-                startMission={startMission}
-                missionChores={missionChores}
-                setMissionChores={setMissionChores}
-              />
-            }
-          />
+          <Route path="/Signup" element={<SignupView />} />
+          <Route element={<PrivateRoutes />}>
+            <Route
+              path="/UserProfile"
+              element={
+                <UserProfileView
+                  userData={userData}
+                  setUserData={setUserData}
+                  setStartMission={setStartMission}
+                  setMissionChores={setMissionChores}
+                />
+              }
+            />
+            <Route
+              path="/Chores"
+              element={
+                <ChoresView userData={userData} setUserData={setUserData} />
+              }
+            />
+            <Route
+              path="/Chores/create"
+              element={
+                <NewChoreForm userData={userData} setUserData={setUserData} />
+              }
+            />
+            <Route
+              path="/Rewards"
+              element={
+                <RewardsView userData={userData} setUserData={setUserData} />
+              }
+            />
+            <Route
+              path="/Rewards/create"
+              element={
+                <NewRewardForm userData={userData} setUserData={setUserData} />
+              }
+            />
+            <Route
+              path="/Mission"
+              element={
+                <MissionView
+                  userData={userData}
+                  setUserData={setUserData}
+                  setStartMission={setStartMission}
+                  startMission={startMission}
+                  missionChores={missionChores}
+                  setMissionChores={setMissionChores}
+                />
+              }
+            />
+            <Route path="*" element={<h1> 404: There is nothing here!</h1>} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
