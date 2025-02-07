@@ -7,6 +7,7 @@ import { extractUserRecurrences } from "~/Helper Functions/extractUserRecurrence
 import { extractUserCategories } from "~/Helper Functions/extractUserCategories";
 import sortData from "~/Helper Functions/sortData";
 import FilterButton from "~/Components/SharedComponents/FilterButton";
+import filterData from "~/Helper Functions/filterData";
 
 interface ChoresProps {
   userData: UserData;
@@ -48,7 +49,16 @@ const ChoresView = ({ userData, setUserData }: ChoresProps) => {
       />
       <ChoreList
         userData={userData}
-        chores={sortData(userData.chores, sortValue, sortOrder)}
+        chores={sortData(
+          filterData(
+            userData.chores,
+            filterValues,
+            recurrenceList,
+            categoryList,
+          ),
+          sortValue,
+          sortOrder,
+        )}
         setUserData={setUserData}
         recurrenceList={recurrenceList}
         categoryList={categoryList}
