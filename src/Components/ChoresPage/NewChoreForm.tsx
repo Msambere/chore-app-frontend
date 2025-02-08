@@ -13,9 +13,9 @@ import ChoreResponse from "~/types/Response/ChoreResponse";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import UserData from "~/types/Response/UserData";
 import { useNavigate } from "react-router";
-import { extractUserRecurrences } from "~/Helper Functions/extractUserRecurrences";
-import { extractUserCategories } from "~/Helper Functions/extractUserCategories";
-import { createNewChoreApiCall } from "~/Helper Functions/ApiCalls";
+import { extractUserRecurrences } from "~/HelperFunctions/extractUserRecurrences";
+import { extractUserCategories } from "~/HelperFunctions/extractUserCategories";
+import { createNewChoreApiCall } from "~/HelperFunctions/ApiCalls";
 import CloseIcon from "@mui/icons-material/Close";
 import AutocompleteFormField from "~/Components/SharedComponents/AutocompleteFormField";
 

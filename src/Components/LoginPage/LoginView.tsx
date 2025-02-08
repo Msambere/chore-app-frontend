@@ -9,7 +9,7 @@ import {
 import { Button, Container, Stack, Typography } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router";
 import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
-import { getUserInfo } from "~/Helper Functions/ApiCalls";
+import { getUserInfo } from "~/HelperFunctions/ApiCalls";
 import UserData from "~/types/Response/UserData";
 
 const loginSchema = z.object({

@@ -17,7 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { createNewRewardApiCall } from "~/Helper Functions/ApiCalls";
+import { createNewRewardApiCall } from "~/HelperFunctions/ApiCalls";
 import RewardResponse from "~/types/Response/RewardResponse";
 import UserData from "~/types/Response/UserData";
 

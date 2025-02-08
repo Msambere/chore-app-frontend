@@ -8,11 +8,11 @@ import {
   CardContent,
 } from "@mui/material";
 import ChoreResponse from "~/types/Response/ChoreResponse";
-import { extractUserCategories } from "~/Helper Functions/extractUserCategories";
-import { extractUserRecurrences } from "~/Helper Functions/extractUserRecurrences";
+import { extractUserCategories } from "~/HelperFunctions/extractUserCategories";
+import { extractUserRecurrences } from "~/HelperFunctions/extractUserRecurrences";
 import { MissionRequest } from "~/types/Request/MissionRequest";
 import UserData from "~/types/Response/UserData";
-import { createNewMissionApiCall } from "~/Helper Functions/ApiCalls";
+import { createNewMissionApiCall } from "~/HelperFunctions/ApiCalls";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 import { useNavigate } from "react-router";
 

@@ -7,7 +7,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import { formatTime } from "~/Helper Functions/FormatTime";
+import { formatTime } from "~/HelperFunctions/FormatTime";
 
 interface MissionSummaryDialogProps {
   open: boolean;

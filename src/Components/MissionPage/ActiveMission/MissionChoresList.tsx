@@ -16,7 +16,7 @@ import {
   RadioButtonUnchecked,
 } from "@mui/icons-material";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
-import { formatTime } from "~/Helper Functions/FormatTime";
+import { formatTime } from "~/HelperFunctions/FormatTime";
 
 interface MissionChoresListProps {
   chores: MissionChoreResponse[];

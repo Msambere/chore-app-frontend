@@ -12,7 +12,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import ChoreResponse from "~/types/Response/ChoreResponse";
-import { deleteEntityApiCall } from "~/Helper Functions/ApiCalls";
+import { deleteEntityApiCall } from "~/HelperFunctions/ApiCalls";
 import UserData from "~/types/Response/UserData";
 import SingleChoreDetails from "./SingleChoreDetails";
 import EditChoreForm from "./EditChoreForm";
