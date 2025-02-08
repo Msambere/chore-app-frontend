@@ -6,7 +6,7 @@ import {
   TextFieldElement,
 } from "react-hook-form-mui";
 import { Button, Stack, Box } from "@mui/material";
-import { createUser } from "~/Helper Functions/ApiCalls";
+import { createUser } from "~/HelperFunctions/ApiCalls";
 import { Link as RouterLink, useNavigate } from "react-router";
 import signupSchema from "~/types/Forms/SignupSchema";
 import SignupFormInputs from "~/types/Forms/SignupFormInputs";

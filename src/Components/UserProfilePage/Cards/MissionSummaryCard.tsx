@@ -7,7 +7,7 @@ import {
   Star,
 } from "@mui/icons-material";
 import MissionResponse from "~/types/Response/MissionResponse";
-import { formatTime } from "~/Helper Functions/FormatTime";
+import { formatTime } from "~/HelperFunctions/FormatTime";
 
 interface MissionSummaryProps {
   mission?: MissionResponse;

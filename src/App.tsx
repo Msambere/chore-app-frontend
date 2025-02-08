@@ -13,7 +13,7 @@ import ChoresView from "~/Components/ChoresPage/ChoresView";
 import NewRewardForm from "~/Components/RewardsPage/NewRewardForm";
 import NewChoreForm from "~/Components/ChoresPage/NewChoreForm";
 import UserData from "~/types/Response/UserData";
-import { getExistngUserApiCall } from "~/Helper Functions/ApiCalls";
+import { getExistngUserApiCall } from "~/HelperFunctions/ApiCalls";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 import PrivateRoutes from "~/Components/Layout/PrivateRoutes";
 import { makeAppTheme } from "~/Theme/theme";

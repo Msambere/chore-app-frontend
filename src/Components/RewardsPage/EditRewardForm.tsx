@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { updateEntityApiCall } from "~/Helper Functions/ApiCalls";
+import { updateEntityApiCall } from "~/HelperFunctions/ApiCalls";
 import UserData from "~/types/Response/UserData";
 import RewardResponse from "~/types/Response/RewardResponse";
 

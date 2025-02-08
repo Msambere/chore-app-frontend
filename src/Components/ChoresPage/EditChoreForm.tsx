@@ -10,7 +10,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import ChoreResponse from "~/types/Response/ChoreResponse";
-import { updateEntityApiCall } from "~/Helper Functions/ApiCalls";
+import { updateEntityApiCall } from "~/HelperFunctions/ApiCalls";
 import UserData from "~/types/Response/UserData";
 import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";

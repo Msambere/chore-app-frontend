@@ -18,7 +18,7 @@ import MissionResponse from "~/types/Response/MissionResponse";
 import {
   updateChoreCompletionApiCall,
   updateMissionApiCall,
-} from "~/Helper Functions/ApiCalls";
+} from "~/HelperFunctions/ApiCalls";
 
 interface ActiveMissionProps {
   missionChores: MissionChoreResponse[];

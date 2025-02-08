@@ -12,10 +12,10 @@ import {
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import UserData from "~/types/Response/UserData";
-import { extractUserRecurrences } from "~/Helper Functions/extractUserRecurrences";
-import { extractUserCategories } from "~/Helper Functions/extractUserCategories";
+import { extractUserRecurrences } from "~/HelperFunctions/extractUserRecurrences";
+import { extractUserCategories } from "~/HelperFunctions/extractUserCategories";
 import { MissionRequest } from "~/types/Request/MissionRequest";
-import { createNewMissionApiCall } from "~/Helper Functions/ApiCalls";
+import { createNewMissionApiCall } from "~/HelperFunctions/ApiCalls";
 import MissionResponse from "~/types/Response/MissionResponse";
 import CloseIcon from "@mui/icons-material/Close";
 

@@ -8,10 +8,10 @@ import SortIcon from "@mui/icons-material/Sort";
 import ChoreList from "~/Components/ChoresPage/ChoreList";
 import SortingButtons from "~/Components/SharedComponents/SortingButtons";
 import FilterButton from "~/Components/SharedComponents/FilterButton";
-import { extractUserRecurrences } from "~/Helper Functions/extractUserRecurrences";
-import { extractUserCategories } from "~/Helper Functions/extractUserCategories";
-import filterData from "~/Helper Functions/filterData";
-import sortData from "~/Helper Functions/sortData";
+import { extractUserRecurrences } from "~/HelperFunctions/extractUserRecurrences";
+import { extractUserCategories } from "~/HelperFunctions/extractUserCategories";
+import filterData from "~/HelperFunctions/filterData";
+import sortData from "~/HelperFunctions/sortData";
 import UserData from "~/types/Response/UserData";
 
 interface ChoresViewProps {

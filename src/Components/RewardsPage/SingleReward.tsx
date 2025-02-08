@@ -11,7 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UserData from "~/types/Response/UserData";
 import RewardResponse from "~/types/Response/RewardResponse";
-import { deleteEntityApiCall } from "~/Helper Functions/ApiCalls";
+import { deleteEntityApiCall } from "~/HelperFunctions/ApiCalls";
 import EditRewardForm from "./EditRewardForm";
 import SingleRewardDetails from "./SingleRewardDetails";
 import ConfirmationDeleteDialog from "~/Components/SharedComponents/ConfirmationDeleteDialog";
