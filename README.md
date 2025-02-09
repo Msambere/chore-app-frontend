@@ -63,7 +63,7 @@ Steps:
 The application uses environment variables for configuration. Create a `.env` file in the root directory with the following variables:
 
 ```
-REACT_APP_API_URL=<your_api_url>
+VITE_APP_BACKEND_URL=<your_api_url>
 ```
 
 ### Common Use Cases
