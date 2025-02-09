@@ -73,7 +73,10 @@ export default function SingleReward({ reward, setUserData }: RewardProps) {
             <IconButton color="primary" onClick={() => setEditing(true)}>
               <EditIcon />
             </IconButton>
-            <IconButton color="error" onClick={() => setOpenDeleteDialog(true)}>
+            <IconButton
+              color="secondary"
+              onClick={() => setOpenDeleteDialog(true)}
+            >
               <DeleteIcon />
             </IconButton>
           </CardActions>

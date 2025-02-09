@@ -8,7 +8,7 @@ const FinishMissionButton = ({ onFinishMission }: FinishMissionButtonProps) => {
   return (
     <Button
       variant="outlined"
-      color="error"
+      color="secondary"
       fullWidth
       sx={{
         mt: 2,

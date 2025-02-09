@@ -1,9 +1,8 @@
-import React, { Dispatch, JSX, SetStateAction, useEffect } from "react";
+import React, { Dispatch, JSX, SetStateAction } from "react";
 import ActiveMission from "~/Components/MissionPage/ActiveMission/ActiveMission";
 import MissionForm from "~/Components/MissionPage/MissionForm/MissionForm";
 import MissionChoreResponse from "~/types/Response/MissionChoreResponse";
 import UserData from "~/types/Response/UserData";
-import { useNavigate } from "react-router";
 
 interface MissionProps {
   userData: UserData;
