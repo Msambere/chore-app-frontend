@@ -12,7 +12,10 @@
 ChoreChamp is a React-based web application that gamifies household chores, making task management fun and rewarding.
 The app allows users to create and manage chores, embark on missions, earn points, and redeem rewards.
 With its intuitive interface and engaging features, ChoreChamp transforms mundane household tasks into exciting challenges.
-The app consists of two separate repositories: one for the Front-End and another for the Back-End.
+The app consists of two separate repositories: one for the Front-End and another for the Back-End API. In order to run this 
+front-end application, the back-end api must be installed and running. Follow this [link](https://github.com/Msambere/chore-app-backend) and complete the back-end setup 
+before continuing. 
+
 
 ## Demo
 ```
@@ -41,7 +44,7 @@ chore-app-frontend/
     │   ├── SharedComponents/
     │   ├── SideBar/
     │   └── UserProfilePage/
-    ├── Helper Functions/
+    ├── HelperFunctions/
     ├── Theme/
     └── types/
 ```
@@ -52,7 +55,7 @@ Key Files:
 - `Components`: Is the backbone of our React front end. It houses reusable, modular UI building blocks that represent different parts of our application
 
 Important integration points:
-- `Helper Functions/ApiCalls.ts`: Contains API calls to the backend
+- `HelperFunctions/ApiCalls.ts`: Contains functions for making API calls to the backend
 - `Theme/theme.ts`: Defines the application's theme
 - `types/`: Contains TypeScript type definitions for the application
 
@@ -73,14 +76,6 @@ cd chore-app-frontend
 ```
 3. Run `npm install` to install dependencies
 
-### Getting Started
-
-1. Start the development server:
-   ```
-   npm run dev
-   ```
-2. Open your browser and navigate to `http://localhost:<>`
-
 ### Configuration
 
 The application uses environment variables for configuration.
@@ -90,6 +85,16 @@ Create a `.env` file in the root directory with the following variables:
 VITE_APP_BACKEND_URL=<your_local_api_url>
 
 ```
+
+### Getting Started
+1. Make sure backend api is installed and running.
+
+2. Start the development server:
+   ```
+   npm run dev
+   ```
+3. Open your browser and navigate to `http://localhost:<port number, default is 5173>`
+
 
 ### Common Use Cases
 
@@ -105,13 +110,14 @@ VITE_APP_BACKEND_URL=<your_local_api_url>
    - Fill in the chore details and submit
 
 3. Starting a Mission:
+   - Click "Check out Mission" in User Profile for instance Start Mission
    - Navigate to the Mission page
    - Select mission parameters (recurrence, category, time limit)
    - Click "Start Mission" to begin
 
 4. Redeeming Rewards:
    - Complete chores to earn points
-   - Navigate to the Rewards page
+   - Click Redeem Rewards in Mission Page
    - Select a reward to redeem with your earned points
 
 
@@ -163,10 +169,22 @@ Here's an overview of the data flow:
 +-------------+      
 ```
 
-Note: Ensure proper error handling and state management throughout the application to maintain data consistency between the frontend and backend.
+Note: Application ensures proper error handling and state management throughout the application to maintain data consistency between the frontend and backend.
 
-### 🚀 Contact Us
+## 🚀 Contact Us
+### Amber Edwards - Fullstack SWE
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/amber-edwards-swe/)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Msambere)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:a.r.a.edwards@gmail.com)
+
+### Anh Tran - Fullstack SWE
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/anhtran077/)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/momofAnAl)
 [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:anhtr077@gmail.com)
+
+### Salma Anany - Fullstack SWE
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/salma-anany/)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/SalmaAnany)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:salmayousry5@gmail.com)
+
 
