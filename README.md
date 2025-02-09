@@ -49,7 +49,7 @@ chore-app-frontend/
 Key Files:
 - `App.tsx`: Main application component
 - `main.tsx`: Entry point of the application
-- `Components`: Is the backbone of your React front end. It houses reusable, modular UI building blocks that represent different parts of your application
+- `Components`: Is the backbone of our React front end. It houses reusable, modular UI building blocks that represent different parts of our application
 
 Important integration points:
 - `Helper Functions/ApiCalls.ts`: Contains API calls to the backend
@@ -116,7 +116,8 @@ VITE_APP_BACKEND_URL=<your_local_api_url>
 
 ## Data Flow
 
-The ChoreChamp application follows a client-server architecture with the React frontend communicating with a backend API. Here's an overview of the data flow:
+The ChoreChamp application follows a client-server architecture with the React frontend communicating with a backend API. 
+Here's an overview of the data flow:
 
 1. User Authentication:
    - User submits login credentials
