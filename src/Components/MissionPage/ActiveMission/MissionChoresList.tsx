@@ -4,9 +4,7 @@ import {
   Typography,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemText,
-  Avatar,
   IconButton,
   Stack,
   CircularProgress,
@@ -158,18 +156,6 @@ const MissionChoresList = ({
                 },
               }}
             >
-              <ListItemAvatar>
-                <Avatar
-                  src=""
-                  sx={{
-                    bgcolor: chore.completed ? "success" : "primary",
-                    color: "primary.contrastText",
-                  }}
-                >
-                  {chore.choreId}
-                </Avatar>
-              </ListItemAvatar>
-
               <ListItemText
                 primary={
                   <Typography
