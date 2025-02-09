@@ -104,13 +104,14 @@ VITE_APP_BACKEND_URL=<your_local_api_url>
    - Fill in the chore details and submit
 
 3. Starting a Mission:
+   - Click "Check out Mission" in User Profile for instance Start Mission
    - Navigate to the Mission page
    - Select mission parameters (recurrence, category, time limit)
    - Click "Start Mission" to begin
 
 4. Redeeming Rewards:
    - Complete chores to earn points
-   - Navigate to the Rewards page
+   - Click Redeem Rewards in Mission Page
    - Select a reward to redeem with your earned points
 
 
