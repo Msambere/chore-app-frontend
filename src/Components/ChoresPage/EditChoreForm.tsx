@@ -172,7 +172,6 @@ function EditChoreForm({
             defaultValue={choreRequestData.category}
           />
 
-          {/* TextField for Chore Length */}
           <TextField
             required
             fullWidth
@@ -187,12 +186,11 @@ function EditChoreForm({
           >
             {[0, 5, 10, 15, 20, 25, 30, 35, 40, 45].map((time, index) => (
               <MenuItem key={index} value={time}>
-                {time}
+                {time} minutes
               </MenuItem>
             ))}
           </TextField>
 
-          {/* Textfield forSelect a set difficulty level */}
           <TextField
             required
             fullWidth
@@ -215,17 +213,19 @@ function EditChoreForm({
           </TextField>
 
           <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end", // Aligns items to the right
-              mt: 2, // Optional: Add some margin-top
-            }}
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"flex-end"}
           >
-            <Button type="submit" variant="outlined">
-              Edit chore!
-            </Button>
-            <Button variant="outlined" onClick={() => setEditing(false)}>
+            <Button
+              onClick={() => setEditing(false)}
+              color={"secondary"}
+              variant={"outlined"}
+            >
               Cancel
+            </Button>
+            <Button type="submit" variant="contained" color={"primary"}>
+              Save
             </Button>
           </Box>
         </form>
