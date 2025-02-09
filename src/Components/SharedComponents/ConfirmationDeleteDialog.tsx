@@ -32,7 +32,7 @@ const ConfirmationDialog = ({
         <Button onClick={onClose} color="primary">
           No
         </Button>
-        <Button onClick={onConfirm} color="error" variant="contained">
+        <Button onClick={onConfirm} color="secondary" variant="contained">
           Yes, Delete
         </Button>
       </DialogActions>
