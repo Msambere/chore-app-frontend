@@ -1,8 +1,29 @@
 # ChoreChamp: A Gamified Chore Management App
+[![React Router](https://img.shields.io/badge/React_Router-v7-CA4245?style=for-the-badge&logo=react-router&logoColor=white)](https://reactrouter.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-4.x-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)](https://axios-http.com/)
+[![Material UI](https://img.shields.io/badge/Material_UI-007FFF?style=for-the-badge&logo=mui&logoColor=white)](https://mui.com/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)](https://eslint.org/)
+[![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)](https://prettier.io/)
+[![Rainbow](https://img.shields.io/badge/Rainbow-FF0080?style=for-the-badge&logo=rainbow&logoColor=white)](https://rainbow.me/)
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 
 ChoreChamp is a React-based web application that gamifies household chores, making task management fun and rewarding.
+The app allows users to create and manage chores, embark on missions, earn points, and redeem rewards.
+With its intuitive interface and engaging features, ChoreChamp transforms mundane household tasks into exciting challenges.
+The app consists of two separate repositories: one for the Front-End and another for the Back-End.
 
-The app allows users to create and manage chores, embark on missions, earn points, and redeem rewards. With its intuitive interface and engaging features, ChoreChamp transforms mundane household tasks into exciting challenges.
+## Demo
+```
+link: <>
+```
+## 🌟 Preview
+
+![ChoreChamp Screenshot](./src/assets/UserProfile.png)
+![ChoreChamp Screenshot](./src/assets/Chore.png)
+![ChoreChamp Screenshot](./src/assets/Reward.png)
+![ChoreChamp Screenshot](./src/assets/Mission.png)
 
 ## Repository Structure
 
@@ -28,26 +49,28 @@ chore-app-frontend/
 Key Files:
 - `App.tsx`: Main application component
 - `main.tsx`: Entry point of the application
-- `Components/Layout/Layout.tsx`: Main layout component
-- `Components/MissionPage/ActiveMission/ActiveMission.tsx`: Handles active mission functionality
-- `Components/LoginPage/LoginView.tsx`: Manages user login
+- `Components`: Is the backbone of your React front end. It houses reusable, modular UI building blocks that represent different parts of your application
 
 Important integration points:
 - `Helper Functions/ApiCalls.ts`: Contains API calls to the backend
 - `Theme/theme.ts`: Defines the application's theme
 - `types/`: Contains TypeScript type definitions for the application
 
-## Usage Instructions
-
 ### Installation
 
 Prerequisites:
-- Node.js (v14 or later)
-- npm (v6 or later)
+- Node.js (^20)
+- npm (10.9.2)
 
 Steps:
-1. Clone the repository
-2. Navigate to the project directory
+1. Clone the repository 
+```
+https://github.com/Msambere/chore-app-frontend.git
+```
+2. Navigate to the project directory 
+```
+cd chore-app-frontend
+```
 3. Run `npm install` to install dependencies
 
 ### Getting Started
@@ -56,14 +79,15 @@ Steps:
    ```
    npm run dev
    ```
-2. Open your browser and navigate to `http://localhost:3000`
+2. Open your browser and navigate to `http://localhost:<>`
 
 ### Configuration
 
-The application uses environment variables for configuration. Create a `.env` file in the root directory with the following variables:
+The application uses environment variables for configuration.
+Create a `.env` file in the root directory with the following variables:
 
 ```
-REACT_APP_API_URL=<your_api_url>
+VITE_APP_BACKEND_URL=<your_local_api_url>
 ```
 
 ### Common Use Cases
@@ -89,37 +113,6 @@ REACT_APP_API_URL=<your_api_url>
    - Navigate to the Rewards page
    - Select a reward to redeem with your earned points
 
-### Testing & Quality
-
-To run tests:
-```
-npm test
-```
-
-### Troubleshooting
-
-1. Login Issues:
-   - Problem: Unable to log in
-   - Solution: 
-     1. Check if the username exists
-     2. Verify the password
-     3. Ensure the backend API is running and accessible
-
-2. Mission Not Starting:
-   - Problem: Unable to start a new mission
-   - Solution:
-     1. Check if there are available chores matching the selected criteria
-     2. Verify that the user is not already on an active mission
-     3. Check the console for any error messages
-
-3. Points Not Updating:
-   - Problem: Points are not updating after completing a chore
-   - Solution:
-     1. Verify that the chore was marked as completed
-     2. Check the network tab in browser dev tools for successful API calls
-     3. Refresh the page to see if points update
-
-For any persistent issues, check the browser console for error messages and verify the API responses in the Network tab of your browser's developer tools.
 
 ## Data Flow
 
@@ -158,14 +151,19 @@ The ChoreChamp application follows a client-server architecture with the React f
 |   (React)   |        |             |        |             |
 |             |        |             |        |             |
 +-------------+        +-------------+        +-------------+
-      ^                      ^
-      |                      |
-      v                      v
-+-------------+        +-------------+
-|             |        |             |
-| Local State |        | Local Storage|
-|             |        |             |
-+-------------+        +-------------+
+      ^                      
+      |                      
+      v                      
++-------------+        
+|             |        
+|Local Storage|        
+|             |        
++-------------+      
 ```
 
 Note: Ensure proper error handling and state management throughout the application to maintain data consistency between the frontend and backend.
+
+### 🚀 Contact Us
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/amber-edwards-swe/)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Msambere)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:anhtr077@gmail.com)
