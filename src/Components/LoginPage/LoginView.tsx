@@ -6,7 +6,7 @@ import {
   PasswordElement,
   TextFieldElement,
 } from "react-hook-form-mui";
-import { Button, Container, Stack, Typography } from "@mui/material";
+import {Box, Button, Container, Stack, Typography} from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router";
 import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
 import { getUserInfo } from "~/HelperFunctions/ApiCalls";
@@ -65,7 +65,7 @@ export default function LoginPage({ setUserData }: LoginViewProps) {
 
   return (
     <Container fixed sx={{ height: "100vh" }}>
-      <Typography variant={"h1"} align={"center"}>
+      <Typography variant={"h1"} align={"center"} pb={2}>
         ChoreChamp
       </Typography>
       <FormContainer
@@ -73,16 +73,26 @@ export default function LoginPage({ setUserData }: LoginViewProps) {
         handleSubmit={handleSubmit(onSubmit)}
         resolver={formResolver}
       >
-        <Stack spacing={2}>
+        <Stack spacing={2} maxWidth={0.7} m={"auto"} mb={2}>
           <TextFieldElement name={"username"} label={"Username"} required />
           <PasswordElement name={"password"} label={"Password"} required />
         </Stack>
-        <Button type={"submit"} color={"primary"}>
-          Login
-        </Button>
-        <Button component={RouterLink} to={"/Signup"}>
-          Sign up
-        </Button>
+        <Box
+          sx={{
+            maxWidth: 0.7,
+            margin: "auto",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "end",
+          }}
+        >
+          <Button component={RouterLink} to={"/Signup"}>
+            Sign up
+          </Button>
+          <Button variant={"contained"} type={"submit"} color={"primary"}>
+            Login
+          </Button>
+        </Box>
       </FormContainer>
     </Container>
   );
