@@ -71,7 +71,7 @@ export default function SignupView() {
             Back to Login
           </Button>{" "}
           <Button variant={"contained"} type={"submit"} color={"primary"}>
-            Signup
+            Sign up
           </Button>
         </Box>
       </FormContainer>
