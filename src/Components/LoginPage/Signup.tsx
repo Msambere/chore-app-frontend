@@ -5,7 +5,7 @@ import {
   PasswordElement,
   TextFieldElement,
 } from "react-hook-form-mui";
-import { Button, Stack, Box } from "@mui/material";
+import { Button, Stack, Box, Container, Typography } from "@mui/material";
 import { createUser } from "~/HelperFunctions/ApiCalls";
 import { Link as RouterLink, useNavigate } from "react-router";
 import signupSchema from "~/types/Forms/SignupSchema";
@@ -42,26 +42,39 @@ export default function SignupView() {
   };
 
   return (
-    <FormContainer
-      formContext={formContext}
-      handleSubmit={handleSubmit(onSubmit)}
-      resolver={formResolver}
-    >
-      <Stack spacing={2} maxWidth={0.7} m={"auto"}>
-        <TextFieldElement name={"firstName"} label={"First Name"} required />
-        <TextFieldElement name={"lastName"} label={"Last Name"} required />
-        <TextFieldElement name={"username"} label={"Username"} required />
-        <TextFieldElement name={"email"} label={"Email"} required />
-        <PasswordElement name={"password"} label={"Password"} required />
-      </Stack>
-      <Box sx={{ maxWidth: 0.7, margin: "auto" }}>
-        <Button component={RouterLink} to={"/"}>
-          Back to Login
-        </Button>{" "}
-        <Button variant={"contained"} type={"submit"} color={"primary"}>
-          Signup
-        </Button>
-      </Box>
-    </FormContainer>
+    <Container fixed sx={{ height: "100vh" }}>
+      <Typography variant={"h1"} align={"center"} pb={2}>
+        ChoreChamp
+      </Typography>
+      <FormContainer
+        formContext={formContext}
+        handleSubmit={handleSubmit(onSubmit)}
+        resolver={formResolver}
+      >
+        <Stack spacing={2} maxWidth={0.7} m={"auto"} mb={2}>
+          <TextFieldElement name={"firstName"} label={"First Name"} required />
+          <TextFieldElement name={"lastName"} label={"Last Name"} required />
+          <TextFieldElement name={"username"} label={"Username"} required />
+          <TextFieldElement name={"email"} label={"Email"} required />
+          <PasswordElement name={"password"} label={"Password"} required />
+        </Stack>
+        <Box
+          sx={{
+            maxWidth: 0.7,
+            margin: "auto",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "end",
+          }}
+        >
+          <Button component={RouterLink} to={"/"}>
+            Back to Login
+          </Button>{" "}
+          <Button variant={"contained"} type={"submit"} color={"primary"}>
+            Signup
+          </Button>
+        </Box>
+      </FormContainer>
+    </Container>
   );
 }
