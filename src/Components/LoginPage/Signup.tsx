@@ -18,6 +18,7 @@ import { createUser } from "~/HelperFunctions/ApiCalls";
 import { Link as RouterLink, useNavigate } from "react-router";
 import signupSchema from "~/types/Forms/SignupSchema";
 import SignupFormInputs from "~/types/Forms/SignupFormInputs";
+import DemoAlert from "~/Components/SharedComponents/DemoAlert";
 
 export default function SignupView() {
   const formResolver = zodResolver(signupSchema);
@@ -51,6 +52,17 @@ export default function SignupView() {
 
   return (
     <Container fixed sx={{ height: "100vh" }}>
+      <Box
+        sx={{
+          width: 100,
+          height: 100,
+          display: "flex",
+          alignItems: "center",
+          margin: "auto",
+        }}
+      >
+        <img width={"100px"} src={`logo.svg`} loading="lazy" alt={"CC"} />
+      </Box>
       <Typography variant={"h1"} align={"center"} pb={2}>
         ChoreChamp
       </Typography>
@@ -83,33 +95,7 @@ export default function SignupView() {
           </Button>
         </Box>
       </FormContainer>
-      <Alert
-        severity="info"
-        variant="filled"
-        sx={{
-          maxWidth: 0.7,
-          margin: "auto",
-          marginBottom: 4,
-          marginTop: 4,
-          borderRadius: "8px",
-        }}
-      >
-        <AlertTitle>Info</AlertTitle>
-        <h4>Demo Website Disclaimer</h4>
-        <p>
-          This is a demo version of the ChoreChamp web application. It is
-          intended for demonstration and development purposes only.
-          <ul>
-            <li> Do NOT enter any personal, private, or secure information.</li>
-            <li> No real data security measures are implemented. </li>
-            <li>
-              This demo may be accessed by multiple users. Please be mindful and
-              respectful when using the app.{" "}
-            </li>
-          </ul>
-          Thank you for understanding and using ChoreChamp responsibly!
-        </p>
-      </Alert>
+      <DemoAlert />
     </Container>
   );
 }

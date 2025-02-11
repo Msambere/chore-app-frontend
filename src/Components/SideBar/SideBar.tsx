@@ -9,7 +9,14 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import { Home, ListAlt, CardGiftcard, Assignment } from "@mui/icons-material";
+import LinkIcon from "@mui/icons-material/Link";
+import {
+  Home,
+  ListAlt,
+  CardGiftcard,
+  Assignment,
+  Feedback,
+} from "@mui/icons-material";
 import { Link as RouterLink, useLocation } from "react-router";
 import LogoutButton from "~/Components/LoginPage/LogoutButton";
 import { Dispatch, SetStateAction } from "react";
@@ -26,6 +33,13 @@ const menuItems = [
   { label: "Chores", route: "/Chores", icon: <ListAlt /> },
   { label: "Rewards", route: "/Rewards", icon: <CardGiftcard /> },
   { label: "Mission", route: "/Mission", icon: <Assignment /> },
+  {
+    label: "Feedback",
+    route:
+      "https://docs.google.com/forms/d/e/1FAIpQLSebTFAS0f_fT2Y2dXl7iElsLb29HiG7_HR_6IituZWc0ltuKQ/viewform",
+    icon: <Feedback />,
+    external: true,
+  },
 ];
 
 const Sidebar = ({ setUserData, userData, open }: Props) => {
@@ -81,6 +95,15 @@ const Sidebar = ({ setUserData, userData, open }: Props) => {
               >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} />
+                {item.external && (
+                  <LinkIcon
+                    sx={{
+                      ml: 1,
+                      color: "text.primary",
+                      fontSize: "1.2rem",
+                    }}
+                  />
+                )}
               </ListItemButton>
             </ListItem>
           ))}

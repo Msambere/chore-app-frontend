@@ -6,6 +6,7 @@ import {
   Typography,
   IconButton,
   Box,
+  Rating,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -15,6 +16,7 @@ import { deleteEntityApiCall } from "~/HelperFunctions/ApiCalls";
 import EditRewardForm from "./EditRewardForm";
 import SingleRewardDetails from "./SingleRewardDetails";
 import ConfirmationDeleteDialog from "~/Components/SharedComponents/ConfirmationDeleteDialog";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 
 interface RewardProps {
   reward: RewardResponse;
@@ -60,9 +62,25 @@ export default function SingleReward({ reward, setUserData }: RewardProps) {
             />
           ) : (
             <Box>
-              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
-                {reward.name}
-              </Typography>
+              <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600, mr: 1 }}>
+                  {reward.name}
+                </Typography>
+                <Rating
+                  size="small"
+                  name="points Needed"
+                  value={reward.pointsNeeded}
+                  max={5}
+                  readOnly
+                  icon={<MonetizationOnIcon fontSize="inherit" />}
+                  emptyIcon={
+                    <MonetizationOnIcon
+                      fontSize="inherit"
+                      sx={{ opacity: 0.25 }}
+                    />
+                  }
+                />
+              </Box>
               <SingleRewardDetails reward={reward} />
             </Box>
           )}

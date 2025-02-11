@@ -173,7 +173,7 @@ export default function RecommendMissionCard({
               sx={{ mt: 1, borderRadius: 2 }}
               onClick={handleCheckOutMission}
             >
-              Check out Mission!
+              Check out Mission
             </Button>
           </Stack>
         ) : (
