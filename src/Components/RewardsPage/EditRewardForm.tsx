@@ -168,11 +168,15 @@ export default function EditRewardForm({
           </FormControl>
 
           <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-            <Button type="submit" variant="contained" sx={{ mr: 2 }}>
-              Save
-            </Button>
-            <Button variant="outlined" onClick={() => setEditing(false)}>
+            <Button
+              variant="outlined"
+              onClick={() => setEditing(false)}
+              sx={{ mr: 2 }}
+            >
               Cancel
+            </Button>
+            <Button type="submit" variant="contained">
+              Save
             </Button>
           </Box>
         </form>
