@@ -5,7 +5,15 @@ import {
   PasswordElement,
   TextFieldElement,
 } from "react-hook-form-mui";
-import { Button, Stack, Box, Container, Typography } from "@mui/material";
+import {
+  Button,
+  Stack,
+  Box,
+  Container,
+  Typography,
+  Alert,
+  AlertTitle,
+} from "@mui/material";
 import { createUser } from "~/HelperFunctions/ApiCalls";
 import { Link as RouterLink, useNavigate } from "react-router";
 import signupSchema from "~/types/Forms/SignupSchema";
