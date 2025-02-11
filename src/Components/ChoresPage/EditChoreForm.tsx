@@ -212,15 +212,11 @@ function EditChoreForm({
             ))}
           </TextField>
 
-          <Box
-            display={"flex"}
-            justifyContent={"space-between"}
-            alignItems={"flex-end"}
-          >
+          <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
             <Button
+              variant="outlined"
               onClick={() => setEditing(false)}
-              color={"secondary"}
-              variant={"outlined"}
+              sx={{ mr: 2 }}
             >
               Cancel
             </Button>

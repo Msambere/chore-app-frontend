@@ -22,7 +22,7 @@ export default function SingleRewardDetails({ reward }: Props) {
         </ListItem>
       )}
 
-      <ListItem disablePadding sx={{ mb: 1 }}>
+      <ListItem disablePadding>
         <ListItemText
           primary={
             <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
@@ -30,17 +30,6 @@ export default function SingleRewardDetails({ reward }: Props) {
             </Typography>
           }
           secondary={reward.inMission ? "Yes" : "No"}
-        />
-      </ListItem>
-
-      <ListItem disablePadding>
-        <ListItemText
-          primary={
-            <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
-              Points Needed
-            </Typography>
-          }
-          secondary={reward.pointsNeeded}
         />
       </ListItem>
     </List>

@@ -7,7 +7,11 @@ import { PickersDay, PickersDayProps } from "@mui/x-date-pickers/PickersDay";
 import { styled } from "@mui/material/styles";
 import UserData from "~/types/Response/UserData";
 import MissionResponse from "~/types/Response/MissionResponse";
-
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault(dayjs.tz.guess());
 export interface DateRange {
   start: Date;
   end: Date;
@@ -33,7 +37,7 @@ const CustomPickersDay = styled(PickersDay, {
 
 const buildMissionDateRanges = (missions: MissionResponse[]): DateRange[] => {
   return missions?.map((mission) => ({
-    start: new Date(mission.dateStarted),
+    start: dayjs(mission.dateStarted).toDate(),
     end: dayjs(mission.dateStarted).add(mission.timeLimit, "minutes").toDate(),
     color: getMissionColor(mission),
   }));
