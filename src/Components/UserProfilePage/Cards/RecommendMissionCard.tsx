@@ -26,17 +26,17 @@ export interface RecommendMissionProps {
 }
 
 //check if any chore match category and recurrence
-const checkForMatchingChores = (
-  chores: ChoreResponse[],
-  recurrence: string,
-  category: string,
-): boolean => {
-  if (!chores?.length) return false;
-
-  return chores.some(
-    (chore) => chore.recurrence === recurrence && chore.category === category,
-  );
-};
+// const checkForMatchingChores = (
+//   chores: ChoreResponse[],
+//   recurrence: string,
+//   category: string,
+// ): boolean => {
+//   if (!chores?.length) return false;
+//
+//   return chores.some(
+//     (chore) => chore.recurrence === recurrence && chore.category === category,
+//   );
+// };
 
 const getRandomNumber = (min: number, max: number) => {
   min = Math.ceil(min);
@@ -69,18 +69,41 @@ export default function RecommendMissionCard({
   useEffect(() => {
     if (!chores?.length) return;
 
-    const extractedCategories = extractUserCategories(chores);
-    const extractedRecurrence = extractUserRecurrences(chores);
+    // const extractedCategories = extractUserCategories(chores);
+    // const extractedRecurrence = extractUserRecurrences(chores);
 
-    const validCombinations = extractedRecurrence.flatMap((recurrence) =>
-      extractedCategories
-        .filter((category) =>
-          checkForMatchingChores(chores, recurrence, category),
-        )
-        .map((category) => ({ recurrence, category })),
-    );
+    // const validCombinations = extractedRecurrence.flatMap((recurrence) =>
+    //   extractedCategories
+    //     .filter((category) =>
+    //       checkForMatchingChores(chores, recurrence, category),
+    //     )
+    //     .map((category) => ({ recurrence, category })),
+    // );
+    const validCombinations: { recurrence: string; category: string }[] = [];
 
-    if (validCombinations.length) {
+    chores.forEach((chore) => {
+      validCombinations.push({
+        recurrence: chore.recurrence,
+        category: chore.category,
+      });
+    });
+
+    // if (validCombinations.length) {
+    //   const randomCombination =
+    //     validCombinations[getRandomNumber(0, validCombinations.length)];
+    //   const randomTimeLimit =
+    //     timeLimitOptions[getRandomNumber(0, timeLimitOptions.length)];
+    //
+    //   const newMission = {
+    //     recurrence: randomCombination.recurrence,
+    //     category: randomCombination.category,
+    //     timeLimit:
+    //       randomTimeLimit === "Let's do them all!" ? null : randomTimeLimit,
+    //   };
+    //   setMissionRequestData(newMission);
+    //   console.log(" New Recommended Mission:", newMission);
+    // }
+    if (validCombinations.length > 0) {
       const randomCombination =
         validCombinations[getRandomNumber(0, validCombinations.length)];
       const randomTimeLimit =
@@ -94,6 +117,8 @@ export default function RecommendMissionCard({
       };
       setMissionRequestData(newMission);
       console.log(" New Recommended Mission:", newMission);
+    } else {
+      console.log("No valid mission combinations found.");
     }
   }, [chores]);
 
