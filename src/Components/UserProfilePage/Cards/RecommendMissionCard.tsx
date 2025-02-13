@@ -8,8 +8,6 @@ import {
   CardContent,
 } from "@mui/material";
 import ChoreResponse from "~/types/Response/ChoreResponse";
-import { extractUserCategories } from "~/HelperFunctions/extractUserCategories";
-import { extractUserRecurrences } from "~/HelperFunctions/extractUserRecurrences";
 import { MissionRequest } from "~/types/Request/MissionRequest";
 import UserData from "~/types/Response/UserData";
 import { createNewMissionApiCall } from "~/HelperFunctions/ApiCalls";
@@ -24,19 +22,6 @@ export interface RecommendMissionProps {
   userData: UserData;
   setUserData: Dispatch<SetStateAction<UserData>>;
 }
-
-//check if any chore match category and recurrence
-// const checkForMatchingChores = (
-//   chores: ChoreResponse[],
-//   recurrence: string,
-//   category: string,
-// ): boolean => {
-//   if (!chores?.length) return false;
-//
-//   return chores.some(
-//     (chore) => chore.recurrence === recurrence && chore.category === category,
-//   );
-// };
 
 const getRandomNumber = (min: number, max: number) => {
   min = Math.ceil(min);
@@ -68,17 +53,6 @@ export default function RecommendMissionCard({
   ];
   useEffect(() => {
     if (!chores?.length) return;
-
-    // const extractedCategories = extractUserCategories(chores);
-    // const extractedRecurrence = extractUserRecurrences(chores);
-
-    // const validCombinations = extractedRecurrence.flatMap((recurrence) =>
-    //   extractedCategories
-    //     .filter((category) =>
-    //       checkForMatchingChores(chores, recurrence, category),
-    //     )
-    //     .map((category) => ({ recurrence, category })),
-    // );
     const validCombinations: { recurrence: string; category: string }[] = [];
 
     chores.forEach((chore) => {
@@ -88,21 +62,6 @@ export default function RecommendMissionCard({
       });
     });
 
-    // if (validCombinations.length) {
-    //   const randomCombination =
-    //     validCombinations[getRandomNumber(0, validCombinations.length)];
-    //   const randomTimeLimit =
-    //     timeLimitOptions[getRandomNumber(0, timeLimitOptions.length)];
-    //
-    //   const newMission = {
-    //     recurrence: randomCombination.recurrence,
-    //     category: randomCombination.category,
-    //     timeLimit:
-    //       randomTimeLimit === "Let's do them all!" ? null : randomTimeLimit,
-    //   };
-    //   setMissionRequestData(newMission);
-    //   console.log(" New Recommended Mission:", newMission);
-    // }
     if (validCombinations.length > 0) {
       const randomCombination =
         validCombinations[getRandomNumber(0, validCombinations.length)];
