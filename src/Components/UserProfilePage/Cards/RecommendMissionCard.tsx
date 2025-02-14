@@ -8,8 +8,6 @@ import {
   CardContent,
 } from "@mui/material";
 import ChoreResponse from "~/types/Response/ChoreResponse";
-import { extractUserCategories } from "~/HelperFunctions/extractUserCategories";
-import { extractUserRecurrences } from "~/HelperFunctions/extractUserRecurrences";
 import { MissionRequest } from "~/types/Request/MissionRequest";
 import UserData from "~/types/Response/UserData";
 import { createNewMissionApiCall } from "~/HelperFunctions/ApiCalls";
@@ -24,19 +22,6 @@ export interface RecommendMissionProps {
   userData: UserData;
   setUserData: Dispatch<SetStateAction<UserData>>;
 }
-
-//check if any chore match category and recurrence
-const checkForMatchingChores = (
-  chores: ChoreResponse[],
-  recurrence: string,
-  category: string,
-): boolean => {
-  if (!chores?.length) return false;
-
-  return chores.some(
-    (chore) => chore.recurrence === recurrence && chore.category === category,
-  );
-};
 
 const getRandomNumber = (min: number, max: number) => {
   min = Math.ceil(min);
@@ -68,19 +53,16 @@ export default function RecommendMissionCard({
   ];
   useEffect(() => {
     if (!chores?.length) return;
+    const validCombinations: { recurrence: string; category: string }[] = [];
 
-    const extractedCategories = extractUserCategories(chores);
-    const extractedRecurrence = extractUserRecurrences(chores);
+    chores.forEach((chore) => {
+      validCombinations.push({
+        recurrence: chore.recurrence,
+        category: chore.category,
+      });
+    });
 
-    const validCombinations = extractedRecurrence.flatMap((recurrence) =>
-      extractedCategories
-        .filter((category) =>
-          checkForMatchingChores(chores, recurrence, category),
-        )
-        .map((category) => ({ recurrence, category })),
-    );
-
-    if (validCombinations.length) {
+    if (validCombinations.length > 0) {
       const randomCombination =
         validCombinations[getRandomNumber(0, validCombinations.length)];
       const randomTimeLimit =
@@ -94,6 +76,8 @@ export default function RecommendMissionCard({
       };
       setMissionRequestData(newMission);
       console.log(" New Recommended Mission:", newMission);
+    } else {
+      console.log("No valid mission combinations found.");
     }
   }, [chores]);
 
