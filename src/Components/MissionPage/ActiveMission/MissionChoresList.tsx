@@ -44,7 +44,6 @@ const MissionChoresList = ({
   // Timer effect
   useEffect(() => {
     if (missionFinished) return;
-
     if (remainingTime > 0 && chores.some((chore) => !chore.completed)) {
       const timer = setInterval(() => {
         setRemainingTime((prev) => {
@@ -58,7 +57,7 @@ const MissionChoresList = ({
       }, 1000);
       return () => clearInterval(timer);
     }
-  }, [missionFinished, chores, remainingTime, onTimeRunOut]);
+  }, [missionFinished]);
 
   // Progress effect
   useEffect(() => {
