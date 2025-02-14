@@ -17,6 +17,7 @@ import {
   Assignment,
   Feedback,
 } from "@mui/icons-material";
+import YouTubeIcon from '@mui/icons-material/YouTube';
 import { Link as RouterLink, useLocation } from "react-router";
 import LogoutButton from "~/Components/LoginPage/LogoutButton";
 import { Dispatch, SetStateAction } from "react";
@@ -33,6 +34,12 @@ const menuItems = [
   { label: "Chores", route: "/Chores", icon: <ListAlt /> },
   { label: "Rewards", route: "/Rewards", icon: <CardGiftcard /> },
   { label: "Mission", route: "/Mission", icon: <Assignment /> },
+  {
+    label: "New User Demo",
+    route: "https://youtu.be/CAMR34YwlpQ?si=57d68XBRTBAgFv3k",
+    icon: <YouTubeIcon />,
+    external: true,
+  },
   {
     label: "Feedback",
     route:
